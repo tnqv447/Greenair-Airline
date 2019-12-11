@@ -1,0 +1,320 @@
+@page
+@model AccountModel
+@using Microsoft.AspNetCore.Http
+@{
+	if(HttpContext.Session.GetString("userid") == null)
+		Response.Redirect("Index");
+}
+<div class="hero-wrap js-fullheight" style="background-image: url('images/bg_1.jpg');">
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-start" data-scrollax-parent="true">
+			<div class="col-md-9 ftco-animate mb-5 pb-5 text-center text-md-left" data-scrollax=" properties: { translateY: '70%' }">
+				<h1 class="mb-4" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Discover <br>A new Place</h1>
+				<p data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Find great places to stay, eat, shop, or visit from local experts</p>
+			</div>
+		</div>
+	</div>
+</div>
+<section class="ftco-section">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3" style="border-right:1px solid #0f0f0f3b">
+				<div class="nav nav-pills flex-column justify-content-center text-center" id="myTab" role="tablist" aria-orientation="vertical">
+					<a class="nav-link active" id="Account-tab" data-toggle="pill" href="#account-tab" role="tab" aria-controls="account" aria-selected="true">Your account</a>
+					<a class="nav-link" id="Identify-tab" data-toggle="pill" href="#profile-tab" role="tab" aria-controls="profile" aria-selected="false">Your profile</a>
+					<a class="nav-link" id="Ticket-tab" data-toggle="pill" href="#ticket-tab" role="tab" aria-controls="ticket" aria-selected="false">Your tickets</a>
+				</div>
+			</div>
+			<div class="col-md-9">
+				<div class="tab-content" id="myTabContent">
+					<div class="tab-pane fade show active" id="account-tab"  role="tabpanel" aria-labelledby="account">
+						<div style="  border-bottom: 1px solid #0f0f0f3b;" class="row">
+							<div class="account-title col-md-8">
+								<h2>Account Settings</h2>
+							</div>
+						</div>
+						<div style="margin-top: 30px" class="row">
+							<div class="heading  col-md-8">
+								<h3>Username</h3>
+							</div>
+							<!-- <div class="col-md-4">
+								<button id="save-user" class="btn btn-primary save-account hidden">Save Changes</button>
+								<button id="close-user" class="btn close-account hidden">Cancel</button>
+								<button id="open-user" class="btn open-account">Edit</button>
+							</div> -->
+						</div>
+						<div class="row user-show ">
+							<div class="col-md-6">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">Username:</label>
+									<div id="text-username">@ViewData["username"]</div>
+								</div>	
+							</div>		
+						</div>
+						<div class="row user-field hidden">
+							<div class="col-md-4">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">Username:</label>
+									<input type="text" class="form-control" value='@ViewData["username"]' id="Username">
+									<span class="hidden" style="color:red" id="err-user">Username must be 5-14 characters, start with a letter and only letters and numbers</span>
+								</div>
+							</div>		
+						</div>
+						<div class="row">
+							<div class="heading col-md-8" >
+								<h3>Password</h3>
+							</div>
+							<div class="col-md-4">
+								<button id="save-pass" class="btn btn-primary save-account hidden">Save Changes</button>
+								<button id="close-pass" class="btn close-account hidden">Cancel</button>
+								<button id="open-pass"class="btn open-account">Edit</button>
+							</div>
+						</div>
+						<div class="row" id="pass-show">
+							<div class="col-md-6">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">Password:</label>
+									<div id="text-password">********</div>
+								</div>
+							</div>
+						</div>
+						<div class="row hidden" id="pass-field">
+							<div class="col-md-5" style="padding-left:15px">
+								<div class="form-group" >
+									<label style="font-weight:600">Current password</label>
+									<input type="password" disabled class="form-control" value='@ViewData["password"]'  id="old-pass">
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="form-group">
+									<label style="font-weight:600">Enter a new password</label>
+									<input type="password" class="form-control" id="new-pass">
+									<span class="hidden" style="color:red" id="err-new-pass">Must be 5-20 characters, contains at least one lower-case letter, one number</span>
+								</div>
+							</div>
+							<div class="col-md-5" style="padding-top: 15px">
+								<div class="form-group">
+									<label style="font-weight:600">Repeat new password</label>
+									<input type="password" class="form-control"   id="re-pass">
+									<span class="hidden" style="color:red" id="err-re-pass">Not correct with new password</span>
+								</div>
+									
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="profile-tab"  role="tabpanel" aria-labelledby="profile">
+						<div style="  border-bottom: 1px solid #0f0f0f3b;" class="row">
+							<div class="account-title col-md-8">
+								<h2>Profile Settings</h2>
+							</div>
+						</div>
+						<div style="margin-top: 30px" class="row">
+							<div class="heading  col-md-8">
+								<h3>About you</h3>
+							</div>
+							<div class="col-md-4">
+								<button id="profile_s" class="btn btn-primary save hidden">Save Changes</button>
+								<button id="profile_cl" class="btn cancel hidden">Cancel</button>
+								<button id="profile_op"class="btn open">Edit</button>
+							</div>
+						</div>
+						<div class="row pro-show ">
+							<div class="col-md-6">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">Name:</label>
+									<div class="name"></div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">Date of birth</label>
+									<div class="birth_day">@ViewData["birthdate"]</div>
+								</div>
+							</div>
+						</div>
+						<div class="row pro-field hidden">
+							<div class="col-md-4" style="padding-left:15px">
+								<div class="form-group" >
+									<label style="font-weight:600">Last name</label>
+									<input id="lastName" type="text" class="form-control" value='@ViewData["lastname"]'>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label style="font-weight:600">First name</label>
+									<input id="firstName" type="text" class="form-control" value='@ViewData["firstname"]' >
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label style="font-weight:600">Date of birth</label>
+									<input type="text" class="form-control birth_date" value='@ViewData["birthdate"]'>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="heading col-md-8" >
+								<h3>Address</h3>
+							</div>
+							<div class="col-md-4">
+								<button id="add_s" class="btn btn-primary save hidden">Save Changes</button>
+								<button id="add_cl" class="btn cancel hidden">Cancel</button>
+								<button id="add_op" class="btn open">Edit</button>
+							</div>
+						</div>
+						<div class="row" id="address-show">
+							<div class="col-md-4">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">Num</label>
+									<div id="text-num">@ViewData["num"]</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">Street</label>
+									<div id="text-street">@ViewData["street"]</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">District</label>
+									<div id="text-district">@ViewData["district"]</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">City</label>
+									<div id="text-city">@ViewData["city"]</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">State</label>
+									<div id="text-state">@ViewData["state"]</div>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">Country</label>
+									<div id="text-country">@ViewData["country"]</div>
+								</div>
+							</div>
+						</div>
+						<div class="row hidden" id="address-field">
+							<div class="col-md-4" style="padding-left:15px">
+								<div class="form-group" >
+									<label style="font-weight:600">Num</label>
+									<input type="text" value='@ViewData["num"]' class="form-control" id="num">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label style="font-weight:600">Street</label>
+									<input value='@ViewData["street"]' type="text" class="form-control" id="street">
+								</div>
+							</div>
+							<div class="col-md-4" >
+								<div class="form-group">
+									<label style="font-weight:600">District</label>
+									<input type="text" value='@ViewData["district"]' class="form-control"  id="district" >
+								</div>			
+							</div>
+							<div class="col-md-4" style="padding-left:15px">
+								<div class="form-group" >
+									<label style="font-weight:600">City</label>
+									<input type="text" value='@ViewData["city"]' class="form-control" id="city" >
+								</div>
+							</div>
+							<div class="col-md-4" style="padding-left:15px">
+								<div class="form-group" >
+									<label style="font-weight:600">State</label>
+									<input type="text" value='@ViewData["state"]' class="form-control" id="state" >
+								</div>
+							</div>
+							<div class="col-md-4" >
+								<div class="form-group">
+									<label style="font-weight:600">Country</label>
+									<select id="items"  name="items" type="text" class="form-control country"  ></select>
+									<input type="hidden" value='@ViewData["country"]' id="country"/>
+								</div>			
+							</div>
+						</div>
+						<div class="row">
+							<div class="heading col-md-8" >
+								<h3>Email</h3>
+							</div>
+							<div class="col-md-4">
+								<button id="email_s" class="btn btn-primary save hidden">Save Changes</button>
+								<button id="email_cl" class="btn cancel hidden">Cancel</button>
+								<button id="email_op" class="btn open">Edit</button>
+							</div>
+						</div>
+						<div class="row email-show ">
+							<div class="col-md-6">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">Email</label>
+									<div id="text-email">@ViewData["email"]</div>
+								</div>
+							</div>
+						</div>
+						<div class="row email-field hidden">
+							<div class="col-md-4" style="padding-left:15px">
+								<div class="form-group" >
+									<label style="font-weight:600">Email</label>
+									<input id="email" type="email" value='@ViewData["email"]' class="form-control">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="heading col-md-8" >
+								<h3>Phone</h3>
+							</div>
+							<div class="col-md-4">
+								<button id="phone_s" class="btn btn-primary save hidden">Save Changes</button>
+								<button id="phone_cl" class="btn cancel hidden">Cancel</button>
+								<button id="phone_op" class="btn open">Edit</button>
+							</div>
+						</div>
+						<div class="row phone-show ">
+							<div class="col-md-6">
+								<div class="form-group" style="padding-left:15px">
+									<label style="font-weight:600">Phone</label>
+									<div id="text-phone">@ViewData["phone"]</div>
+								</div>
+							</div>
+						</div>
+						<div class="row phone-field hidden">
+							<div class="col-md-4" style="padding-left:15px">
+								<div class="form-group" >
+									<label style="font-weight:600">Phone</label>
+									<input id="phone" type="text" value='@ViewData["phone"]' class="form-control">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="ticket-tab"  role="tabpanel" aria-labelledby="ticket">
+						<div style="border-bottom: 1px solid #0f0f0f3b;" class="row">
+							<div class="account-title col-md-8">
+								<h2>Your tickets</h2>
+							</div>
+						</div>
+						<div class="row">
+							<div style="margin-top:30px" class="ticket_detail col-md-4">
+								<div class="form-group">
+									<label>Enter your ticket id here:</label>
+									<input class="form-control" type="text" id="ticket_id"/>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<button style="margin-top: 70px" class="btn btn-primary" id="submit_ticket_id">Check</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+</script>

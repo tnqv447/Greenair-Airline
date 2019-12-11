@@ -1,0 +1,469 @@
+@page
+@model Presentation.Pages.FlightModel
+@using Microsoft.AspNetCore.Http
+@using Presentation.Helpers
+@Html.AntiForgeryToken()
+@{
+	@if(SessionHelper.GetObjectFromJson<Dictionary<string,object>>(HttpContext.Session,"FlightSearch") == null)
+		{
+			Response.Redirect("Index");
+		}
+	else
+	{
+		<div style="background-image: -webkit-linear-gradient(315deg,#f58300 0,#f59300 50%,#f6a100 50%,#f58300 100%);
+		background-image: linear-gradient(135deg,#f58300 0,#f59300 50%,#f6a100 50%,#f58300 100%); width:100%;height:450px">
+			<div class="overlay"></div>
+			<div class="container">
+				<div class="row no-gutters slider-text js-fullheight align-items-center " data-scrollax-parent="true">
+					<div style="width:100%;padding-left: 250px">
+						<h1 class="mb-5">Flight start here</h1>		
+					</div>
+				</div>
+			</div>
+		</div>
+		<section class="ftco-section bg-light">
+
+				<div class="container flight-go">
+					<div class="row">
+						<div class="col-sm-12" style="text-align:center;padding-left: .9375rem;padding-right: .9375rem;">
+							<h2 style="font-weight:600">@ViewData["from_city"] 
+								to
+								@ViewData["where_city"]
+							</h2>
+							<a style="font-weight:600" asp-page="/Index">
+								Change flight search
+								<span class="ion-ios-color-wand"></span>
+							</a>
+						</div>
+						<div class="col-sm-8">
+							<div class="">
+								<div class="section-heading">
+									<h3 class="section-heading__title" style="font-weight:600">
+										Flight go
+									</h3>
+									<span class="section-heading__icon ion-ios-plane"></span>
+									<div class="section-heading__content">
+										<span class="section-heading__route">
+											@ViewData["from_city"]
+											to
+											@ViewData["where_city"]
+										</span>
+										<span class="section-heading__content-connector">
+											-
+										</span>
+										<span class="section-heading__date">
+											@ViewData["depDate"]
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+							<label for="day-go">Check in</label>
+							<input type="text"  value='@ViewData["value_dep_date"]' id="check-in">
+						</div>
+					</div>
+					<p>
+						@Model.Msg
+					</p>
+						@{
+							@if(Model.ListFlights_1.Any())
+							{
+								@foreach(var item in Model.ListFlights_1)
+								{
+									<div class="row" style="margin-top: 20px">
+										<div class="col-sm-12">
+											<div class="flight-card-wrapper">
+												<div class="flight-card">
+													<div class="flight-card-itinerary">
+														<div class="itinerary-info">
+															<div class="itinerary-info__time">
+																5:30
+															</div>
+															<div class="itinerary-info__airport"> 
+																	@ViewData["from"]
+																	- Origin
+															</div>
+														</div>
+														<div class="itinerary-info__icons">
+															<span></span>
+														</div>
+														<div class="itinerary-info">
+															<div class="itinerary-info__time ">
+																7:40
+															</div>
+															<div class="itinerary-info__airport">
+																@ViewData["where"] 
+																- Destination
+															</div>
+														</div>
+													</div>
+													<div class="flight-card-details-price">
+														<div class="flight-card-details">
+															<div style="float:left;">
+																<span class="flight-card-details__duration ">Blasdasdasdasasdsad</span>
+																<div class="flight-card-details__more">
+																	<span class="info-show" >
+																		Chi tiết
+																	</span>
+																	<span class="info-hide">
+																		Ẩn
+																	</span>
+																</div>
+															</div>
+															
+															<div class="price-select" style="float:right">
+																<div class="price-select__price  text-right">
+																	<div class="starter-price-wrapper">
+																		<div class="pricepoint-wrapper pricepoint-wrapper--orange">
+																			<div class="pricepoint">
+																				<span class="pricepoint__middle">
+																					890,000
+																					<span class="pricepoint__decimal"></span>
+																				</span>
+																				<span class="pricepoint__symbol">
+																					đ
+																				</span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="price-select__button">
+																	<div class="button-toggle js-button-toggle">
+																		<span>
+																			Chọn
+																		</span>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class=" qa-flight-card-details">
+													<div class="fare__details fare__details--leg-0 ">
+														<span class="carrier"></span>
+														<div class="flight-info">
+															<div class="flight-info__row  flight-info__flightNubmer">
+																<div class="flight-info__row__label medium-3"> 
+																	Chuyến bay 1:
+																</div>
+																<div class="medium-9">
+																	<p></p>
+																</div>
+															</div>
+															<div class="flight-info__row">
+																<div class="flight-info__row__label medium-3"> 
+																	Khởi hành:
+																</div>
+																<div class="medium-9">
+																	<p></p>
+																</div>
+															</div>
+															<div class="flight-info__row">
+																<div class="flight-info__row__label medium-3"> 
+																	Đến:
+																</div>
+																<div class="medium-9">
+																	<p></p>
+																</div>
+															</div>
+															<div class="flight-info__row">
+																<div class="flight-info__row__label medium-3"> 
+																</div>
+																<div class="flight-info__more medium-9">
+																	<div class="flight-info__more__item">
+																		Thời gian:
+																		<p>2hrs 10mins</p>
+																	</div>
+																	<div class="flight-info__more__item">
+																		Máy bay:
+																		<p>2hrs 10mins</p>
+																	</div>
+																	<div class="flight-info__more__item">
+																		Hãng khai thác:
+																		<p>2hrs 10mins</p>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								}
+							}
+							else
+							{
+								<div class="row">
+									<div class="col-sm-12" style="text-align:center;padding-left: .9375rem;padding-right: .9375rem;">
+											<h2 class="section-heading__route">
+											No results
+											</h2>
+									</div>
+								</div>
+							}
+								
+						}	
+				</div>
+				@if(Model.CheckType == "round")
+				{
+					<div class="container flight-back">
+						<div class="row">
+							<div class="col-sm-12" style="text-align:center;padding-left: .9375rem;padding-right: .9375rem;">
+								<h2 style="font-weight:600">@ViewData["where_city"] 
+									to
+									@ViewData["from_city"]
+								</h2>
+								<a style="font-weight:600" asp-page="/Index">
+									Change flight search
+									<span class="ion-ios-color-wand"></span>
+								</a>
+							</div>
+							<div class="col-sm-8">
+								<div class="">
+									<div class="section-heading">
+										<h3 class="section-heading__title" style="font-weight:600">
+											Flight back
+										</h3>
+										<span class="section-heading__icon ion-ios-plane"></span>
+										<div class="section-heading__content">
+											<span class="section-heading__route">
+												@ViewData["where_city"]
+												to
+												@ViewData["from_city"]
+											</span>
+											<span class="section-heading__content-connector">
+												-
+											</span>
+											<span class="section-heading__date">
+												@ViewData["arrDate"]
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3">
+								<label for="day-go">Check out</label>
+								<input type="text"  value='@ViewData["value_arr_date"]' id="check-out">
+							</div>
+						</div>
+						@if(Model.ListFlights_2.Any())
+						{
+							@foreach(var item in Model.ListFlights_2)
+							{
+								<div class="row" style="margin-top: 20px">
+									<div class="col-sm-12">
+										<div class="flight-card-wrapper">
+											<div class="flight-card">
+												<div class="flight-card-itinerary">
+													<div class="itinerary-info">
+														<div class="itinerary-info__time">
+															5:30
+														</div>
+														<div class="itinerary-info__airport"> 
+																@ViewData["where"]
+																- Origin
+														</div>
+													</div>
+													<div class="itinerary-info__icons">
+														<span></span>
+													</div>
+													<div class="itinerary-info">
+														<div class="itinerary-info__time ">
+															7:40
+														</div>
+														<div class="itinerary-info__airport">
+															@ViewData["from"] 
+															- Destination
+														</div>
+													</div>
+												</div>
+												<div class="flight-card-details-price">
+													<div class="flight-card-details">
+														<div style="float:left;">
+															<span class="flight-card-details__duration ">Blasdasdasdasasdsad</span>
+															<div class="flight-card-details__more">
+																<span class="info-show" >
+																	Chi tiết
+																</span>
+																<span class="info-hide">
+																	Ẩn
+																</span>
+															</div>
+														</div>
+														
+														<div class="price-select" style="float:right">
+															<div class="price-select__price  text-right">
+																<div class="starter-price-wrapper">
+																	<div class="pricepoint-wrapper pricepoint-wrapper--orange">
+																		<div class="pricepoint">
+																			<span class="pricepoint__middle">
+																				890,000
+																				<span class="pricepoint__decimal"></span>
+																			</span>
+																			<span class="pricepoint__symbol">
+																				đ
+																			</span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="price-select__button">
+																<div class="button-toggle js-button-toggle">
+																	<span>
+																		Chọn
+																	</span>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class=" qa-flight-card-details">
+												<div class="fare__details fare__details--leg-0 ">
+													<span class="carrier"></span>
+													<div class="flight-info">
+														<div class="flight-info__row  flight-info__flightNubmer">
+															<div class="flight-info__row__label medium-3"> 
+																Chuyến bay 1:
+															</div>
+															<div class="medium-9">
+																<p></p>
+															</div>
+														</div>
+														<div class="flight-info__row">
+															<div class="flight-info__row__label medium-3"> 
+																Khởi hành:
+															</div>
+															<div class="medium-9">
+																<p></p>
+															</div>
+														</div>
+														<div class="flight-info__row">
+															<div class="flight-info__row__label medium-3"> 
+																Đến:
+															</div>
+															<div class="medium-9">
+																<p></p>
+															</div>
+														</div>
+														<div class="flight-info__row">
+															<div class="flight-info__row__label medium-3"> 
+															</div>
+															<div class="flight-info__more medium-9">
+																<div class="flight-info__more__item">
+																	Thời gian:
+																	<p>2hrs 10mins</p>
+																</div>
+																<div class="flight-info__more__item">
+																	Máy bay:
+																	<p>2hrs 10mins</p>
+																</div>
+																<div class="flight-info__more__item">
+																	Hãng khai thác:
+																	<p>2hrs 10mins</p>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							}
+						}
+						else
+						{
+							<div class="row">
+								<div class="col-sm-12" style="text-align:center;padding-left: .9375rem;padding-right: .9375rem;">
+										<h2 class="section-heading__route">
+										No results
+										</h2>
+								</div>
+							</div>
+						}
+						
+						
+					</div>
+				}
+				<!-- }
+			} -->
+		</section>
+		<script>
+			$(document).ready(function()
+			{ 
+				$(document).on("focus","#check-in",function(){
+					$(this).datepicker({
+					dateFormat: "dd/mm/yy",
+					minDate: new Date(),
+					'autoclose': true
+					});
+				});
+				
+				$(document).on("focus","#check-out",function(){
+					$(this).datepicker({
+						dateFormat: "dd/mm/yy",
+						minDate: $("#check-in").val(),
+					});
+				});
+				$(document).on("change","#check-in",function()
+				{
+					var type_date = "check_in";
+					var choose = $("#check-in").val();
+					var arrdate = $("#check-out").val();
+					var check = "";
+					if(choose > arrdate)
+					{
+						$("#check-out").val(choose);
+						check = "true";
+					}
+					$("#check-out").datepicker("option","minDate",$("#check-in").val());
+					$.ajax({
+						type: "GET",
+						url: "/Flight?handler=NewDate",
+						dataType: 'json',
+						contentType: 'application/json; charset=utf-8',
+						data: { 
+							choose: choose,
+							type_date: type_date,
+							check: check
+						},
+						success:function(response)
+						{
+							$(".flight-go").load("/Flight" + " .flight-go");
+
+							$(".flight-back").load("/Flight" + " .flight-back");
+						}
+					});
+					
+				});
+				$(document).on("change","#check-out",function()
+				{
+					var type_date = "check_out";
+					var choose = $("#check-out").val();
+					$.ajax({
+						type: "GET",
+						url: "/Flight?handler=NewDate",
+						dataType: 'json',
+						contentType: 'application/json; charset=utf-8',
+						data: { 
+							choose: choose,
+							type_date: type_date
+						},
+						success:function(response)
+						{
+							$(".flight-back").load("/Flight" + " .flight-back");
+						}
+					});
+					
+				});
+			});
+		</script>
+	}
+}

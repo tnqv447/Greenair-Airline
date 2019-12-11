@@ -1,0 +1,428 @@
+﻿<!DOCTYPE html>
+@Html.AntiForgeryToken()
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GreenAir</title>
+    <link rel="stylesheet" href="~/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/animate.css">
+    
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="~/css/aos.css">
+
+    <link rel="stylesheet" href="~/css/ionicons.min.css">
+    <!-- <link rel="stylesheet" href="~/css/bootstrap-datepicker.css"> -->
+    <link rel="stylesheet" href="~/css/jquery.timepicker.css">
+
+    <link rel="stylesheet" href="~/css/jquery-ui.css">
+    <link rel="stylesheet" href="~/css/flaticon.css">
+    <link rel="stylesheet" href="~/css/icomoon.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/jquery-migrate-3.0.1.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">GreenAir</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="oi oi-menu"></span> Menu
+                </button>
+
+                <div class="collapse navbar-collapse" id="ftco-nav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a asp-page="/Index" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a asp-page="/About" class="nav-link">About</a></li>
+                        <li class="nav-item"><a asp-protocol="https" asp-host="agoda.com/" class="nav-link">Hotels</a></li>
+                        <li class="nav-item"><a asp-page="/blog" class="nav-link">Blog</a></li>
+                        <li class="nav-item"><a asp-page="/contact" class="nav-link">Contact</a></li>   
+                        <li class="nav-item" id="userField">
+                            <a id='opener' style='cursor:pointer' class='nav-link'>
+                                <span class='ion-ios-person'></span>
+                                Log in
+                            </a>
+                            <div class='dropdown user nav-link hidden'>
+                                <a id='account-dropdown' class=' dropdown-toggle ' style='cursor:pointer' type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' >
+                                    <span class='ion-ios-person' ></span>
+                                    <span id='userId'></span>
+                                </a>
+                                <div class='dropdown-menu' aria-labelledby='account-dropdown'>
+                                    
+                                    <button id="profile" class='dropdown-item' asp-page='/account' type='button'>Your Profile</button>
+                                    <button id='logOut' class='dropdown-item'  type='button'>Logout</button>
+                                </div>
+                            </div>                          
+                        </li>
+                        <li class="nav-item">
+                            <a style="cursor:pointer" class="nav-link">
+                                <span class="ion-ios-cart"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+            @RenderBody()
+
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2">Adventure</h2>
+                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                        <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-3">
+                            <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                            <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                            <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4 ml-md-4">
+                        <h2 class="ftco-heading-2">Information</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="py-2 d-block">About Us</a></li>
+                            <li><a href="#" class="py-2 d-block">Online enquiry</a></li>
+                            <li><a href="#" class="py-2 d-block">Call Us</a></li>
+                            <li><a href="#" class="py-2 d-block">General enquiries</a></li>
+                            <li><a href="#" class="py-2 d-block">Booking Conditions</a></li>
+                            <li><a href="#" class="py-2 d-block">Privacy and Policy</a></li>
+                            <li><a href="#" class="py-2 d-block">Refund policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2">Experience</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="py-2 d-block">Beach</a></li>
+                            <li><a href="#" class="py-2 d-block">Adventure</a></li>
+                            <li><a href="#" class="py-2 d-block">Wildlife</a></li>
+                            <li><a href="#" class="py-2 d-block">Honeymoon</a></li>
+                            <li><a href="#" class="py-2 d-block">Nature</a></li>
+                            <li><a href="#" class="py-2 d-block">Party</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2">Have a Questions?</h2>
+                        <div class="block-23 mb-3">
+                        <ul>
+                            <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+                            <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+                            <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
+                        </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- diaglog -->
+<div id="dialog" title="Log In">
+    <form method="post">
+            <fieldset>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="ion-ios-person"></i>
+                </span>
+                <input id="username" type="text" class="form-control" placeholder="Username" required />
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="ion-ios-lock"></i>
+                </span>
+                <input id="password" type="password" class="form-control" placeholder="Password" required /> 
+            </div>
+        </fieldset>
+        <div style="float:right">
+            <a style="cursor:pointer" id="open-register">Register</a>
+            <input type="submit" value="Login" class="btn" id="logIn">
+        </div>
+		
+    </form>   
+</div>
+<!-- register -->
+<div id="register" title="Register">
+    <div class="row">
+        <div class="heading  col-md-8">
+            <h3>Your information</h3>
+        </div>
+    </div>
+    <form>
+        <div class="row">
+            <div class="col-md-4">
+                <label>First Name</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>Last Name</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>Birth Date</label>
+                <div class="form-group">
+                    <input type="text" class="form-control birth_date" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Num</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>Street</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>District</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>City</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>State</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>Country</label>
+                <div class="form-group">
+                    <select id="items"  name="items" type="text" class="form-control country"  ></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="heading  col-md-8">
+                <h3>Your Account</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Username</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>Password</label>
+                <div class="form-group">
+                    <input type="password" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>Re-password</label>
+                <div class="form-group">
+                    <input type="password" class="form-control"  />
+                </div>
+            </div>
+        </div>
+    </form>
+    
+</div>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery-ui.js"></script>
+    <script src="~/js/jquery.easing.1.3.js"></script>
+    <script src="~/js/jquery.waypoints.min.js"></script>
+    
+    <script src="~/js/jquery.stellar.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/js/aos.js"></script>
+    <script src="~/js/jquery.animateNumber.min.js"></script>
+    <!-- <script src="~/js/bootstrap-datepicker.js"></script> -->
+    <script src="~/js/jquery.timepicker.min.js"></script>
+    <script src="~/js/scrollax.min.js"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script> -->
+    <!-- <script src="~/js/google-map.js"></script> -->
+    <script src="~/js/main.js"></script>
+    
+    <script>
+        $(document).ready(function()
+        {
+            //var now = new Date();
+            //var day = ("0" + now.getDate()).slice(-2);
+            //var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            //var today = (day)+"/"+(month)+"/"+ now.getFullYear();
+            //$('.checkin_date').val(today);
+            $(document).on('click','.plus',function()
+            {
+                let id = $(this).attr("id");
+                let new_val_adult = 0;
+                let value_adult = parseInt($("#adult").val());
+                let value_child = parseInt($("#child").val());
+                let new_val_child = 0;
+                if((value_adult + value_child) < 10){
+                    if(id == "plus-adult")
+                    {
+                        new_val_adult = value_adult + 1;
+                        $("#adult").val(new_val_adult);
+                    }
+                    if(id == "plus-child")
+                    {
+                        new_val_child = value_child + 1;
+                        $("#child").val(new_val_child); 
+                    }
+                    
+                }
+            });
+            $(document).on('click','.min',function()
+            {
+                let id = $(this).attr("id");
+                if(id == "min-adult"){
+                    let value_adult = parseInt($("#adult").val());
+                    let new_val_adult = 0;
+                    if(value_adult > 0)
+                    {
+                        new_val_adult = value_adult - 1;        
+                    }
+                    $("#adult").val(new_val_adult);
+                }
+                if(id == "min-child")
+                {
+                    let value_child = parseInt($("#child").val());
+                    let new_val_child = 0;
+                    if(value_child > 0)
+                    {
+                        new_val_child = value_child - 1;
+                    }
+                    
+                    $("#child").val(new_val_child);
+                }
+            });
+        });
+    </script>
+    <script>
+    (function ($) {
+        loadUser();
+        function loadUser()
+        {
+            $.ajax({
+                type:"GET",
+                url: "/Account?handler=UserField",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function(response)
+                {
+                    if($.trim(response.check) == "not")
+                    {
+                        $("#opener").addClass("hidden");
+                        $(".user").removeClass("hidden");
+                        $("#userId").text(response.userid);
+                    }
+                    else
+                    {
+                        $("#opener").removeClass("hidden");
+                        $(".user").addClass("hidden");
+                    }
+                }
+            })
+        }
+        $("#logIn").on("click", function () {
+		event.preventDefault();
+		var username = $("#username").val();
+		var password = $("#password").val();
+		$.ajax({
+			type: "POST",
+			url: "/Account?handler=LogIn",
+			headers: {
+				"XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
+			},
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+ 			// data: JSON.stringify({UserName : username,PassWord: password}),
+			data: JSON.stringify({
+				Username: username,
+				Password: password
+			}),
+			success: function (response) {
+				if ($.trim(response.msg) == "true") {
+					loadUser();
+                    $("#dialog").dialog("close");
+				} else {
+					alert("Tài khoản hoặc mật khẩu bị sai!");
+				}
+			},
+			failure: function (response) {
+				alert(response);
+			},
+			error: function (xhr) {
+				alert(xhr.status);
+			}
+			});	
+		});
+	$("#logOut").on("click",function(){
+			$.ajax({
+				type: "POST",
+				url: "/Account?handler=LogOut",
+				headers: {
+				"XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
+				},
+				success:function(response)
+				{
+					loadUser();
+					location.reload();
+				}
+			});
+		});
+
+    //cart
+    loadCart();
+    function loadCart()
+    {
+        $.ajax({
+            type:"GET",
+            url: "/Payment?handler=Cart",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(response){
+
+            },
+            error: function(e){
+
+            }
+        });
+    }
+    //end of cart
+    })(jQuery);
+    </script>
+    @section scripts{
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

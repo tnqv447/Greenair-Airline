@@ -1,0 +1,167 @@
+@page
+@model Presentation.Pages.Admin.DashboardModel
+@{
+  Layout = "_LayoutAdmin";
+	ViewData["Title"] = "Admin Page";
+}
+@using Microsoft.AspNetCore.Http
+@{
+  if(HttpContext.Session.GetString("username") == null)
+  {
+    Response.Redirect("Index");
+  }
+}
+<div class="main-panel">
+  <div class="content-wrapper">
+    <!-- Page Title Header Starts-->
+    <div class="row page-title-header">
+    </div>
+    <!-- Page Title Header Ends-->
+
+    <!-- Statistic Total -->
+    <div class="row">
+      <div class="col-md-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-3 col-md-6">
+                <div class="d-flex">
+                  <div class="wrapper">
+                    <h3 class="mb-0 font-weight-semibold">32,451</h3>
+                    <h5 class="mb-0 font-weight-medium text-primary">Total Turnover</h5>
+                  </div>
+                  <div class="wrapper my-auto ml-auto ml-lg-4">
+                    <canvas height="50" width="100" id="stats-line-graph-1"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="d-flex">
+                  <div class="wrapper">
+                    <h3 class="mb-0 font-weight-semibold">32,451</h3>
+                    <h5 class="mb-0 font-weight-medium text-primary">Number Of Flights</h5>
+                  </div>
+                  <div class="wrapper my-auto ml-auto ml-lg-4">
+                    <canvas height="50" width="100" id="stats-line-graph-2"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="d-flex">
+                  <div class="wrapper">
+                    <h3 class="mb-0 font-weight-semibold">32,451</h3>
+                    <h5 class="mb-0 font-weight-medium text-primary">Number Of Tickets</h5>
+                  </div>
+                  <div class="wrapper my-auto ml-auto ml-lg-4">
+                    <canvas height="50" width="100" id="stats-line-graph-3"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6">
+                <div class="d-flex">
+                  <div class="wrapper">
+                    <h3 class="mb-0 font-weight-semibold">32,451</h3>
+                    <h5 class="mb-0 font-weight-medium text-primary">Number Of Booking</h5>
+                  </div>
+                  <div class="wrapper my-auto ml-auto ml-lg-4">
+                    <canvas height="50" width="100" id="stats-line-graph-4"></canvas>
+                  </div>
+                </div>
+              </div>            
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   <!--End Statistic -->
+   
+   <!-- Satistic diagram -->
+    <div class="row">
+              <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title mb-0">Sales Statistics Overview</h4>
+                    <div class="d-flex flex-column flex-lg-row">
+                      <p>Lorem ipsum is placeholder text commonly used</p>
+                      <ul class="nav nav-tabs sales-mini-tabs ml-lg-auto mb-4 mb-md-0" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="sales-statistics_switch_1" data-toggle="tab" role="tab" aria-selected="true">1D</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="sales-statistics_switch_2" data-toggle="tab" role="tab" aria-selected="false">5D</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="sales-statistics_switch_3" data-toggle="tab" role="tab" aria-selected="false">1M</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="sales-statistics_switch_4" data-toggle="tab" role="tab" aria-selected="false">1Y</a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="d-flex flex-column flex-lg-row">
+                      <div class="data-wrapper d-flex mt-2 mt-lg-0">
+                        <div class="wrapper pr-5">
+                          <h5 class="mb-0">Total Cost</h5>
+                          <div class="d-flex align-items-center">
+                            <h4 class="font-weight-semibold mb-0">15,263</h4>
+                            <small class="ml-2 text-gray d-none d-lg-block"><b>89.5%</b> of 20,000 Total</small>
+                          </div>
+                        </div>
+                        <div class="wrapper">
+                          <h5 class="mb-0">Total Revenue</h5>
+                          <div class="d-flex align-items-center">
+                            <h4 class="font-weight-semibold mb-0">$753,098</h4>
+                            <small class="ml-2 text-gray d-none d-lg-block"><b>10.5%</b> of 20,000 Total</small>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="ml-lg-auto" id="sales-statistics-legend"></div>
+                    </div>
+                    <canvas class="mt-5" height="120" id="sales-statistics-overview"></canvas>
+                  </div>
+                </div>
+              </div>
+    </div>
+    <!-- ENd Satistic diagram  -->
+
+    <!-- List Top Route -->
+    <div class="row">
+      <div class="col-md-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h2 class="card-title mb-0">Top 10 Route</h2>
+              <a href="#"><small>Show All</small></a>
+            </div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est quod cupiditate esse fuga</p>
+            <div class="table-responsive">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Route ID</th>
+                    <th>Origin</th>
+                    <th>Origin Airport</th>
+                    <th>Destination</th>
+                    <th>Destination Port</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>001</td>
+                    <td>Hồ Chí Minh City</td>
+                    <td>Tân Sơn Nhất</td>
+                    <td>Hà Nội</td>
+                    <td>Nội Bài</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End List Top Route -->        
+  </div>
+  <!-- content-wrapper ends -->
+</div>
+<!-- main-panel ends -->

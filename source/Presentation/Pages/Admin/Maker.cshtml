@@ -1,0 +1,157 @@
+@page
+@model Presentation.Pages.Admin.MakerModel
+@{
+  Layout = "_LayoutAdmin";
+	ViewData["Title"] = "Admin Page";
+}
+<div class="main-panel">
+  <div class="content-wrapper">
+     <!-- row button create -->
+    <div class="row">
+      <div class="col-lg-12 stretch-card">
+        <a href="#CreateMakerForm" data-toggle="modal" id="btCreateMaker" type="button" class="btn  btn-primary btn-lg btn-inverse-*">
+          <i class="mdi mdi-upload"></i>Create Maker
+        </a>
+      </div>
+    </div>
+    <!-- row table -->
+    <div class="row">
+      <div class="col-lg-12 stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group row">
+              <div class="col-sm-7"></div>
+              <div class="col-sm-5">
+                <form>
+                  <div class="input-group">
+                    <input type="search" id="SearchMaker" class="form-control" placeholder="Search Here" name="searchString"  asp-for="SearchString">
+                    <button type="submit" id="btsubmitSearchMaker" class="btn btn-icons btn-rounded btn-outline-primary"><i class="fa fa-search"></i></button>
+                  </div>
+                </form> 
+              </div> 
+            </div>
+            <h3 align="center">List of Makers </h3>
+            <table class="table table-bordered table-striped table-hover" id="TableMaker">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody> 
+              @foreach (var item in Model.ListMakerPage.Makers){
+                <tr>
+                <!-- <tr id="@item.MakerId" class="list-maker"> -->
+                  <td>@item.MakerId</td>
+                  <td>@item.MakerName</td>
+                  <td>@item.Address.toString()</td>
+                  <td> 
+                    <button  id="@item.MakerId" data-toggle="modal" data-target="#EditMakerForm"  type="button" class="btn btn-dark btn-sm  btn-rounded EditMaker"><i class="fa fa-cog"></i></button>
+                    <button  id="@item.MakerId" type="button" class="btn btn-danger btn-sm  btn-rounded DeleteMaker"><i class="fa fa-times" ></i></button>
+                  </td>
+                </tr>
+              }
+              </tbody>
+            </table>
+            <br />
+              @{
+              var preDisabled = !Model.ListMakerPage.Makers.HasPrevious ? "disabled" : "";
+              var nextDisabled = !Model.ListMakerPage.Makers.HasNext ? "disabled" : "";
+              var pageNow =Model.ListMakerPage.Makers.PageIndex;
+              }
+              <!-- pagination -->
+              <div class="pagination" >
+                <a style="cursor:pointer" asp-page="/Admin/Maker" 
+                asp-route-pageIndex="@(Model.ListMakerPage.Makers.PageIndex - 1)" 
+                class="pagination_link @preDisabled" >Previous</a>
+                @for (int i=1;i<=Model.ListMakerPage.Makers.TotalPages;++i)
+                {
+                    if(i==pageNow)
+                    {
+                      <a style="cursor:pointer" asp-page="/Admin/Maker" asp-route-pageIndex="@i" class="pagination_link active" >@i</a>
+                    }
+                    else{
+                      <a style="cursor:pointer" asp-page="/Admin/Maker" asp-route-pageIndex="@i" class="pagination_link">@i</a>
+                    }
+                }
+                <a  style="cursor:pointer" asp-page="/Admin/Maker" 
+                asp-route-pageIndex="@(Model.ListMakerPage.Makers.PageIndex + 1)" 
+                class="pagination_link @nextDisabled">Next</a>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end table maker  -->
+
+  </div> 
+  <!-- end content_warper -->
+
+
+
+</div>
+<!-- end main body -->
+
+<!--create maker form  -->
+<div class="modal fade" id="CreateMakerForm" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content" >
+      <div class="modal-header" style="text-align:center !important; background-color:aliceblue;">
+        <h4 class="modal-title" style=" color:#000; font-weight: bold;font-size:34">Create Maker</h4>
+      </div>
+		  <div class="model-body" style="margin: 15px">
+				<form class="forms-sample">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Name</label>
+            <div class="col-sm-9">
+              <input id="CreateMaker-name" type="text" class="form-control"  placeholder="Enter name">
+            </div>    
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Address</label>
+            <div class="col-sm-9">
+              <input id="CreateMaker-address" type="text" class="form-control" placeholder="Enter address">
+            </div>
+          </div>
+          <button id="btsubmitCreateMaker" type="submit" class="btn btn-success mr-2" ><b>Create</b></button>
+          <button class="btn btn-light" data-dismiss="modal"><b>Cancel</b></button>
+        </form>
+		  </div>
+    </div> 
+  </div>
+</div>
+
+ <!-- edit maker form -->
+<div class="modal fade" id="EditMakerForm" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content" >
+      <div class="modal-header" style="text-align:center !important; background-color:aliceblue;">
+        <h4 class="modal-title" style=" color:#000; font-weight: bold;font-size:34">Edit Maker</h4>
+      </div>
+      <div class="model-body" style="margin: 15px" id="bodyEditMaker">
+        <form class="forms-sample">
+          <input id="EditMaker-id" type="hidden" class="form-control"   >
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Name</label>
+            <div class="col-sm-9">
+              <input id="EditMaker-name" type="text" class="form-control"  placeholder="Enter name">
+            </div>
+            <span style="color: red bold" class="z-mak-name"></span>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Address</label>
+            <div class="col-sm-9">
+              <input id="EditMaker-address" type="text" class="form-control" placeholder="Enter address">
+            </div>
+            <span style="color: red bold" class="z-mak-address"></span>
+          </div>
+          <button  id="btsubmitEditMaker" class="btn btn-success mr-2"><b>Update</b></button>
+          <button class="btn btn-light" data-dismiss="modal"><b>Cancel</b></button>
+        </form>
+      </div>
+    </div>    
+  </div>
+</div>
+

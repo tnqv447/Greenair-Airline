@@ -1,0 +1,164 @@
+@page
+@model Presentation.Pages.Admin.PlaneModel
+@{
+  Layout = "_LayoutAdmin";
+	ViewData["Title"] = "Admin Page";
+}
+<div class="main-panel">
+  <div class="content-wrapper">
+    <!-- row button create -->
+    <div class="row">
+      <div class="col-lg-12 stretch-card">
+        <a href="#CreatePlaneForm" data-toggle="modal" id="btCreatePlane" type="button" class="btn  btn-primary btn-lg btn-inverse-*">
+          <i class="mdi mdi-upload"></i>Create Plane
+        </a>
+      </div>
+    </div>
+    <!-- row table -->
+    <div class="row">
+    <div class="col-lg-12 stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group row">
+            <div class="col-sm-7"></div>
+            <div class="col-sm-5">
+              <div class="input-group">
+                <form>
+                  <div class="input-group">
+                    <select class="form-control form-control-lg" asp-for="SearchMaker" asp-items="Model.ListMakerName">
+                      <option value="">All</option>
+                    </select>
+                    <button type="submit" id="btsubmitSearchMaker" class="btn btn-icons btn-rounded btn-outline-primary"><i class="fa fa-search"></i></button>
+                  </div>
+                </form>
+              </div>
+            </div> 
+          </div>
+          <h3 align="center">List of Planes </h3>
+          <table class="table table-bordered table-striped table-hover" id="TablePlane">
+           <thead>
+            <tr>
+              <th>Phane ID</th>
+              <th>Seat Num</th>
+              <th>Maker ID</th>
+              <th></th>
+            </tr>
+           </thead>
+           <tbody>
+            @foreach (var item in Model.ListPlanePage.Planes){
+              <tr>
+                <td>@item.PlaneId</td>
+                <td>@item.SeatNum</td>
+                <td>@item.MakerId</td>
+                <td> 
+                  <button  id="@item.PlaneId" data-toggle="modal" data-target="#EditPlaneForm"  type="button" class="btn btn-dark btn-sm  btn-rounded EditPlane"><i class="fa fa-cog"></i></button>
+                  <button  id="@item.PlaneId" type="button" class="btn btn-danger btn-sm  btn-rounded DeletePlane"><i class="fa fa-times" ></i></button>
+                </td>
+              </tr>
+            }
+            </tbody>
+          </table>
+          <br />
+          @{
+              var preDisabled = !Model.ListPlanePage.Planes.HasPrevious ? "disabled" : "";
+              var nextDisabled = !Model.ListPlanePage.Planes.HasNext ? "disabled" : "";
+              var pageNow =Model.ListPlanePage.Planes.PageIndex;
+            }
+              <!-- pagination -->
+              <div class="pagination" >
+                <a style="cursor:pointer" asp-page="/Admin/Plane" 
+                asp-route-pageIndex="@(Model.ListPlanePage.Planes.PageIndex - 1)" 
+                class="pagination_link @preDisabled" >Previous</a>
+                @for (int i=1;i<=Model.ListPlanePage.Planes.TotalPages;++i)
+                {
+                    if(i==pageNow)
+                    {
+                      <a style="cursor:pointer" asp-page="/Admin/Plane" asp-route-pageIndex="@i" class="pagination_link active" >@i</a>
+                    }
+                    else{
+                      <a style="cursor:pointer" asp-page="/Admin/Plane" asp-route-pageIndex="@i" class="pagination_link">@i</a>
+                    }
+                }
+                <a  style="cursor:pointer" asp-page="/Admin/Plane" 
+                asp-route-pageIndex="@(Model.ListPlanePage.Planes.PageIndex + 1)" 
+                class="pagination_link @nextDisabled">Next</a>
+              </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+  <!-- end content-wrapper -->
+</div>
+
+<!--create plane form  -->
+<div class="modal fade" id="CreatePlaneForm" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content" >
+      <div class="modal-header" style="text-align:center !important; background-color:aliceblue;">
+        <h4 class="modal-title" style=" color:#000; font-weight: bold;font-size:34">Create Plane</h4>
+      </div>
+		  <div class="model-body" style="margin: 15px">
+				<form class="forms-sample">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">SeatNum</label>
+            <div class="col-sm-9">
+              <input id="CreatePlane-seatnum" type="number" class="form-control"  placeholder="Enter seat number">
+            </div>    
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Maker ID</label>
+            <div class="col-sm-9">
+              <select class="form-control form-control-lg" id="CreatePlane-makerid">
+                @foreach (var item in Model.ListMakers){
+                  <option>@item.MakerId - 
+                    @item.MakerName</option>
+                }
+              </select>
+            </div>
+          </div>
+          <button id="btsubmitCreatePlane" type="submit" class="btn btn-success mr-2" ><b>Create</b></button>
+          <button class="btn btn-light" data-dismiss="modal"><b>Cancel</b></button>
+        </form>
+		  </div>
+    </div> 
+  </div>
+</div>
+
+ <!-- edit Plane form -->
+<div class="modal fade" id="EditPlaneForm" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content" >
+      <div class="modal-header" style="text-align:center !important; background-color:aliceblue;">
+        <h4 class="modal-title" style=" color:#000; font-weight: bold;font-size:34">Edit Plane</h4>
+      </div>
+      <div class="model-body" style="margin: 15px" id="bodyEditPlane">
+				<form class="forms-sample">
+          <input id="EditPlane-id" type="hidden" class="form-control"   >
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">SeatNum</label>
+            <div class="col-sm-9">
+              <input id="EditPlane-seatnum" type="number" class="form-control"  placeholder="Enter seat number">
+            </div>    
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Maker ID</label>
+            <div class="col-sm-9">
+              <select class="form-control form-control-lg" id="EditPlane-makerid">
+                  <option id="EditPlane-default" hidden></option>
+                @foreach (var item in Model.ListMakers){
+                  <option>@item.MakerId - 
+                    @item.MakerName</option>
+                }
+              </select>
+            </div>
+          </div>
+          <button id="btsubmitEditPlane" type="submit" class="btn btn-success mr-2" ><b>Update</b></button>
+          <button class="btn btn-light" data-dismiss="modal"><b>Cancel</b></button>
+        </form>
+      </div>
+    </div>    
+  </div>
+</div>
+

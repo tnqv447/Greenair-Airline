@@ -1,0 +1,277 @@
+@page
+@model Presentation.Pages.Admin.FlightModel
+@{
+  Layout = "_LayoutAdmin";
+	ViewData["Title"] = "Admin Page";
+}
+<div class="main-panel">
+  <div class="content-wrapper">
+     <!-- row button create -->
+    <div class="row">
+      <div class="col-lg-12 stretch-card">
+        <a href="#CreateFlightForm" data-toggle="modal" id="btCreateFlight" type="button" class="btn  btn-primary btn-lg btn-inverse-*">
+          <i class="mdi mdi-upload"></i>Create Flight
+        </a>
+      </div>
+    </div>
+    <!-- row table -->
+    <div class="row">
+      <div class="col-lg-12 stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group row">
+              <div class="col-sm-7"></div>
+              <div class="col-sm-5">
+                <form>
+                  <div class="input-group">
+                    <input type="search" id="SearchFlight" class="form-control" placeholder="Search Here" name="searchString"  asp-for="SearchString">
+                    <button type="submit" id="btsubmitSearchFlight" class="btn btn-icons btn-rounded btn-outline-primary"><i class="fa fa-search"></i></button>
+                  </div>
+                </form> 
+              </div> 
+            </div>
+            <h3 align="center">List of Flights </h3>
+            <table class="table table-bordered table-striped table-hover" id="TableFlight">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Plane ID</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody> 
+              @foreach (var item in Model.ListFlights){
+                <tr>
+                <!-- <tr id="@item.FlightId" class="list-Flight"> -->
+                  <td>@item.FlightId</td>
+                  <td>@item.Status</td>
+                  <td>@item.PlaneId</td>
+                  <td> 
+                    <button  id="@item.FlightId" data-toggle="modal" data-target="#DetailFlightForm"  type="button" class="btn btn-info btn-sm  btn-rounded DetailFlight"><i class="fa fa-vcard-o"></i></button>
+                    <button  id="@item.FlightId" data-toggle="modal" data-target="#EditFlightForm"  type="button" class="btn btn-dark btn-sm  btn-rounded EditFlight"><i class="fa fa-cog"></i></button>
+                    <button  id="@item.FlightId" type="button" class="btn btn-danger btn-sm  btn-rounded DeleteFlight"><i class="fa fa-times" ></i></button>
+                  </td>
+                </tr>
+              }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end table Flight  -->
+
+  </div> 
+  <!-- end content_warper -->
+  
+</div>
+<!-- end main body -->
+
+
+<!--detail flight form  -->
+<div class="modal fade" id="DetailFlightForm" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" >
+            <div class="modal-header" style=" background-color:aliceblue;">
+                <h4 class="modal-title" style="margin: 10px 0 10px 510px; color:#000; font-weight: bold;font-size:34">Detail Flight</h4>
+            </div>
+		    <div class="model-body" style="margin: 15px">
+          <form class="form-sample">
+				    <p style="font-weight:600" class="card-description"> Flight info </p>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Flight ID</label>
+                  <div class="col-sm-9">
+                    <span id="DetailFlight-flightid"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Plane ID</label>
+                  <div class="col-sm-9">
+                    <span id="DetailFlight-planeid"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Status</label>
+                  <div class="col-sm-9">
+                    <span id="DetailFlight-status"></span>
+                  </div>
+                </div>
+              </div>
+            </div> 
+            <p style="font-weight:600" class="card-description"> Flight detail </p>
+            <div id="DetailFlight-context"></div>
+
+            
+          </form>
+		    </div>
+        <div class="model-footer" style="margin: 15px">
+          <div class="row" style=" display: flex; justify-content: flex-end;">
+              <button class="btn btn-light" data-dismiss="modal"><b>Back to list</b></button>
+            </div>
+        </div>
+      </div>    
+    </div>
+</div>
+
+<!--create flight form  đây là form thêm-->
+<div class="modal fade" id="CreateFlightForm" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" >
+            <div class="modal-header" style=" background-color:aliceblue;">
+                <h4 class="modal-title" style="margin: 10px 0 10px 510px; color:#000; font-weight: bold;font-size:34">Create Flight</h4>
+            </div>
+		    <div class="model-body" style="margin: 15px">
+          <form class="form-sample">
+            <input id="CreateFlight-flightid" type="text" class="form-control" hidden/>
+				    <p style="font-weight:600" class="card-description"> Flight info </p>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Plane ID</label>
+                  <div class="col-sm-9">
+                    <select class="form-control form-control-lg" id="CreateFlight-planeid">
+                      @foreach (var item in Model.ListNamePlanes){
+                        <option>@item</option>
+                      }
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Status</label>
+                  <div class="col-sm-9">
+                     <input id="CreateFlight-status" type="text" class="form-control form-control-lg" value="AVAILABLE" disabled/>
+                  </div>
+                </div>
+              </div>
+            </div> 
+            <p style="font-weight:600" class="card-description"> Flight Detail </p>
+            <div id="CreateFlight-context">
+              <input id="CreateFlight-number" type="text" class="form-control" value="1" hidden/>
+              <div class="row">
+                <div class="col-md-4">
+                  <button  id="CreateFlight-btadd" type="button" class="btn  btn-primary btn-md">
+                  <i class="mdi mdi-upload"></i>Add</button>
+                   <button  id="CreateFlight-btdelete" type="button" class="btn btn-danger btn-md">
+                  <i class="fa fa-times" ></i>Remove</button>
+                </div>
+              </div>
+              <div class ="row">
+                <div class="col-md-4">
+                  <label class="col-form-label">Route ID</label>
+                </div>
+                <div class="col-md-4">
+                  <label class="col-form-label">Departure Date</label>
+                </div>
+                <div class="col-md-4">
+                  <label class="col-form-label">Arrive Date</label>
+                </div>
+              </div>
+              <div class="row" id="CreateFlight-row1">
+                <div class="col-md-4">
+                  <select class="form-control form-control-lg CreateFlight-routeid" id="CreateFlight-routeid1">
+                      @foreach (var item in Model.ListRoutes){
+                        <option >@item.RouteId :
+                          @item.Origin - 
+                          @item.Destination
+                        </option>
+                      }
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <input id="CreateFlight-depdate1" type="text" class="form-control CreateFlight-depdate choose_date" required/>
+                  <span style="color:red" id="error-date1" class=" hidden-class"> Please choose date</span>
+                </div>
+                <div class="col-md-4">
+                  <input id="CreateFlight-arrdate1" type="text" class="form-control CreateFlight-arrdate choose_date" disabled/>
+                </div>
+              </div>
+              <hr id="CreateFlight-hr1">
+              
+            </div>
+
+            <button id="btsubmitCreateFlight"  class="btn btn-success mr-2" ><b>Create</b></button>
+            <button class="btn btn-light" data-dismiss="modal"><b>Cancel</b></button>
+          </form>
+		    </div>
+      </div>    
+    </div>
+</div>
+
+<!--edit flight form -->
+<div class="modal fade" id="EditFlightForm" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" >
+            <div class="modal-header" style=" background-color:aliceblue;">
+                <h4 class="modal-title" style="margin: 10px 0 10px 510px; color:#000; font-weight: bold;font-size:34">Edit Flight</h4>
+            </div>
+		    <div class="model-body" style="margin: 15px">
+          <form class="form-sample">
+            <input id="EditFlight-flightid" type="text" class="form-control" hidden/>
+				    <p style="font-weight:600" class="card-description"> Flight info </p>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Plane ID</label>
+                  <div class="col-sm-9">
+                    <select class="form-control form-control-lg" id="EditFlight-planeid">
+                      <option id="EditFlight-planeiddefault"></option>
+                      @foreach (var item in Model.ListNamePlanes){
+                        <option>@item</option>
+                      }
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Status</label>
+                  <div class="col-sm-9">
+                    <select class="form-control form-control-lg" id="EditFlight-status">
+                      <option id="EditFlight-statusdefault"></option>
+                      <option>AVAILABLE</option>
+                      <option>DISABLED</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div> 
+            <p style="font-weight:600" class="card-description"> Flight Detail </p>
+              <input id="EditFlight-number" type="text" class="form-control" value="1" hidden/>
+              <div class="row">
+                <div class="col-md-4">
+                  <button  id="EditFlight-btadd" type="button" class="btn  btn-primary btn-md">
+                  <i class="mdi mdi-upload"></i>Add</button>
+                   <button  id="EditFlight-btdelete" type="button" class="btn btn-danger btn-md">
+                  <i class="fa fa-times" ></i>Remove</button>
+                </div>
+              </div>
+              <div class ="row">
+                <div class="col-md-4">
+                  <label class="col-form-label">Route ID</label>
+                </div>
+                <div class="col-md-4">
+                  <label class="col-form-label">Departure Date</label>
+                </div>
+                <div class="col-md-4">
+                  <label class="col-form-label">Arrive Date</label>
+                </div>
+              </div>
+            <div id="EditFlight-context">
+            </div>
+
+            <button id="btsubmitEditMaker" type="submit" class="btn btn-success mr-2" ><b>Update</b></button>
+            <button class="btn btn-light" data-dismiss="modal"><b>Cancel</b></button>
+          </form>
+		    </div>
+      </div>    
+    </div>
+</div>

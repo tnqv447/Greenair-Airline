@@ -1,0 +1,3 @@
+D:\Code\C#\Greenair\ApplicationCore\obj\Debug\netstandard2.0\ApplicationCore.csprojAssemblyReference.cache
+D:\Code\C#\Greenair\ApplicationCore\obj\Debug\netstandard2.0\ApplicationCore.AssemblyInfoInputs.cache
+D:\Code\C#\Greenair\ApplicationCore\obj\Debug\netstandard2.0\ApplicationCore.AssemblyInfo.cs

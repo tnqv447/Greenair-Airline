@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+ @Html.AntiForgeryToken()
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"] - GreenAir </title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="../assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../assets/vendors/iconfonts/ionicons/css/ionicons.css">
+    <link rel="stylesheet" href="../assets/vendors/iconfonts/typicons/src/font/typicons.css">
+    <link rel="stylesheet" href="../assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.addons.css">
+    <!-- <link rel="stylesheet" href="~/css/bootstrap-datepicker.css"> -->
+    <link rel="stylesheet" href="~/css/jquery-ui.css">
+    <link rel="stylesheet" href="~/css/jquery.timepicker.css">
+    
+    <link rel="stylesheet" href="~/assets/css/shared/jquery-datetimepicker.css">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="../../../assets/vendors/iconfonts/font-awesome/css/font-awesome.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="../assets/css/shared/style.css">
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="../assets/css/demo_1/style.css">
+    <link rel="stylesheet" href="../assets/css/shared/pagination.css">
+    <!-- End Layout styles -->
+    <link rel="shortcut icon" href="../assets/images/favicon.png" />
+
+</head>
+<body>
+<div class="container-scroller">
+    <header>
+      <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center" style="color:white; font: bold;">
+          <a class="nav-link" asp-page="/Admin/Dashboard">GreenAir</a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center">
+          <ul class="navbar-nav">
+          </ul>
+
+          <form class="ml-auto search-form d-none d-md-block" action="#">
+            <div class="form-group">
+              <input type="search" class="form-control" placeholder="Search Here">
+            </div>
+          </form>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
+              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <!-- <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="Profile image">  -->
+                <div >
+                  <span id="personName"></span>
+
+                </div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <div class="dropdown-header text-center">
+                  <!-- header of dropdown -->
+                </div>
+                <a class="dropdown-item">My Profile <i class="dropdown-item-icon ti-dashboard"></i></a>
+                <a class="dropdown-item" id="signout">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+              </div>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+    <br>
+    <br>
+    <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item nav-profile">
+              <a href="#" class="nav-link">
+                <div class="profile-image">
+                  <img class="img-xs rounded-circle" src="../assets/images/faces/face8.jpg" alt="profile image">
+                  <div class="dot-indicator bg-success"></div>
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name">Allen Moreno</p>
+                  <p class="designation">Premium user</p>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item nav-category">Main Menu</li>
+            <li class="nav-item">
+              <a class="nav-link" asp-page="/Admin/Dashboard">
+                <i class="menu-icon typcn typcn-document-text"></i>
+                <span class="menu-title">Dashboard</span>
+              </a>
+            </li>
+           <li class="nav-item">
+              <a class="nav-link" asp-page="/Admin/Customer">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Customer</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" asp-page="/Admin/Employee">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Employee</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" asp-page="/Admin/Flight">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Flight</span>
+              </a>
+            </li>
+            </li><li class="nav-item">
+              <a class="nav-link" asp-page="/Admin/Maker">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Maker</span>
+              </a>
+            </li><li class="nav-item">
+              <a class="nav-link" asp-page="/Admin/Plane">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Plane</span>
+              </a>
+            </li><li class="nav-item">
+              <a class="nav-link" asp-page="/Admin/Airport">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Airport</span>
+              </a>
+            </li>
+        </nav>
+          @RenderBody()
+    </div>
+      <!-- content-wrapper ends -->
+
+    <footer class="footer">
+            <div class="container-fluid clearfix">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019 <a href="http://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i>
+              </span>
+            </div>
+    </footer>
+</div>
+    <!-- container-scroller -->
+    
+    <!-- plugins:js -->
+    <script src="../assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="../assets/vendors/js/vendor.bundle.addons.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <script src="~/js/jquery-ui.js"></script>
+    <!-- <script src="~/js/bootstrap-datepicker.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script> -->
+    <script src="~/assets/js/shared/jquery-datetimepicker.js"></script>
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+    <script src="../assets/js/shared/off-canvas.js"></script>
+    <script src="../assets/js/shared/misc.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="../assets/js/demo_1/dashboard.js"></script>
+    <!-- End custom js for this page-->
+    <script>
+      (function ($) {
+           
+		  })(jQuery);
+    </script>
+    <script src="../assets/js/demo_1/Maker.js"></script>
+    <script src="../assets/js/demo_1/Plane.js"></script>
+    <script src="../assets/js/demo_1/Airport.js"></script>
+    <script src="../assets/js/demo_1/Customer.js"></script>
+    <script src="../assets/js/demo_1/Employee.js"></script>
+    <script src="../assets/js/demo_1/Flight.js"></script>
+    <script src="../assets/js/demo_1/Layout.js"></script>
+    <script src="../assets/js/shared/jquery.min.js"></script>
+    <script src="../assets/js/shared/jquery-ui.js"></script>
+    
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

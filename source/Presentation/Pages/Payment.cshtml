@@ -1,0 +1,146 @@
+@page
+@model PaymentModel
+@{
+    ViewData["title"]="Payment";
+}
+@using Microsoft.AspNetCore.Http;
+@using Presentation.Helpers;
+@if(SessionHelper.GetObjectFromJson<Dictionary<string,object>>(HttpContext.Session,"FlightSearch") == null)
+    {
+        Response.Redirect("Index");    
+    }
+    else{
+    <div class="hero-wrap js-fullheight" style="background-image: url('images/bg_1.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
+                <div class="col-md-9 text-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+                    <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span class="mr-2"><a href="index.html">Home</a></span> <span>Blog</span></p>
+                    <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Tips &amp; Articles</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="payment-headding">
+                    <h3>Contact Information</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 ">
+                <p class="alg-r">Name</p>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 ">
+                <p class="alg-r">Phone</p>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <p class=" alg-r">Email</p>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 ">
+                <p class="alg-r">Address</p>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <input type="area" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="payment-headding">
+                    <h3>Customer Information</h3>
+                </div>
+            </div>
+        </div>
+        @for(int i=0;i < Model.Adults; i++)
+        {
+            <!-- Adults -->
+            <div class="row">
+                <div class="col-md-2" style="text-align:center">
+                    <p style="margin-top:15px">Adult 1:</p>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <select class="form-control">
+                            <option value="mr" selected>Mr</option>
+                            <option value="ms">Ms</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Example: John Smith" />
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- end of adult -->
+        @for(int i=0;i < Model.Childs; i++)
+        {    
+            
+            <!-- child -->
+            <div class="row">
+                <div class="col-md-2" style="text-align:center">
+                    <p style="margin-top:15px">Children 1:</p>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <select class="form-control">
+                            <option value="mr" selected>Male</option>
+                            <option value="ms">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="float:right">Birth Date:</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Example: John Smith" />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control birth_date" />
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-md-4">
+                <div class="payment-headding">
+                    <h3>Choose your payment</h3>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <input type="radio">
+            </div>
+        </div>
+    </div>
+    }
+    
