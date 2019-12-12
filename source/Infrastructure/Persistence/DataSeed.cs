@@ -4,6 +4,7 @@ using System.Linq;
 using System;
 using ApplicationCore;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Services;
 namespace Infrastructure.Persistence
 {
     public class DataSeed
@@ -140,21 +141,22 @@ namespace Infrastructure.Persistence
                     new Flight("00000", "00000", STATUS.AVAILABLE),
                     new Flight("00001", "00001", STATUS.AVAILABLE),
                     new Flight("00002", "00003", STATUS.AVAILABLE),
-                    new Flight("00003", "00004", STATUS.AVAILABLE),
-                    new Flight("00004", "00002", STATUS.AVAILABLE),
-                    new Flight("00005", "00000", STATUS.AVAILABLE)
+                    new Flight("00003", "00004", STATUS.AVAILABLE)
                 );
                 context.SaveChanges();
             }
+            //context.FlightDetails.RemoveRange(context.FlightDetails.ToList());
+            //context.Tickets.RemoveRange(context.Tickets.ToList());
 
             if (!context.FlightDetails.Any())
             {
+
                 context.FlightDetails.AddRange(
-                    new FlightDetail("00000", "00000", "00000", new DateTime(2019, 12, 1, 10, 0, 0), new DateTime(2019, 12, 1, 11, 45, 0)),
-                    new FlightDetail("00001", "00001", "00001", new DateTime(2019, 12, 1, 12, 0, 0), new DateTime(2019, 12, 1, 13, 45, 0)),
-                    new FlightDetail("00002", "00002", "00000", new DateTime(2019, 12, 2, 12, 0, 0), new DateTime(2019, 12, 2, 13, 45, 0)),
-                    new FlightDetail("00003", "00002", "00002", new DateTime(2019, 12, 2, 15, 0, 0), new DateTime(2019, 12, 2, 19, 30, 0)),
-                    new FlightDetail("00004", "00003", "00006", new DateTime(2019, 12, 3, 6, 0, 0), new DateTime(2019, 12, 3, 16, 30, 0))
+                    new FlightDetail("000", "00000", "00000", new DateTime(2019, 12, 1, 10, 0, 0), new DateTime(2019, 12, 1, 11, 45, 0)),
+                    new FlightDetail("000", "00001", "00001", new DateTime(2019, 12, 1, 12, 0, 0), new DateTime(2019, 12, 1, 13, 45, 0)),
+                    new FlightDetail("000", "00002", "00000", new DateTime(2019, 12, 2, 12, 0, 0), new DateTime(2019, 12, 2, 13, 45, 0)),
+                    new FlightDetail("001", "00002", "00002", new DateTime(2019, 12, 2, 15, 0, 0), new DateTime(2019, 12, 2, 19, 30, 0)),
+                    new FlightDetail("000", "00003", "00006", new DateTime(2019, 12, 3, 6, 0, 0), new DateTime(2019, 12, 3, 16, 30, 0))
                 );
                 context.SaveChanges();
             }

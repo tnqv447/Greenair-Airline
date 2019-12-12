@@ -26,7 +26,7 @@ namespace Presentation.Services.ServicesImplement
         public async Task<AirportPageVM> GetAirportPageViewModelAsync(string searchString, int pageIndex = 1)
         {
             // var movies = await _service.GetMoviesAsync(searchString, genre);
-            var airports = await _service.getAllAirportAsync();
+            var airports = await _service.getAvailableAirportAsync();
             if (searchString != null)
             {
                 airports = await _service.getAirportByConditionsAsync(searchString, "", "");

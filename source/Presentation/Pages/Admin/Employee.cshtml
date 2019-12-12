@@ -4,19 +4,29 @@
   Layout = "_LayoutAdmin";
 	ViewData["Title"] = "Admin Page";
 }
+@using Microsoft.AspNetCore.Http
+@{
+  if(HttpContext.Session.GetString("username") == null)
+  {
+    Response.Redirect("Index");
+  }
+  string job = HttpContext.Session.GetString("job");
+}
 <div class="main-panel">
   <div class="content-wrapper">
      <!-- row search -->
     <div class="row">
     </div>
     <!-- row button insert -->
-    <div class="row">
-      <div class="col-lg-12 stretch-card">
-        <a href="#CreateEmployeeForm" data-toggle="modal" id="btCreateEmployee" type="button" class="btn  btn-primary btn-lg btn-inverse-*">
-          <i class="mdi mdi-upload"></i>Create Employee
-        </a>
+    @if(job =="002"){
+      <div class="row">
+        <div class="col-lg-12 stretch-card">
+          <a href="#CreateEmployeeForm" data-toggle="modal" id="btCreateEmployee" type="button" class="btn  btn-primary btn-lg btn-inverse-*">
+            <i class="mdi mdi-upload"></i>Create Employee
+          </a>
+        </div>
       </div>
-    </div>
+    }
     <!-- row table -->
     <div class="row">
     <div class="col-lg-12 stretch-card">
@@ -68,14 +78,17 @@
                 <td> 
                   <button  id="@item.Id" data-toggle="modal" data-target="#DetailEmployeeForm"  type="button" class="btn btn-info btn-sm  btn-rounded DetailEmployee"><i class="fa fa-vcard-o"></i></button>
                   @{
-                    if (item.Status==Model.Status){
-                      <button  id="@item.Id" data-toggle="modal" data-target="#EditEmployeeFormLock"  type="button" class="btn btn-dark btn-sm  btn-rounded EditEmployee"><i class="fa fa-cog"></i></button>
-                    }
-                    else {
-                      <button  id="@item.Id" data-toggle="modal" data-target="#EditEmployeeFormUnlock"  type="button" class="btn btn-dark btn-sm  btn-rounded EditEmployee"><i class="fa fa-cog"></i></button>
+                    if(job =="002"){
+                      if (item.Status==Model.Status){
+                        <button  id="@item.Id" data-toggle="modal" data-target="#EditEmployeeFormLock"  type="button" class="btn btn-dark btn-sm  btn-rounded EditEmployee"><i class="fa fa-cog"></i></button>
+                      }
+                      else {
+                        <button  id="@item.Id" data-toggle="modal" data-target="#EditEmployeeFormUnlock"  type="button" class="btn btn-dark btn-sm  btn-rounded EditEmployee"><i class="fa fa-cog"></i></button>
+                      }
+                      <button  id="@item.Id" type="button" class="btn btn-danger btn-sm  btn-rounded DeleteEmployee"><i class="fa fa-times" ></i></button>
                     }
                   }
-                  <button  id="@item.Id" type="button" class="btn btn-danger btn-sm  btn-rounded DeleteEmployee"><i class="fa fa-times" ></i></button>
+                  
                 </td>
               </tr>
             }
@@ -168,6 +181,7 @@
                   <label class="col-sm-3 col-form-label">First Name</label>
                   <div class="col-sm-9">
                     <input id="CreateEmployee-firstname" type="text" class="form-control" required/>
+                    <span style="color:red" id="z-CreateEmployee-firstname" class=" hidden-class"> Please enter First Name</span>
                   </div>
                 </div>
               </div>
@@ -176,6 +190,7 @@
                   <label class="col-sm-3 col-form-label">Username</label>
                   <div class="col-sm-9">
                     <input id="CreateEmployee-username" type="text" class="form-control" required/>
+                    <span style="color:red" id="z-CreateEmployee-username" class=" hidden-class"> Userame has less than or equal 20 letters</span>
                   </div>
                 </div>
               </div>
@@ -186,6 +201,7 @@
                   <label class="col-sm-3 col-form-label">Last Name</label>
                   <div class="col-sm-9">
                     <input id="CreateEmployee-lastname" type="text" class="form-control" required/>
+                    <span style="color:red" id="z-CreateEmployee-lastname" class=" hidden-class"> Please enter your Last Name</span>
                   </div>
                 </div>
               </div>
@@ -194,6 +210,7 @@
                   <label class="col-sm-3 col-form-label">Password</label>
                   <div class="col-sm-9">
                     <input id="CreateEmployee-password" type="password" class="form-control" required/>
+                    <span style="color:red" id="z-CreateEmployee-password" class=" hidden-class"> Password has less than or equal 20 letters</span>
                   </div>
                 </div>
               </div>
@@ -204,6 +221,7 @@
                   <label class="col-sm-3 col-form-label">Date of Birth</label>
                   <div class="col-sm-9">
                     <input id="CreateEmployee-birthdate" type="date" class="form-control" placeholder="dd/mm/yyyy" />
+                    <span style="color:red" id="z-CreateEmployee-birthdate" class=" hidden-class"> Please enter your birthdate</span>
                   </div>
                 </div>
               </div>
@@ -212,6 +230,7 @@
                   <label class="col-sm-3 col-form-label">Enter Password</label>
                   <div class="col-sm-9">
                     <input id="CreateEmployee-password2" type="password" class="form-control" required/>
+                    <span style="color:red" id="z-CreateEmployee-password2" class=" hidden-class"> Password is invalid</span>
                   </div>
                 </div>
               </div>   
@@ -222,6 +241,7 @@
                   <label class="col-sm-3 col-form-label">Phone</label>
                   <div class="col-sm-9">
                     <input id="CreateEmployee-phone" type="tel" class="form-control" pattern="0[0-9]{9,10}" />
+                    <span style="color:red" id="z-CreateEmployee-phone" class=" hidden-class"> Wrong structure of phone</span>
                   </div>
                 </div>
               </div>
@@ -230,8 +250,8 @@
                   <label class="col-sm-3 col-form-label">Status</label>
                   <div class="col-sm-9">
                     <select id="CreateEmployee-status" class="form-control">
-                      <option>Active</option>
-                      <option>Disable</option>
+                      <option>AVALABLE</option>
+                      <option>DISABLED</option>
                     </select>
                   </div>
                 </div>
@@ -253,7 +273,6 @@
                   <label class="col-sm-3 col-form-label">Job</label>
                   <div class="col-sm-9">
                     <select id="CreateEmployee-job" class="form-control">
-                      <option id="CreateEmployee-default" hidden></option>
                       @foreach (var item in Model.ListJobs){
                         <option>@item.JobId - 
                           @item.JobName</option>

@@ -48,7 +48,9 @@
 							<div class="col-md-6">
 								<div class="form-group" style="padding-left:15px">
 									<label style="font-weight:600">Username:</label>
-									<div id="text-username">@ViewData["username"]</div>
+									<div id="text-username">
+										@ViewData["username"]
+									</div>
 								</div>	
 							</div>		
 						</div>
@@ -83,7 +85,9 @@
 							<div class="col-md-5" style="padding-left:15px">
 								<div class="form-group" >
 									<label style="font-weight:600">Current password</label>
-									<input type="password" disabled class="form-control" value='@ViewData["password"]'  id="old-pass">
+									<input type="password" disabled class="form-control"  id="old-pass">
+									<input type="hidden" value='@ViewData["password"]' id="check-pass">
+									<span class="hidden" style="color:red" id="err-old-pass">Your current password is not correct</span>
 								</div>
 							</div>
 							<div class="col-md-5">
@@ -129,27 +133,34 @@
 							<div class="col-md-6">
 								<div class="form-group" style="padding-left:15px">
 									<label style="font-weight:600">Date of birth</label>
-									<div class="birth_day">@ViewData["birthdate"]</div>
+									<div class="birth_day">
+										@ViewData["birthdate"]
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="row pro-field hidden">
-							<div class="col-md-4" style="padding-left:15px">
-								<div class="form-group" >
-									<label style="font-weight:600">Last name</label>
-									<input id="lastName" type="text" class="form-control" value='@ViewData["lastname"]'>
-								</div>
-							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label style="font-weight:600">First name</label>
 									<input id="firstName" type="text" class="form-control" value='@ViewData["firstname"]' >
+									<span class="hidden" style="color:red" id="err-first-name">Your first name is incorrect</span>									
 								</div>
 							</div>
+							<div class="col-md-4" style="padding-left:15px">
+								<div class="form-group" >
+									<label style="font-weight:600">Last name</label>
+									<input id="lastName" type="text" class="form-control" value='@ViewData["lastname"]'>
+									<span class="hidden" style="color:red" id="err-last-name">Your last name is incorrect</span>
+								</div>
+							</div>
+						
 							<div class="col-md-4">
 								<div class="form-group">
 									<label style="font-weight:600">Date of birth</label>
 									<input type="text" class="form-control birth_date" value='@ViewData["birthdate"]'>
+									<span class="hidden" style="color:red" id="err-birth-date">The value is incorrect</span>
+									
 								</div>
 							</div>
 						</div>
@@ -263,6 +274,8 @@
 								<div class="form-group" >
 									<label style="font-weight:600">Email</label>
 									<input id="email" type="email" value='@ViewData["email"]' class="form-control">
+									<span class="hidden" style="color:red" id="err-email">Your email is incorrect </span>
+								
 								</div>
 							</div>
 						</div>
@@ -289,6 +302,8 @@
 								<div class="form-group" >
 									<label style="font-weight:600">Phone</label>
 									<input id="phone" type="text" value='@ViewData["phone"]' class="form-control">
+									<span class="hidden" style="color:red" id="err-phone">Your phone is incorrect</span>
+
 								</div>
 							</div>
 						</div>

@@ -98,10 +98,7 @@ namespace Presentation.Pages.Admin
                     var obj = JsonConvert.DeserializeObject<PlaneDTO>(requestBody);
                     if (obj != null)
                     {
-                        PlaneId = obj.PlaneId;
-                        var item = await _unitofwork.Planes.GetByAsync(PlaneId);
-                        await _unitofwork.Planes.RemoveAsync(item);
-                        await _unitofwork.CompleteAsync();
+                        await _services.disablePlaneAsync(obj.PlaneId);
                     }
                 }
             }

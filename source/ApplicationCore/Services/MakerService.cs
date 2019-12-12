@@ -41,9 +41,9 @@ namespace ApplicationCore.Services
             return this.toDtoRange(Makers);
         }
 
-        new public async Task<IEnumerable<Maker>> SortAsync(IEnumerable<Maker> entities, ORDER_ENUM col, ORDER_ENUM order)
+        new public async Task<IEnumerable<MakerDTO>> SortAsync(IEnumerable<MakerDTO> entities, ORDER_ENUM col, ORDER_ENUM order)
         {
-            IEnumerable<Maker> res = null;
+            IEnumerable<MakerDTO> res = null;
             await Task.Run(() => true);
             if (order == ORDER_ENUM.DESCENDING)
             {

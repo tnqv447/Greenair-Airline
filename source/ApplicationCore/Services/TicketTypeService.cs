@@ -36,9 +36,9 @@ namespace ApplicationCore.Services
             return this.toDtoRange(TicketTypes);
         }
 
-        new public async Task<IEnumerable<TicketType>> SortAsync(IEnumerable<TicketType> entities, ORDER_ENUM col, ORDER_ENUM order)
+        new public async Task<IEnumerable<TicketTypeDTO>> SortAsync(IEnumerable<TicketTypeDTO> entities, ORDER_ENUM col, ORDER_ENUM order)
         {
-            IEnumerable<TicketType> res = null;
+            IEnumerable<TicketTypeDTO> res = null;
             await Task.Run(() => true);
             if (order == ORDER_ENUM.DESCENDING)
             {

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using ApplicationCore.DTOs;
 using ApplicationCore;
+using ApplicationCore.Services;
 using Presentation.Services.ServiceInterfaces;
 
 namespace Presentation.Pages.Admin
@@ -21,14 +22,17 @@ namespace Presentation.Pages.Admin
     {
         public STATUS Status { get; set; }
         private readonly IUnitOfWork _unitofwork;
+        private readonly IEmployeeService _service;
+        private readonly IAccountService _accountService;
         private readonly IEmployeeVMService _serviceVM;
 
-        public EmployeeModel(IUnitOfWork unitofwork, IEmployeeVMService serviceVM)
+        public EmployeeModel(IEmployeeService service, IAccountService accountService, IUnitOfWork unitofwork, IEmployeeVMService serviceVM)
         {
             this.Status = STATUS.AVAILABLE;
-            // this._service = service;
+            this._service = service;
             this._serviceVM = serviceVM;
             this._unitofwork = unitofwork;
+            _accountService = accountService;
         }
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
@@ -51,59 +55,59 @@ namespace Presentation.Pages.Admin
             // return new JsonResult(Employee);
         }
 
-        public async Task<IActionResult> OnGetEditCustomer(string id)
+        public async Task<IActionResult> OnGetEditEmployee(string id)
         {
             var Employee = await _unitofwork.Employees.GetByAsync(id);
             Account acc = await _unitofwork.Accounts.getAccountByPersonId(Employee.Id);
             EmployeeVM EmployeeVM = new EmployeeVM(Employee, acc);
-            // return Content(JsonConvert.SerializeObject(customerVM));
+            // return Content(JsonConvert.SerializeObject(EmployeeVM));
             return new JsonResult(EmployeeVM);
         }
-        // public async Task<IActionResult> OnPostEditCustomerLock()
-        // {
-        //     string respone = "Successful";
-        //     MemoryStream stream = new MemoryStream();
-        //     Request.Body.CopyTo(stream);
-        //     stream.Position = 0;
-        //     using (StreamReader reader = new StreamReader(stream))
-        //     {
-        //         string requestBody = reader.ReadToEnd();
-        //         if (requestBody.Length > 0)
-        //         {
-        //             var obj = JsonConvert.DeserializeObject<CustomerDTO>(requestBody);
-        //             if (obj != null)
-        //             {
-        //                 string id = obj.Id;
-        //                 await _service.disableCutomerAsync(id);
-        //                 // _service
-        //             }
-        //         }
-        //     }
-        //     return new JsonResult(respone);
-        // }
-        // public async Task<IActionResult> OnPostEditCustomerUnlock()
-        // {
-        //     string respone = "Successful";
-        //     MemoryStream stream = new MemoryStream();
-        //     Request.Body.CopyTo(stream);
-        //     stream.Position = 0;
-        //     using (StreamReader reader = new StreamReader(stream))
-        //     {
-        //         string requestBody = reader.ReadToEnd();
-        //         if (requestBody.Length > 0)
-        //         {
-        //             var obj = JsonConvert.DeserializeObject<CustomerDTO>(requestBody);
-        //             if (obj != null)
-        //             {
-        //                 string id = obj.Id;
-        //                 await _service.activateCustomerAsync(id);
-        //                 // _service
-        //             }
-        //         }
-        //     }
-        //     return new JsonResult(respone);
-        // }
-        public async Task<IActionResult> OnPostDeleteCustomer()
+        public async Task<IActionResult> OnPostEditEmployeeLock()
+        {
+            string respone = "Lock Successful";
+            MemoryStream stream = new MemoryStream();
+            Request.Body.CopyTo(stream);
+            stream.Position = 0;
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                string requestBody = reader.ReadToEnd();
+                if (requestBody.Length > 0)
+                {
+                    var obj = JsonConvert.DeserializeObject<EmployeeDTO>(requestBody);
+                    if (obj != null)
+                    {
+                        string id = obj.Id;
+                        await _service.disableEmployeeAsync(id);
+                        // _service
+                    }
+                }
+            }
+            return new JsonResult(respone);
+        }
+        public async Task<IActionResult> OnPostEditEmployeeUnlock()
+        {
+            string respone = "Unlock Successful";
+            MemoryStream stream = new MemoryStream();
+            Request.Body.CopyTo(stream);
+            stream.Position = 0;
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                string requestBody = reader.ReadToEnd();
+                if (requestBody.Length > 0)
+                {
+                    var obj = JsonConvert.DeserializeObject<EmployeeDTO>(requestBody);
+                    if (obj != null)
+                    {
+                        string id = obj.Id;
+                        await _service.activateEmployeeAsync(id);
+                        // _service
+                    }
+                }
+            }
+            return new JsonResult(respone);
+        }
+        public async Task<IActionResult> OnPostDeleteEmployee()
         {
             string EmployeeId = "";
             MemoryStream stream = new MemoryStream();
@@ -117,17 +121,63 @@ namespace Presentation.Pages.Admin
                     var obj = JsonConvert.DeserializeObject<EmployeeVM>(requestBody);
                     if (obj != null)
                     {
-                        EmployeeId = obj.Id;
-                        // await _service.removeCustomerAsync(obj.Id);
-                        var em = await _unitofwork.Employees.GetByAsync(EmployeeId);
-                        await _unitofwork.Employees.RemoveAsync(em);
-                        await _unitofwork.CompleteAsync();
+                        await _service.removeEmployeeAsync(obj.Id);
                         // await _servic
                     }
                 }
             }
             string mes = "Remove " + EmployeeId + " Success!";
             return new JsonResult(mes);
+        }
+        public async Task<IActionResult> OnPostCreateEmployee()
+        {
+            string respone = "True";
+            MemoryStream stream = new MemoryStream();
+            Request.Body.CopyTo(stream);
+            stream.Position = 0;
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                string requestBody = reader.ReadToEnd();
+                if (requestBody.Length > 0)
+                {
+                    var obj = JsonConvert.DeserializeObject<EmployeeVM>(requestBody);
+                    if (obj != null)
+                    {
+                        var check = await _accountService.isExistedUsernameAsync(obj.Username);
+                        if (!check) respone = "False";
+                        else
+                        {
+                            EmployeeDTO emp = new EmployeeDTO();
+                            emp.LastName = obj.LastName;
+                            emp.FirstName = obj.FirstName;
+                            emp.Phone = obj.Phone;
+                            emp.Salary = obj.Salary;
+                            emp.JobId = obj.JobId;
+                            if (obj.Status == "AVAILABLE")
+                            {
+                                emp.Status = STATUS.AVAILABLE;
+                            }
+                            else emp.Status = STATUS.DISABLED;
+                            AddressDTO address = new AddressDTO();
+                            address.toValue(obj.Address);
+                            emp.Address = address;
+                            await _service.addEmployeeAsync(emp);
+                            IEnumerable<EmployeeDTO> Lists = await _service.getAllEmployeeAsync();
+                            EmployeeDTO LastEmp = Lists.Last();
+                            AccountDTO account = new AccountDTO();
+                            account.PersonId = LastEmp.Id;
+                            account.Username = obj.Username;
+                            account.Password = obj.Password;
+
+                            await _accountService.addAccountAsync(account);
+                            // emp.Birthdate=obj.Birthdate;
+
+                        }
+                        // _service
+                    }
+                }
+            }
+            return new JsonResult(respone);
         }
     }
     class EmployeeVM

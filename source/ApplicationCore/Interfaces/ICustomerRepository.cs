@@ -10,7 +10,7 @@ namespace ApplicationCore.Interfaces
 
         Task<IEnumerable<Customer>> getAvailableCustomer();
         Task<IEnumerable<Customer>> getDisabledCustomer();
-        
+
         Task disable(string cus_id);
         Task activate(string cus_id);
         Task disable(Customer cus);

@@ -54,9 +54,9 @@ namespace ApplicationCore.Services
             return this.toDtoRange(Employees);
         }
 
-        new public async Task<IEnumerable<Employee>> SortAsync(IEnumerable<Employee> entities, ORDER_ENUM col, ORDER_ENUM order)
+        new public async Task<IEnumerable<EmployeeDTO>> SortAsync(IEnumerable<EmployeeDTO> entities, ORDER_ENUM col, ORDER_ENUM order)
         {
-            IEnumerable<Employee> res = null;
+            IEnumerable<EmployeeDTO> res = null;
             await Task.Run(() => true);
             if (order == ORDER_ENUM.DESCENDING)
             {
@@ -182,7 +182,7 @@ namespace ApplicationCore.Services
         }
 
 
-        public async Task disableCutomerAsync(string emp_id)
+        public async Task disableEmployeeAsync(string emp_id)
         {
             var emp = await unitOfWork.Employees.GetByAsync(emp_id);
             if (emp != null) await unitOfWork.Employees.disable(emp);

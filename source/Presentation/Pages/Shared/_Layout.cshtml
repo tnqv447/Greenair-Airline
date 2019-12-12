@@ -169,19 +169,19 @@
             <div class="col-md-4">
                 <label>First Name</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" id="reg-first-name"/>
                 </div>
             </div>
             <div class="col-md-4">
                 <label>Last Name</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" id="reg-last-name"/>
                 </div>
             </div>
             <div class="col-md-4">
                 <label>Birth Date</label>
                 <div class="form-group">
-                    <input type="text" class="form-control birth_date" />
+                    <input type="text" class="form-control birth_date" id="reg-birth-date"/>
                 </div>
             </div>
         </div>
@@ -189,19 +189,19 @@
             <div class="col-md-4">
                 <label>Num</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" id="reg-num"/>
                 </div>
             </div>
             <div class="col-md-4">
                 <label>Street</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" id="reg-street"/>
                 </div>
             </div>
             <div class="col-md-4">
                 <label>District</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" id="reg-district"/>
                 </div>
             </div>
         </div>
@@ -209,19 +209,35 @@
             <div class="col-md-4">
                 <label>City</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" id="reg-city"/>
                 </div>
             </div>
             <div class="col-md-4">
                 <label>State</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" id="reg-state"/>
                 </div>
             </div>
             <div class="col-md-4">
                 <label>Country</label>
                 <div class="form-group">
-                    <select id="items"  name="items" type="text" class="form-control country"  ></select>
+                    <select id="items"  name="items" type="text" class="form-control country" id='reg-country' ></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label>Email</label>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="reg-email"/>
+                    <span class="hidden" style="color:red" id="err-email">Your email is incorrect </span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>Phone</label>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="reg-phone"/>
+                    <span class="hidden" style="color:red" id="err-phone">Your phone is incorrect</span>
                 </div>
             </div>
         </div>
@@ -234,19 +250,22 @@
             <div class="col-md-4">
                 <label>Username</label>
                 <div class="form-group">
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" id="reg-username"/>
+					<span class="hidden" style="color:red" id="err-user">Username must be 5-14 characters</span>
                 </div>
             </div>
             <div class="col-md-4">
                 <label>Password</label>
                 <div class="form-group">
-                    <input type="password" class="form-control" />
+                    <input type="password" class="form-control" id="reg-password"/>
+                    <span class="hidden" style="color:red" id="err-new-pass">Must be 5-20 characters, contains at least one lower-case letter, one number</span>
                 </div>
             </div>
             <div class="col-md-4">
                 <label>Re-password</label>
                 <div class="form-group">
-                    <input type="password" class="form-control"  />
+                    <input type="password" class="form-control" id="reg-re-password" />
+                    <span class="hidden" style="color:red" id="err-re-pass">Not correct with new password</span>
                 </div>
             </div>
         </div>

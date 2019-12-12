@@ -7,15 +7,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Presentation.ViewModels;
 using Presentation.Services.ServiceInterfaces;
 using AutoMapper;
+using ApplicationCore.Services;
+
 namespace Presentation.Services.ServicesImplement
 {
     public class PlaneVMService : IPlaneVMService
     {
         private int pageSize = 3;
-        private readonly IUnitOfWork _service;
+        private readonly IPlaneService _service;
         private readonly IMapper _mapper;
 
-        public PlaneVMService(IUnitOfWork movieService, IMapper mapper)
+        public PlaneVMService(IPlaneService movieService, IMapper mapper)
         {
             _service = movieService;
             _mapper = mapper;
@@ -24,19 +26,18 @@ namespace Presentation.Services.ServicesImplement
         public async Task<PlanePageVM> GetPlanePageViewModelAsync(string searchString, int pageIndex = 1)
         {
             // var movies = await _service.GetMoviesAsync(searchString, genre);
-            var Planes = await _service.Planes.GetAllAsync();
+            var Planes = await _service.getAvailablePlaneAsync();
             if (searchString != null)
             {
                 // var makerName = _service.Makers.get;
-                Planes = await _service.Planes.getPlanebyMakerId(searchString.Substring(0, 3));
+                Planes = await _service.getPlaneByMakerIdAsync(searchString.Substring(0, 3));
             }
-            var abc = _mapper.Map<IEnumerable<Plane>, IEnumerable<PlaneDTO>>(Planes);
+            Planes = await _service.SortAsync(Planes, ApplicationCore.ORDER_ENUM.ID, ApplicationCore.ORDER_ENUM.ASCENDING);
 
             return new PlanePageVM
             {
-                Planes = PaginatedList<PlaneDTO>.Create(abc, pageIndex, pageSize)
+                Planes = PaginatedList<PlaneDTO>.Create(Planes, pageIndex, pageSize)
             };
         }
-
     }
 }

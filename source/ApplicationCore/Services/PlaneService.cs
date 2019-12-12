@@ -40,6 +40,11 @@ namespace ApplicationCore.Services
             var maker = await unitOfWork.Makers.GetByAsync(plane.MakerId);
             return String.Format("{0}-{1}", maker.MakerName, plane.PlaneId);
         }
+        public async Task<String> getPlaneFullname(PlaneDTO plane, string maker_id)
+        {
+            var maker = await unitOfWork.Makers.GetByAsync(plane.MakerId);
+            return String.Format("{0}-{1}", maker.MakerName, plane.PlaneId);
+        }
 
         public async Task<IEnumerable<PlaneDTO>> getAvailablePlaneAsync()
         {
@@ -52,9 +57,9 @@ namespace ApplicationCore.Services
             return this.toDtoRange(Planes);
         }
 
-        new public async Task<IEnumerable<Plane>> SortAsync(IEnumerable<Plane> entities, ORDER_ENUM col, ORDER_ENUM order)
+        new public async Task<IEnumerable<PlaneDTO>> SortAsync(IEnumerable<PlaneDTO> entities, ORDER_ENUM col, ORDER_ENUM order)
         {
-            IEnumerable<Plane> res = null;
+            IEnumerable<PlaneDTO> res = null;
             await Task.Run(() => true);
             if (order == ORDER_ENUM.DESCENDING)
             {

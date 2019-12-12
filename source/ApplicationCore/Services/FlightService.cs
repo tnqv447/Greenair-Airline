@@ -50,6 +50,11 @@ namespace ApplicationCore.Services
         private async Task<bool> checkOrderNum(string flight_id, int num)
         {
             var tickets = await this.getAvailableTicketAsync(flight_id);
+            if (tickets == null || tickets.Count() == 0)
+            {
+                Console.WriteLine("num = 0");
+                return false;
+            }
             return num <= tickets.Count();
         }
 
@@ -57,19 +62,31 @@ namespace ApplicationCore.Services
         {
             //Expression<Func<Flight, bool>> predicate = m => true;
             //var predicate = PredicateBuilder.New<Flight>();
+
             if (!String.IsNullOrEmpty(origin_id) && !String.IsNullOrEmpty(destination_id))
             {
                 int num = adults_num + childs_num;
                 var res = await unitOfWork.Flights.getAvailableFlights();
                 res = res.Where(m => Task.Run(() => this.getOriginId(m.FlightId)).GetAwaiter().GetResult().Equals(origin_id));
-                res = res.Where(m => Task.Run(() => this.getDestinationId(m.FlightId)).GetAwaiter().GetResult().Equals(destination_id));
-                if (dep_date != null)
-                    res = res.Where(m => DateTime.Compare(Task.Run(() => this.getDepDate(m.FlightId)).GetAwaiter().GetResult(), dep_date) >= 0);
-                res = res.Where(m => Task.Run(() => this.checkOrderNum(m.FlightId, num)).GetAwaiter().GetResult().Equals(origin_id));
 
+                Console.WriteLine(res.Count() + " count");
+                res = res.Where(m => Task.Run(() => this.getDestinationId(m.FlightId)).GetAwaiter().GetResult().Equals(destination_id));
+                Console.WriteLine(res.Count() + " count");
+                res = res.Where(m => DateTime.Compare(Task.Run(() => this.getDepDate(m.FlightId)).GetAwaiter().GetResult(), dep_date) >= 0);
+                Console.WriteLine(res.Count() + " count");
+                res = res.Where(m => Task.Run(() => this.checkOrderNum(m.FlightId, num)).GetAwaiter().GetResult());
+                Console.WriteLine(res.Count() + " count");
                 return toDtoRange(res);
             }
-            else return null;
+            else
+            {
+                var res = await unitOfWork.Flights.getAvailableFlights();
+                res = res.Where(m => DateTime.Compare(Task.Run(() => this.getDepDate(m.FlightId)).GetAwaiter().GetResult(), dep_date) >= 0);
+
+                Console.WriteLine(res.Count() + " count");
+                return toDtoRange(res);
+
+            };
         }
         public async Task<IEnumerable<FlightDTO>> getLimitFlightAsync(IEnumerable<FlightDTO> flights, DateTime arr_date)
         {
@@ -79,9 +96,9 @@ namespace ApplicationCore.Services
             return flights;
         }
 
-        new public async Task<IEnumerable<Flight>> SortAsync(IEnumerable<Flight> entities, ORDER_ENUM col, ORDER_ENUM order)
+        new public async Task<IEnumerable<FlightDTO>> SortAsync(IEnumerable<FlightDTO> entities, ORDER_ENUM col, ORDER_ENUM order)
         {
-            IEnumerable<Flight> res = null;
+            IEnumerable<FlightDTO> res = null;
             await Task.Run(() => true);
             if (order == ORDER_ENUM.DESCENDING)
             {
@@ -143,7 +160,7 @@ namespace ApplicationCore.Services
             await unitOfWork.CompleteAsync();
         }
 
-        public async Task addFlightAsync(FlightDTO flightDto, IEnumerable<FlightDetailDTO> details)
+        public new async Task addFlightAsync(FlightDTO flightDto, IEnumerable<FlightDetailDTO> details)
         {
             var flight = this.toEntity(flightDto);
             flight.FlightId = await generateFlightId();
@@ -263,6 +280,20 @@ namespace ApplicationCore.Services
         }
 
         //Thao tac voi chi tiet ============================================================================================
+        public async Task<IEnumerable<FlightDetailDTO>> SortFlightDetailAsync(IEnumerable<FlightDetailDTO> entities, ORDER_ENUM order)
+        {
+            IEnumerable<FlightDetailDTO> res = null;
+            await Task.Run(() => true);
+            if (order == ORDER_ENUM.DESCENDING)
+            {
+                res = entities.OrderBy(m => m.FlightId).ThenByDescending(m => m.FlightDetailId);
+            }
+            else
+            {
+                res = entities.OrderBy(m => m.FlightId).ThenBy(m => m.FlightDetailId);
+            }
+            return res;
+        }
         public async Task<FlightDetailDTO> getFllightdetailAsync(string flight_id, int part)
         {
             return mapper.Map<FlightDetail, FlightDetailDTO>(await unitOfWork.Flights.getFlightDetail(flight_id, part));
@@ -293,13 +324,22 @@ namespace ApplicationCore.Services
         {
             var det = mapper.Map<FlightDetailDTO, FlightDetail>(det_dto);
             await generateDetailId(det);
-            Console.WriteLine("{0} - {1} - wtf?? {2} wtf??", det.FlightDetailId, det.FlightId, det.RouteId);
             await unitOfWork.Flights.addFlightDetail(det);
             await unitOfWork.CompleteAsync();
         }
-        public async Task addFlightDetailRangeAsync(IEnumerable<FlightDetailDTO> dets_dto)
+        public async Task addFlightDetailRangeAsync(IEnumerable<FlightDetailDTO> dets_dto, string flight_id)
         {
+            await unitOfWork.Flights.removeAllFlightDetail(flight_id);
+            await unitOfWork.CompleteAsync();
+
             var dets = mapper.Map<IEnumerable<FlightDetailDTO>, IEnumerable<FlightDetail>>(dets_dto);
+            int count = 0;
+            foreach (FlightDetail det in dets)
+            {
+                det.FlightId = flight_id;
+                det.FlightDetailId = String.Format("{0:000}", count++);
+
+            }
             await unitOfWork.Flights.addFlightDetailRange(dets);
             await unitOfWork.CompleteAsync();
         }
@@ -313,6 +353,38 @@ namespace ApplicationCore.Services
         }
 
         //Thao tac voi ve =======================================================================================
+
+        public async Task<IEnumerable<TicketDTO>> SortTicketAsync(IEnumerable<TicketDTO> entities, ORDER_ENUM col, ORDER_ENUM order)
+        {
+            IEnumerable<TicketDTO> res = null;
+            await Task.Run(() => true);
+            if (order == ORDER_ENUM.DESCENDING)
+            {
+                switch (col)
+                {
+                    case ORDER_ENUM.CUSTOMER_NAME: res = entities.OrderBy(m => m.FlightId).ThenByDescending(m => unitOfWork.Customers.GetByAsync(m.CustomerId).GetAwaiter().GetResult()); break;
+                    case ORDER_ENUM.ASSIGNED_CUSTOMER: res = entities.OrderBy(m => m.FlightId).ThenByDescending(m => m.AssignedCus); break;
+                    case ORDER_ENUM.TICKET_TYPE_ID: res = entities.OrderBy(m => m.FlightId).ThenByDescending(m => m.TicketTypeId); break;
+                    case ORDER_ENUM.STATUS: res = entities.OrderBy(m => m.FlightId).ThenByDescending(m => m.Status); break;
+
+                    default: res = entities.OrderBy(m => m.FlightId).OrderByDescending(m => m.FlightId); break;
+                }
+            }
+            else
+            {
+                switch (col)
+                {
+                    case ORDER_ENUM.CUSTOMER_NAME: res = entities.OrderBy(m => m.FlightId).ThenBy(m => unitOfWork.Customers.GetByAsync(m.CustomerId).GetAwaiter().GetResult()); break;
+                    case ORDER_ENUM.ASSIGNED_CUSTOMER: res = entities.OrderBy(m => m.FlightId).ThenBy(m => m.AssignedCus); break;
+                    case ORDER_ENUM.TICKET_TYPE_ID: res = entities.OrderBy(m => m.FlightId).ThenBy(m => m.TicketTypeId); break;
+                    case ORDER_ENUM.STATUS: res = entities.OrderBy(m => m.FlightId).ThenBy(m => m.Status); break;
+
+                    default: res = entities.OrderBy(m => m.FlightId).OrderBy(m => m.TicketId); break;
+                }
+
+            }
+            return res;
+        }
 
         public async Task<decimal> calTicketPrice(string flight_id, string ticket_type_id)
         {
@@ -342,18 +414,19 @@ namespace ApplicationCore.Services
                 switch (i / mod)
                 {
                     case 0:
-                        tickets.Add(new Ticket(String.Format("A{0:00}", i), flight_id, null, "000", "000"));
+                        tickets.Add(new Ticket(String.Format("A{0:00}", i), flight_id, "000", "", "000"));
                         break;
                     case 1:
-                        tickets.Add(new Ticket(String.Format("B{0:00}", i), flight_id, null, "000", "000"));
+                        tickets.Add(new Ticket(String.Format("B{0:00}", i), flight_id, "000", "", "000"));
                         break;
                     case 3:
-                        tickets.Add(new Ticket(String.Format("C{0:00}", i), flight_id, null, "000", "000"));
+                        tickets.Add(new Ticket(String.Format("C{0:00}", i), flight_id, "000", "", "000"));
                         break;
                     default:
-                        tickets.Add(new Ticket(String.Format("D{0:00}", i), flight_id, null, "000", "000"));
+                        tickets.Add(new Ticket(String.Format("D{0:00}", i), flight_id, "000", "", "000"));
                         break;
                 }
+
             }
             await unitOfWork.Flights.addTicketRange(tickets);
         }
@@ -400,11 +473,15 @@ namespace ApplicationCore.Services
             var ticket = await unitOfWork.Flights.getTicket(flight_id, ticket_id);
             if (ticket == null) return;
             ticket.TicketTypeId = "000";
-            ticket.CustomerId = null;
-            ticket.AssignedCus = null;
+            ticket.CustomerId = "000";
+            ticket.AssignedCus = "";
             ticket.Status = STATUS.AVAILABLE;
             await unitOfWork.CompleteAsync();
         }
 
+        public Task addFlightDetailAsync(FlightDetailDTO det_dto, IEnumerable<FlightDetailDTO> detail)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

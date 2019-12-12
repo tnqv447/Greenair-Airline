@@ -39,7 +39,7 @@
 							<div class="">
 								<div class="section-heading">
 									<h3 class="section-heading__title" style="font-weight:600">
-										Flight go
+										Flight Go
 									</h3>
 									<span class="section-heading__icon ion-ios-plane"></span>
 									<div class="section-heading__content">
@@ -52,7 +52,7 @@
 											-
 										</span>
 										<span class="section-heading__date">
-											@ViewData["depDate"]
+											Begin @ViewData["depDate"]
 										</span>
 									</div>
 								</div>
@@ -65,14 +65,14 @@
 							<input type="text"  value='@ViewData["value_dep_date"]' id="check-in">
 						</div>
 					</div>
-					<p>
-						@Model.Msg
-					</p>
 						@{
-							@if(Model.ListFlights_1.Any())
+							@if(Model.flightVM_1.Any())
 							{
-								@foreach(var item in Model.ListFlights_1)
+								@foreach(var item in Model.flightVM_1)
 								{
+									 
+									var depDate = @item.DepDate[0];
+									var arrDate = @item.ArrDate[item.FlightDetailId.Count() -1];									
 									<div class="row" style="margin-top: 20px">
 										<div class="col-sm-12">
 											<div class="flight-card-wrapper">
@@ -80,7 +80,7 @@
 													<div class="flight-card-itinerary">
 														<div class="itinerary-info">
 															<div class="itinerary-info__time">
-																5:30
+																@depDate.Substring(11,8)
 															</div>
 															<div class="itinerary-info__airport"> 
 																	@ViewData["from"]
@@ -92,7 +92,7 @@
 														</div>
 														<div class="itinerary-info">
 															<div class="itinerary-info__time ">
-																7:40
+																@arrDate.Substring(11,8)
 															</div>
 															<div class="itinerary-info__airport">
 																@ViewData["where"] 
@@ -103,13 +103,19 @@
 													<div class="flight-card-details-price">
 														<div class="flight-card-details">
 															<div style="float:left;">
-																<span class="flight-card-details__duration ">Blasdasdasdasasdsad</span>
+																<span class="flight-card-details__duration ">
+																	Departs from @ViewData["from_city"]
+
+																</span>
+																@{
+																	var a ="Hide";
+																}
 																<div class="flight-card-details__more">
-																	<span class="info-show" >
-																		Chi tiết
+																	<span id="@item.FlightId" class="info-show" >
+																		Detail
 																	</span>
-																	<span class="info-hide">
-																		Ẩn
+																	<span id="@item.FlightId" class="info-hide @item.FlightId@a">
+																		Hide
 																	</span>
 																</div>
 															</div>
@@ -120,7 +126,7 @@
 																		<div class="pricepoint-wrapper pricepoint-wrapper--orange">
 																			<div class="pricepoint">
 																				<span class="pricepoint__middle">
-																					890,000
+																					@item.Price
 																					<span class="pricepoint__decimal"></span>
 																				</span>
 																				<span class="pricepoint__symbol">
@@ -133,7 +139,7 @@
 																<div class="price-select__button">
 																	<div class="button-toggle js-button-toggle">
 																		<span>
-																			Chọn
+																			Choose
 																		</span>
 																	</div>
 																</div>
@@ -142,51 +148,67 @@
 													</div>
 												</div>
 												<div class=" qa-flight-card-details">
-													<div class="fare__details fare__details--leg-0 ">
+													<div class="fare__details fare__details--leg-0 @item.FlightId">
 														<span class="carrier"></span>
 														<div class="flight-info">
-															<div class="flight-info__row  flight-info__flightNubmer">
-																<div class="flight-info__row__label medium-3"> 
-																	Chuyến bay 1:
-																</div>
-																<div class="medium-9">
-																	<p></p>
-																</div>
-															</div>
-															<div class="flight-info__row">
-																<div class="flight-info__row__label medium-3"> 
-																	Khởi hành:
-																</div>
-																<div class="medium-9">
-																	<p></p>
-																</div>
-															</div>
-															<div class="flight-info__row">
-																<div class="flight-info__row__label medium-3"> 
-																	Đến:
-																</div>
-																<div class="medium-9">
-																	<p></p>
-																</div>
-															</div>
-															<div class="flight-info__row">
-																<div class="flight-info__row__label medium-3"> 
-																</div>
-																<div class="flight-info__more medium-9">
-																	<div class="flight-info__more__item">
-																		Thời gian:
-																		<p>2hrs 10mins</p>
+															
+															@for(int i = 0;i< @item.FlightDetailId.Count();i++)
+															{
+																var j = i + 1;
+																<div class="flight-info__row  flight-info__flightNubmer">
+																	<div class="flight-info__row__label medium-3"> 
+																		Flight @j :
 																	</div>
-																	<div class="flight-info__more__item">
-																		Máy bay:
-																		<p>2hrs 10mins</p>
-																	</div>
-																	<div class="flight-info__more__item">
-																		Hãng khai thác:
-																		<p>2hrs 10mins</p>
+																	<div class="medium-9">
+																		<p>
+																			@item.Origin[i]
+																			to
+																			@item.Destination[i]
+																		</p>
 																	</div>
 																</div>
-															</div>
+																<div class="flight-info__row">
+																	<div class="flight-info__row__label medium-3"> 
+																		Start:
+																	</div>
+																	<div class="medium-9">
+																		<p>
+																			@item.DepDate[i]
+																		</p>
+																	</div>
+																</div>
+																<div class="flight-info__row">
+																	<div class="flight-info__row__label medium-3"> 
+																		End:
+																	</div>
+																	<div class="medium-9">
+																		<p>
+																			@item.ArrDate[i]
+																		</p>
+																	</div>
+																</div>
+																<div class="flight-info__row">
+																	<div class="flight-info__row__label medium-3"> 
+																	</div>
+																	<div class="flight-info__more medium-9">
+																		<div class="flight-info__more__item">
+																			Plane:
+																			<p>
+																				@item.PlaneId
+																			</p>
+																		</div>
+																		<div class="flight-info__more__item">
+																			Maker:
+																			<p>@item.Maker</p>
+																		</div>
+																	</div>
+																</div>
+															}
+															
+															
+															
+															
+															
 														</div>
 													</div>
 												</div>
@@ -254,129 +276,149 @@
 						</div>
 						@if(Model.ListFlights_2.Any())
 						{
-							@foreach(var item in Model.ListFlights_2)
-							{
-								<div class="row" style="margin-top: 20px">
-									<div class="col-sm-12">
-										<div class="flight-card-wrapper">
-											<div class="flight-card">
-												<div class="flight-card-itinerary">
-													<div class="itinerary-info">
-														<div class="itinerary-info__time">
-															5:30
-														</div>
-														<div class="itinerary-info__airport"> 
-																@ViewData["where"]
-																- Origin
-														</div>
-													</div>
-													<div class="itinerary-info__icons">
-														<span></span>
-													</div>
-													<div class="itinerary-info">
-														<div class="itinerary-info__time ">
-															7:40
-														</div>
-														<div class="itinerary-info__airport">
-															@ViewData["from"] 
-															- Destination
-														</div>
-													</div>
-												</div>
-												<div class="flight-card-details-price">
-													<div class="flight-card-details">
-														<div style="float:left;">
-															<span class="flight-card-details__duration ">Blasdasdasdasasdsad</span>
-															<div class="flight-card-details__more">
-																<span class="info-show" >
-																	Chi tiết
-																</span>
-																<span class="info-hide">
-																	Ẩn
-																</span>
+							@foreach(var item in Model.flightVM_2)
+								{
+									 
+									var depDate = @item.DepDate[0];
+									var arrDate = @item.ArrDate[item.FlightDetailId.Count() -1];									
+									<div class="row" style="margin-top: 20px">
+										<div class="col-sm-12">
+											<div class="flight-card-wrapper">
+												<div class="flight-card">
+													<div class="flight-card-itinerary">
+														<div class="itinerary-info">
+															<div class="itinerary-info__time">
+																@depDate.Substring(11,8)
+															</div>
+															<div class="itinerary-info__airport"> 
+																	@ViewData["where"]
+																	- Origin
 															</div>
 														</div>
-														
-														<div class="price-select" style="float:right">
-															<div class="price-select__price  text-right">
-																<div class="starter-price-wrapper">
-																	<div class="pricepoint-wrapper pricepoint-wrapper--orange">
-																		<div class="pricepoint">
-																			<span class="pricepoint__middle">
-																				890,000
-																				<span class="pricepoint__decimal"></span>
-																			</span>
-																			<span class="pricepoint__symbol">
-																				đ
-																			</span>
-																		</div>
-																	</div>
-																</div>
+														<div class="itinerary-info__icons">
+															<span></span>
+														</div>
+														<div class="itinerary-info">
+															<div class="itinerary-info__time ">
+																@arrDate.Substring(11,8)
 															</div>
-															<div class="price-select__button">
-																<div class="button-toggle js-button-toggle">
-																	<span>
-																		Chọn
+															<div class="itinerary-info__airport">
+																@ViewData["from"] 
+																- Destination
+															</div>
+														</div>
+													</div>
+													<div class="flight-card-details-price">
+														<div class="flight-card-details">
+															<div style="float:left;">
+																<span class="flight-card-details__duration ">
+																	Departs from  @ViewData["where_city"]
+
+																</span>
+																@{
+																	var a = "Hide";
+																}
+																<div class="flight-card-details__more">
+																	<span id="@item.FlightId" class="info-show" >
+																		Detail
+																	</span>
+																	<span id="@item.FlightId" class="info-hide @item.FlightId@a">
+																		Hide
 																	</span>
 																</div>
 															</div>
+															
+															<div class="price-select" style="float:right">
+																<div class="price-select__price  text-right">
+																	<div class="starter-price-wrapper">
+																		<div class="pricepoint-wrapper pricepoint-wrapper--orange">
+																			<div class="pricepoint">
+																				<span class="pricepoint__middle">
+																					@item.Price
+																					<span class="pricepoint__decimal"></span>
+																				</span>
+																				<span class="pricepoint__symbol">
+																					đ
+																				</span>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="price-select__button">
+																	<div class="button-toggle js-button-toggle">
+																		<span>
+																			Choose
+																		</span>
+																	</div>
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
-											</div>
-											<div class=" qa-flight-card-details">
-												<div class="fare__details fare__details--leg-0 ">
-													<span class="carrier"></span>
-													<div class="flight-info">
-														<div class="flight-info__row  flight-info__flightNubmer">
-															<div class="flight-info__row__label medium-3"> 
-																Chuyến bay 1:
-															</div>
-															<div class="medium-9">
-																<p></p>
-															</div>
-														</div>
-														<div class="flight-info__row">
-															<div class="flight-info__row__label medium-3"> 
-																Khởi hành:
-															</div>
-															<div class="medium-9">
-																<p></p>
-															</div>
-														</div>
-														<div class="flight-info__row">
-															<div class="flight-info__row__label medium-3"> 
-																Đến:
-															</div>
-															<div class="medium-9">
-																<p></p>
-															</div>
-														</div>
-														<div class="flight-info__row">
-															<div class="flight-info__row__label medium-3"> 
-															</div>
-															<div class="flight-info__more medium-9">
-																<div class="flight-info__more__item">
-																	Thời gian:
-																	<p>2hrs 10mins</p>
+												<div class=" qa-flight-card-details">
+													<div  class="fare__details fare__details--leg-0 @item.FlightId">
+														<span class="carrier"></span>
+														<div class="flight-info">
+															
+															@for(int i = 0;i< @item.FlightDetailId.Count();i++)
+															{
+																var j = i + 1;
+																<div class="flight-info__row  flight-info__flightNubmer">
+																	<div class="flight-info__row__label medium-3"> 
+																		Flight @j :
+																	</div>
+																	<div class="medium-9">
+																		<p>
+																			@item.Origin[i]
+																			to
+																			@item.Destination[i]
+																		</p>
+																	</div>
 																</div>
-																<div class="flight-info__more__item">
-																	Máy bay:
-																	<p>2hrs 10mins</p>
+																<div class="flight-info__row">
+																	<div class="flight-info__row__label medium-3"> 
+																		Start:
+																	</div>
+																	<div class="medium-9">
+																		<p>
+																			@item.DepDate[i]
+																		</p>
+																	</div>
 																</div>
-																<div class="flight-info__more__item">
-																	Hãng khai thác:
-																	<p>2hrs 10mins</p>
+																<div class="flight-info__row">
+																	<div class="flight-info__row__label medium-3"> 
+																		End:
+																	</div>
+																	<div class="medium-9">
+																		<p>
+																			@item.ArrDate[i]
+																		</p>
+																	</div>
 																</div>
-															</div>
+																<div class="flight-info__row">
+																	<div class="flight-info__row__label medium-3"> 
+																	</div>
+																	<div class="flight-info__more medium-9">
+																		<div class="flight-info__more__item">
+																			Plane:
+																			<p>
+																				@item.PlaneId
+																			</p>
+																		</div>
+																		<div class="flight-info__more__item">
+																			Maker:
+																			<p>@item.Maker</p>
+																		</div>
+																	</div>
+																</div>
+															}	
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-							}
+								}
 						}
 						else
 						{
@@ -415,15 +457,20 @@
 				$(document).on("change","#check-in",function()
 				{
 					var type_date = "check_in";
+					var check = "";
 					var choose = $("#check-in").val();
 					var arrdate = $("#check-out").val();
 					var check = "";
-					if(choose > arrdate)
-					{
-						$("#check-out").val(choose);
-						check = "true";
-					}
 					$("#check-out").datepicker("option","minDate",$("#check-in").val());
+
+						if(choose.slice(0,2) > arrdate.slice(0,2))
+						{
+							$( "#check-out" ).val(choose);
+							
+							check = "true";
+						}
+					
+					
 					$.ajax({
 						type: "GET",
 						url: "/Flight?handler=NewDate",
@@ -436,8 +483,20 @@
 						},
 						success:function(response)
 						{
-							$(".flight-go").load("/Flight" + " .flight-go");
-
+							$(".flight-go").load("/Flight" + " .flight-go",function(responseText, textStatus, XMLHttpRequest){
+								$(document).on("click", ".info-show", function () {
+									var id = $(this).attr("id");
+									$(".info-show #"+id).css("display", "none");
+									$(".info-hide #"+id+"Hide").css("display", "inline-block");
+									$("."+id).css("display", "block");
+								});
+								$(document).on("click", ".info-hide", function () {
+									var id = $(this).attr("id");
+									$(".info-hide #"+id).css("display", "none");
+									$(".info-show #"+id+"Hide").css("display", "inline-block");
+									$("."+id).css("display", "none");
+								});
+							});
 							$(".flight-back").load("/Flight" + " .flight-back");
 						}
 					});

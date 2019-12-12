@@ -1,0 +1,238 @@
+@page
+@model Presentation.Pages.Admin.RouteModel
+@{
+    Layout = "_LayoutAdmin";
+	ViewData["Title"] = "Admin Page";
+}
+@using Microsoft.AspNetCore.Http
+@{
+  if(HttpContext.Session.GetString("username") == null)
+  {
+    Response.Redirect("Index");
+  }
+  string job = HttpContext.Session.GetString("job");
+}
+<div class="main-panel">
+    <div class="content-wrapper">
+    <!-- row button create -->
+    <div class="row">
+        <div class="col-lg-12 stretch-card">
+        <a href="#CreateRouteForm" data-toggle="modal" id="btCreateRoute" type="button" class="btn  btn-primary btn-lg btn-inverse-*">
+            <i class="mdi mdi-upload"></i>Create Route
+        </a>
+        </div>
+    </div>
+    <!-- row table -->
+    <div class="row">
+    <div class="col-lg-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+            <div class="form-group row">
+                <div class="col-sm-7"></div>
+                <div class="col-sm-5">
+                <div class="input-group">
+                    <form>
+                    <div class="input-group">
+                        <!-- <select class="form-control form-control-lg" asp-for="SearchRoute" >
+                        <option value="">All</option>
+                        </select> -->
+                        <button type="submit" id="btsubmitSearchMaker" class="btn btn-icons btn-rounded btn-outline-primary"><i class="fa fa-search"></i></button>
+                    </div>
+                    </form>
+                </div>
+                </div> 
+            </div>
+            <h3 align="center">List of Routes </h3>
+            <table class="table table-bordered table-striped table-hover" id="TableRoute">
+            <thead>
+                <tr>
+                    <th>Route ID</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Flight Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ListRoutePage.Routes){
+                <tr>
+                    <td>
+                        @item.RouteId
+                    </td>
+                    <td>
+                        @item.Origin_name
+                    </td>
+                    <td>
+                        @item.Destination_name
+                    </td>
+                    <td>
+                        @item.FlightTime
+                    </td>
+                    <td>
+                        @item.Status
+                    </td>
+                    <td>
+                    @if(job =="003")
+                    { 
+                        
+                        <button  id="@item.RouteId" data-toggle="modal" data-target="#EditRouteForm"  type="button" class="btn btn-dark btn-sm  btn-rounded EditRoute"><i class="fa fa-cog"></i></button>
+                        <button  id="@item.RouteId" type="button" class="btn btn-danger btn-sm  btn-rounded DeleteRoute"><i class="fa fa-times" ></i></button>
+                        
+                    }
+                    </td>
+                </tr>
+                }
+                </tbody>
+            </table>
+            <br />
+            @{
+                var preDisabled = !Model.ListRoutePage.Routes.HasPrevious ? "disabled" : "";
+                var nextDisabled = !Model.ListRoutePage.Routes.HasNext ? "disabled" : "";
+                var pageNow =Model.ListRoutePage.Routes.PageIndex;
+                }
+                <!-- pagination -->
+                <div class="pagination" >
+                    <a style="cursor:pointer" asp-page="/Admin/Route" 
+                    asp-route-pageIndex="@(Model.ListRoutePage.Routes.PageIndex - 1)" 
+                    class="pagination_link @preDisabled" >Previous</a>
+                    @for (int i=1;i<=Model.ListRoutePage.Routes.TotalPages;++i)
+                    {
+                        @if(i==pageNow)
+                        {
+                        <a style="cursor:pointer" asp-page="/Admin/Route" asp-route-pageIndex="@i" class="pagination_link active" >@i</a>
+                        }
+                        else
+                        {
+                        <a style="cursor:pointer" asp-page="/Admin/Route" asp-route-pageIndex="@i" class="pagination_link">@i</a>
+                        }
+                    }
+                    <a  style="cursor:pointer" asp-page="/Admin/Route" 
+                    asp-route-pageIndex="@(Model.ListRoutePage.Routes.PageIndex + 1)" 
+                    class="pagination_link @nextDisabled">Next</a>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+    </div>
+    <!-- end content-wrapper -->
+    </div>
+</div>
+
+<!--create Route form  -->
+<div class="modal fade" id="CreateRouteForm" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content" >
+      <div class="modal-header" style="text-align:center !important; background-color:aliceblue;">
+        <h4 class="modal-title" style=" color:#000; font-weight: bold;font-size:34">Create Route</h4>
+      </div>
+		  <div class="model-body" style="margin: 15px">
+            <form class="forms-sample">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Origin</label>
+                    <div class="col-sm-9">
+                        <select class="form-control form-control-lg" id="CreateRoute-origin">
+                            @foreach (var item in Model.Airports){
+                                <option value="@item.AirportId">@item.AirportId - 
+                                    @item.AirportName
+                                </option>
+                            }
+                        </select>
+                    </div>    
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Destination</label>
+                    <div class="col-sm-9">
+                        <select class="form-control form-control-lg" id="CreateRoute-destination">
+                            @foreach (var item in Model.Airports){
+                                <option value="@item.AirportId">@item.AirportId - 
+                                    @item.AirportName
+                                </option>
+                            }
+                        </select>
+                        <span style="color:red" id="err-airport-create" class="hidden-class">Do not duplicate the airport</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-3 col-form-label">Hours</label>
+                        <div class="col-sm-9">
+                            <input id="CreateRoute-hour" type="number" class="form-control" value="0" min="0" max="24" >
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-3 col-form-label">Minutes</label>
+                        <div class="col-sm-9">
+                            <input id="CreateRoute-minute" type="number" class="form-control" value="0"  min="0" max="59" >
+                        </div>
+                        <span class="hidden-class" id="err-time-create" style="color:red">Please choose your time</span>
+                    </div>
+                </div>
+                <button id="btsubmitCreateRoute" type="submit" class="btn btn-success mr-2" ><b>Create</b></button>
+                <button class="btn btn-light" data-dismiss="modal"><b>Cancel</b></button>
+            </form>
+		  </div>
+    </div> 
+  </div>
+</div>
+
+<!--Edit Route form  -->
+<div class="modal fade" id="EditRouteForm" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content" >
+      <div class="modal-header" style="text-align:center !important; background-color:aliceblue;">
+        <h4 class="modal-title" style=" color:#000; font-weight: bold;font-size:34">Edit Route</h4>
+      </div>
+		  <div class="model-body" style="margin: 15px">
+            <form class="forms-sample">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Origin</label>
+                    <div class="col-sm-9">
+                        <select class="form-control form-control-lg" id="EditRoute-origin">
+                            @foreach (var item in Model.Airports){
+                                <option value="@item.AirportId">
+                                    @item.AirportId - 
+                                    @item.AirportName
+                                </option>
+                            }
+                        </select>
+                    </div>    
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Destination</label>
+                    <input type="hidden" class="hidden-id"/>
+                    <div class="col-sm-9">
+                        <select class="form-control form-control-lg" id="EditRoute-destination">
+                            @foreach (var item in Model.Airports){
+                                <option value="@item.AirportId">
+                                    @item.AirportId - 
+                                    @item.AirportName
+                                </option>
+                            }
+                        </select>
+                        <span style="color:red" id="err-airport" class="hidden-class">Do not duplicate the airport!</span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label class="col-sm-3 col-form-label">Hours</label>
+                        <div class="col-sm-9">
+                            <input id="EditRoute-hour" type="number" class="form-control" value="0" min="0" max="24" >
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="col-sm-3 col-form-label">Minutes</label>
+                        <div class="col-sm-9">
+                            <input id="EditRoute-minute" type="number" class="form-control" value="0"  min="0" max="59" >
+                        </div>
+                        <span class="hidden-class" id="err-time" style="color:red">Please choose your time</span>
+                    </div>
+                </div>
+                <button id="btsubmitEditRoute" type="submit" class="btn btn-success mr-2" ><b>Update</b></button>
+                <button class="btn btn-light" data-dismiss="modal"><b>Cancel</b></button>
+            </form>
+            </div>
+        </div> 
+    </div>
+</div>

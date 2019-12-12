@@ -24,7 +24,7 @@ namespace ApplicationCore.Services
         Task updateEmployeeAsync(EmployeeDTO dto);
 
 
-        Task disableCutomerAsync(string emp_id);
+        Task disableEmployeeAsync(string emp_id);
         Task activateEmployeeAsync(string emp_id);
     }
 }

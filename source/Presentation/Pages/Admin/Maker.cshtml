@@ -4,6 +4,14 @@
   Layout = "_LayoutAdmin";
 	ViewData["Title"] = "Admin Page";
 }
+@using Microsoft.AspNetCore.Http
+@{
+  if(HttpContext.Session.GetString("username") == null)
+  {
+    Response.Redirect("Index");
+  }
+  string job = HttpContext.Session.GetString("job");
+}
 <div class="main-panel">
   <div class="content-wrapper">
      <!-- row button create -->

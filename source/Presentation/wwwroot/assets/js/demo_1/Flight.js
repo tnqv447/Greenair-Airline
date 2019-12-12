@@ -1,7 +1,8 @@
 (function ($) {
     $(function () {
         $(".DeleteFlight").click(function () {
-            var id = $(this).attr("id");
+            var id = $(this).attr("id").trim();
+            alert(id);
             if (confirm('Are you sure you want to delete this flight has id: ' + id)) {
                 $.ajax({
                     type: 'POST',
@@ -12,7 +13,7 @@
                     contentType: 'application/json; charset=utf-8',
                     url: '/Admin/Flight?handler=DeleteFlight',
                     data: JSON.stringify({
-                        Id: id
+                        FlightId: id
                     }),
                     success: function (respone) {
                         alert(respone);
@@ -221,7 +222,7 @@
             }
         });
         $("#btsubmitCreateFlight").click(function () {
-            alert("Create");
+            // alert("Create");
             event.preventDefault();
             var planeid = $("#CreateFlight-planeid").val();
             var planeid = $("#CreateFlight-planeid").val().slice(planeid.length - 5, planeid.length);
@@ -251,8 +252,8 @@
                 contentType: 'application/json; charset=utf-8',
                 url: '/Admin/Flight?handler=CreateFlight',
                 data: JSON.stringify({
-                    planeId: planeid,
-                    status: status,
+                    PlaneId: planeid,
+                    Status: status,
                     routeId: routeId,
                     depDate: depDate,
                     arrDate: arrDate
@@ -288,20 +289,24 @@
                 },
                 success: function (result) {
                     // alert("Id2 " + result.flight.flightId);
-                    loadRoute();
-                    $("#EditFlight-planeiddefault").text(result.flight.planeId);
-                    $("#EditFlight-statusdefault").text(result.flight.status);
+                    var n = result.routeId.length;
+                    loadRouteFull(n);
+                    $("#EditFlight-flightid").val(result.flightId);
+                    $("#EditFlight-planeiddefault").text(result.planeId);
+                    $("#EditFlight-statusdefault").text(result.status);
                     var num = 0;
                     var s = "";
-                    for (item of result.flightDetail) {
+                    for (var i = 0; i < n; ++i) {
                         num++;
                         s += `<div class="row" id="EditFlight-row` + num + `">`;
+                        s += ` <input id="EditFlight-flightdetailid` + num + `" type="text" class="form-control form-control-lg" value="` + result.flightDetailId[i] + `" hidden/>`;
                         s += `  <div class="col-md-4">`;
-                        s += `<select class="form-control form-control-lg listEdit EditFlight-routeid" id="EditFlight-routeid` + num + `">`;
-                        s += `<option>` + item.routeId + `</option>`;
+                        s += `<select class="form-control form-control-lg EditFlight-routeid listEdit` + num + ` EditFlight-routeid" id="EditFlight-routeid` + num + `">`;
+                        s += `<option hidden>` + result.routeId[i] + `</option>`;
                         s += `</select></div>`;
-                        s += `<div class="col-md-4"><input id="EditFlight-depdate` + num + `" type="datetime-local" class="form-control EditFlight-depdate" value="` + item.depDate + `"/></div>`;
-                        s += `<div class="col-md-4"><input id="EditFlight-arrdate` + num + `" type="datetime-local" class="form-control EditFlight-arrdate" value="` + item.arrDate + `" disabled/></div>`;
+                        s += `<div class="col-md-4"><input id="EditFlight-depdate` + num + `" type="text" class="form-control EditFlight-depdate choose_date" value="` + result.depDate[i] + `"/></div>`;
+                        s += `<span style="color:red" id="error-dateEdit` + num + `" class=" hidden-class"> Please choose date</span>`;
+                        s += `<div class="col-md-4"><input id="EditFlight-arrdate` + num + `" type="text" class="form-control EditFlight-arrdate choose_date" value="` + result.arrDate[i] + `" disabled/></div>`;
                         s += `</div>`;
                         s += `<hr id="EditFlight-hr` + num + `">`;
                     }
@@ -310,26 +315,87 @@
                 }
             });
         });
+        $("#btsubmitEditFlight").click(function () {
+            alert("Edit");
+            event.preventDefault();
+            var flightid = $("#EditFlight-flightid").val();
+            var planeid = $("#EditFlight-planeid").val();
+            var planeid = $("#EditFlight-planeid").val().slice(planeid.length - 5, planeid.length);
+            var status = $("#EditFlight-status").val();
+            var num = parseInt($("#EditFlight-number").val());
+            var routeId = [];
+            var depDate = [];
+            var arrDate = [];
+            var flightdetailId = [];
+            for (var i = 1; i <= num; ++i) {
+                flightdetailId[i - 1] = $("#EditFlight-flightdetailid" + i).val();
+                routeId[i - 1] = $("#EditFlight-routeid" + i).val().slice(0, 5);
+                depDate[i - 1] = $("#EditFlight-depdate" + i).val();
+                if (depDate[i - 1] == "") {
+                    $("#error-dateEdit" + i).removeClass("hidden-class");
+                    return;
+                } else {
+                    $("#error-dateEdit" + i).addClass("hidden-class");
+                }
+                arrDate[i - 1] = $("#EditFlight-arrdate" + i).val();
+            }
+            // event.preventDefault() là để ngăn thằng form nó load lại trang ..
+            $.ajax({
+                type: 'POST',
+                headers: {
+                    "XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                url: '/Admin/Flight?handler=EditFlight',
+                data: JSON.stringify({
+                    FlightId: flightid,
+                    PlaneId: planeid,
+                    Status: status,
+                    flightDetailId: flightdetailId,
+                    routeId: routeId,
+                    depDate: depDate,
+                    arrDate: arrDate
+                }),
+                success: function (respone) {
+                    // $('#EditMaker').modal('hide');
+                    if (respone.trim() == "True") {
+                        alert("Edit success");
+                        location.reload();
+                    } else {
+                        alert("This Id exists");
+                        // $('#EditMaker-id').focus();
+                    }
+                },
+                failure: function (result) {
+                    alert("fail");
+                }
+
+            });
+        });
         $("#EditFlight-btadd").click(function () {
             var num = parseInt($("#EditFlight-number").val());
             num = num + 1;
-            loadRoute()
+            loadRouteEdit();
             if (num > 4) return;
             var html = "";
-            html += `<div class="row" id="EditFlight-row` + num + `">
-                <div class="col-md-4">`;
-            html += `    <select class="form-control form-control-lg list" id="EditFlight-route` + num + `">
+            html += `<div class="row" id="EditFlight-row` + num + `">`;
+            html += ` <input id="EditFlight-flightdetailid` + num + `" type="text" class="form-control form-control-lg" value="" hidden/>`;
+            html += `    <div class="col-md-4">`;
+            html += `    <select class="form-control form-control-lg EditFlight-routeid listEdit` + num + `" id="EditFlight-routeid` + num + `">
                         </select>`;
             html += `    </div>
                 <div class="col-md-4">`;
-            html += `      <input id="EditFlight-depdate` + num + `" type="datetime-local" class="form-control" />`;
+            html += `      <input id="EditFlight-depdate` + num + `" type="text" class="form-control EditFlight-depdate choose_date " />`;
+            html += `<span style="color:red" id="error-dateEdit` + num + `" class=" hidden-class"> Please choose date</span>`;
             html += `    </div>
                 <div class="col-md-4">`;
-            html += `      <input id="EditFlight-arrdate` + num + `" type="datetime-local" class="form-control" disabled/>`;
+            html += `      <input id="EditFlight-arrdate` + num + `" type="text" class="form-control" disabled/>`;
             html += `    </div>
                 </div><hr id="EditFlight-hr` + num + `"/>`;
-            $("#EditFlight-number").val(num);
             $("#EditFlight-context").append(html);
+            loadDateTimeEdit();
+            $("#EditFlight-number").val(num);
         });
         $("#EditFlight-btdelete").click(function () {
             var num = parseInt($("#EditFlight-number").val());
@@ -341,80 +407,149 @@
             num = num - 1;
             $("#EditFlight-number").val(num);
         });
-        // $("#btsubmitEditFlightLock").click(function () {
-        //     var id = $('#EditFlight-id').val();
-        //     event.preventDefault();
-        //     // event.preventDefault() là để ngăn thằng form nó load lại trang ..
-        //     $.ajax({
-        //         type: 'POST',
-        //         headers: {
-        //             "XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
-        //         },
-        //         dataType: 'json',
-        //         contentType: 'application/json; charset=utf-8',
-        //         url: '/Admin/Flight?handler=EditFlightLock',
-        //         data: JSON.stringify({
-        //             Id: id
-        //         }),
-        //         success: function (respone) {
-        //             alert("Disabled success");
-        //             location.reload();
-        //         },
-        //         failure: function (result) {
-        //             alert("fail");
-        //         }
+        $(document).on('change', '.EditFlight-routeid', function () {
+            var id = $(this).attr("id");
+            var num = parseInt(id.slice(id.length - 1, id.length));
+            var text = $(this).val().slice(0, 5);
+            // alert(id + " " + num + " " + text);
+            var depDate = $("#EditFlight-depdate" + num).val();
+            if (depDate != "") {
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    url: '/Admin/Flight?Handler=CalArrDate',
+                    data: {
+                        routeid: text,
+                        depDate: depDate
+                    },
+                    success: function (response) {
+                        $("#EditFlight-arrdate" + num).val(response);
+                        //alert(response);
+                    }
+                });
+            }
 
-        //     });
-        // });
-        // $("#btsubmitEditFlightUnlock").click(function () {
-        //     var id = $('#EditFlight-id').val();
-        //     event.preventDefault();
-        //     // event.preventDefault() là để ngăn thằng form nó load lại trang ..
-        //     $.ajax({
-        //         type: 'POST',
-        //         headers: {
-        //             "XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
-        //         },
-        //         dataType: 'json',
-        //         contentType: 'application/json; charset=utf-8',
-        //         url: '/Admin/Flight?handler=EditFlightUnlock',
-        //         data: JSON.stringify({
-        //             Id: id
-        //         }),
-        //         success: function (respone) {
-        //             alert("Active success");
-        //             location.reload();
-        //         },
-        //         failure: function (result) {
-        //             alert("fail");
-        //         }
+        });
+        $(document).on('change', '.EditFlight-depdate', function () {
+            var id = $(this).attr("id");
+            var num = parseInt(id.slice(id.length - 1, id.length));
+            var text = $("#EditFlight-routeid" + num).children("option:selected").val().slice(0, 5);
+            var depDate = $(this).val();
+            if (depDate != "" && text != "") {
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    url: '/Admin/Flight?Handler=CalArrDate',
+                    data: {
+                        routeid: text,
+                        depDate: depDate
+                    },
+                    success: function (response) {
+                        $("#EditFlight-arrdate" + num).val(response);
+                        //alert(response);
+                    }
+                });
+            }
+        });
 
-        //     });
-        // });
-        // $("#btsubmitSearchFlight").click(function () {
-        //     var search = $('#SearchFlight').val();
-        //     event.preventDefault();
-        //     // event.preventDefault() là để ngăn thằng form nó load lại trang ..
-        //     $.ajax({
-        //         type: 'POST',
-        //         headers: {
-        //             "XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
-        //         },
-        //         dataType: 'json',
-        //         contentType: 'application/json; charset=utf-8',
-        //         url: '/Admin/Flight?handler=EditFlight',
-        //         data: {
-        //             searchString: search
-        //         },
-        //         success: function (respone) {
-        //             location.reload();
-        //         },
-        //         failure: function (result) {
-        //             alert("fail");
-        //         }
+        function loadRouteFull(num) {
+            var html = "";
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                url: '/Admin/Flight?Handler=RouteFull',
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+                        html += `<option >` + response[i].routeId + `: ` + response[i].origin + ` - ` + response[i].destination + `</option>`;
+                    }
+                    for (var i = 1; i <= num; ++i) {
+                        $(".listEdit" + i).append(html);
+                    }
 
-        //     });
-        // });
+                }
+            });
+            return html;
+        }
+
+        function loadRouteEdit() {
+            var html = "";
+            var num = parseInt($("#EditFlight-number").val());
+            var routeid = $("#EditFlight-routeid" + num).val();
+            // alert(num + " " + routeid);
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                url: '/Admin/Flight?Handler=Routes',
+                data: {
+                    routeid: routeid
+                },
+                success: function (response) {
+                    for (var i = 0; i < response.length; i++) {
+                        html += `<option >` + response[i].routeId + `: ` + response[i].origin + ` - ` + response[i].destination + `</option>`;
+                    }
+                    $(".listEdit" + (num + 1)).html(html);
+                }
+            });
+            return html;
+        }
+
+        function loadDateTimeEdit() {
+            var html = "";
+            var num = parseInt($("#EditFlight-number").val());
+            var arrdate = $("#EditFlight-arrdate" + num).val();
+            var route = $("#EditFlight-routeid" + num).val();
+            route = route.slice(0, 5);
+            // alert(arrdate);
+            if (arrdate == "") return;
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                url: '/Admin/Flight?Handler=DateTimes',
+                data: {
+                    arrdate: arrdate,
+                    routeid: route
+                },
+                success: function (response) {
+                    // alert(response);
+                    if (response != "null") {
+                        $("#EditFlight-depdate" + (num + 1)).val(response.depDate);
+                        $("#EditFlight-arrdate" + (num + 1)).val(response.arrDate);
+                    }
+
+
+                }
+            });
+        }
+
+        $(".choose").datepicker({
+            dateFormat: 'dd/mm/yy',
+            minDate: new Date(),
+        })
+        $(document).on("change", "#Search_date", function () {
+            var searchString = $(this).val();
+            $.ajax({
+                type: "GET",
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                url: "/Admin/Flight?Handler=SearchFlight",
+                data: {
+                    searchString: searchString
+                },
+                success: function (reponse) {
+                    alert(reponse);
+                    $("#TableFlight").empty();
+                    $("#TableFlight").load("/Admin/Flight" + " #TableFlight");
+                },
+                error: function () {
+                    alert("not ok");
+                }
+            });
+        });
 
 
 

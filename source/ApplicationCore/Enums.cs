@@ -55,7 +55,11 @@ namespace ApplicationCore
 
         //for flight
         DEP_DATE = 24, //departure date
-        ARR_DATE = 25 //arrive date
+        ARR_DATE = 25, //arrive date
+
+        //for ticket
+        TICKET_TYPE_ID = 26,
+        ASSIGNED_CUSTOMER = 27
 
     }
 }

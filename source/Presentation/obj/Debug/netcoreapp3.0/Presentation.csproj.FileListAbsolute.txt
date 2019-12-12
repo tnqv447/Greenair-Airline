@@ -683,6 +683,8 @@ C:\Users\ASUS\Desktop\C#\Greenair\Presentation\obj\Debug\netcoreapp3.0\Razor\Pag
 C:\Users\Administrator\Desktop\Greenair\presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Admin\Account.cshtml.g.cs
 D:\Code\C#\Greenair\Presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Admin\Account.cshtml.g.cs
 C:\Users\ASUS\Desktop\C#\Greenair\Presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Admin\Account.cshtml.g.cs
+C:\Users\Administrator\Desktop\Greenair\Presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Admin\Route.cshtml.g.cs
+D:\Code\C#\Greenair\Presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Admin\Route.cshtml.g.cs
 C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\bin\Debug\netcoreapp3.0\appsettings.Development.json
 C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\bin\Debug\netcoreapp3.0\appsettings.json
 C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\bin\Debug\netcoreapp3.0\Properties\launchSettings.json
@@ -834,6 +836,7 @@ C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\obj\Debug\ne
 C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Admin\Index.cshtml.g.cs
 C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Admin\Maker.cshtml.g.cs
 C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Admin\Plane.cshtml.g.cs
+C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Admin\Route.cshtml.g.cs
 C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Blog.cshtml.g.cs
 C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Contact.cshtml.g.cs
 C:\Users\Administrator\Desktop\Greenair-Airline\source\presentation\obj\Debug\netcoreapp3.0\Razor\Pages\Error.cshtml.g.cs

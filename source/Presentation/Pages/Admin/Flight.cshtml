@@ -4,16 +4,27 @@
   Layout = "_LayoutAdmin";
 	ViewData["Title"] = "Admin Page";
 }
+@using Microsoft.AspNetCore.Http
+@{
+  if(HttpContext.Session.GetString("username") == null)
+  {
+    Response.Redirect("Index");
+  }
+  string job = HttpContext.Session.GetString("job");
+}
 <div class="main-panel">
   <div class="content-wrapper">
      <!-- row button create -->
-    <div class="row">
-      <div class="col-lg-12 stretch-card">
-        <a href="#CreateFlightForm" data-toggle="modal" id="btCreateFlight" type="button" class="btn  btn-primary btn-lg btn-inverse-*">
-          <i class="mdi mdi-upload"></i>Create Flight
-        </a>
+    @if(job =="003")
+    {
+      <div class="row">
+        <div class="col-lg-12 stretch-card">
+          <a href="#CreateFlightForm" data-toggle="modal" id="btCreateFlight" type="button" class="btn  btn-primary btn-lg btn-inverse-*">
+            <i class="mdi mdi-upload"></i>Create Flight
+          </a>
+        </div>
       </div>
-    </div>
+    }
     <!-- row table -->
     <div class="row">
       <div class="col-lg-12 stretch-card">
@@ -24,8 +35,8 @@
               <div class="col-sm-5">
                 <form>
                   <div class="input-group">
-                    <input type="search" id="SearchFlight" class="form-control" placeholder="Search Here" name="searchString"  asp-for="SearchString">
-                    <button type="submit" id="btsubmitSearchFlight" class="btn btn-icons btn-rounded btn-outline-primary"><i class="fa fa-search"></i></button>
+                    <input type="text" id="Search_date" class="form-control choose" placeholder="Search Here" >
+                    <!-- <input type="" -->
                   </div>
                 </form> 
               </div> 
@@ -40,23 +51,52 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody> 
-              @foreach (var item in Model.ListFlights){
-                <tr>
+            <tbody > 
+              @foreach (var item in Model.ListFlightPage.Flights){
+                <tr class="load-table">
                 <!-- <tr id="@item.FlightId" class="list-Flight"> -->
                   <td>@item.FlightId</td>
                   <td>@item.Status</td>
                   <td>@item.PlaneId</td>
                   <td> 
                     <button  id="@item.FlightId" data-toggle="modal" data-target="#DetailFlightForm"  type="button" class="btn btn-info btn-sm  btn-rounded DetailFlight"><i class="fa fa-vcard-o"></i></button>
-                    <button  id="@item.FlightId" data-toggle="modal" data-target="#EditFlightForm"  type="button" class="btn btn-dark btn-sm  btn-rounded EditFlight"><i class="fa fa-cog"></i></button>
-                    <button  id="@item.FlightId" type="button" class="btn btn-danger btn-sm  btn-rounded DeleteFlight"><i class="fa fa-times" ></i></button>
+                    @if(job =="003")
+                    {
+                      <button  id="@item.FlightId" data-toggle="modal" data-target="#EditFlightForm"  type="button" class="btn btn-dark btn-sm  btn-rounded EditFlight"><i class="fa fa-cog"></i></button>
+                      <button  id="@item.FlightId" type="button" class="btn btn-danger btn-sm  btn-rounded DeleteFlight"><i class="fa fa-times" ></i></button>
+                    }
+                  
                   </td>
                 </tr>
               }
               </tbody>
             </table>
           </div>
+          @{
+              var preDisabled = !Model.ListFlightPage.Flights.HasPrevious ? "disabled" : "";
+              var nextDisabled = !Model.ListFlightPage.Flights.HasNext ? "disabled" : "";
+              var pageNow =Model.ListFlightPage.Flights.PageIndex;
+          }
+          <!-- pagination -->
+            <div class="pagination" >
+              <a style="cursor:pointer" asp-page="/Admin/Flight" 
+              asp-route-pageIndex="@(Model.ListFlightPage.Flights.PageIndex - 1)" 
+              class="pagination_link @preDisabled" >Previous</a>
+              @for (int i=1;i<=Model.ListFlightPage.Flights.TotalPages;++i)
+              {
+                  @if(i==pageNow)
+                  {
+                    <a style="cursor:pointer" asp-page="/Admin/Flight" asp-route-pageIndex="@i" class="pagination_link active" >@i</a>
+                  }
+                  else
+                  {
+                    <a style="cursor:pointer" asp-page="/Admin/Flight" asp-route-pageIndex="@i" class="pagination_link">@i</a>
+                  }
+              }
+              <a  style="cursor:pointer" asp-page="/Admin/Flight" 
+              asp-route-pageIndex="@(Model.ListFlightPage.Flights.PageIndex + 1)" 
+              class="pagination_link @nextDisabled">Next</a>
+            </div>
         </div>
       </div>
     </div>
@@ -223,7 +263,7 @@
                   <label class="col-sm-3 col-form-label">Plane ID</label>
                   <div class="col-sm-9">
                     <select class="form-control form-control-lg" id="EditFlight-planeid">
-                      <option id="EditFlight-planeiddefault"></option>
+                      <option id="EditFlight-planeiddefault" hidden></option>
                       @foreach (var item in Model.ListNamePlanes){
                         <option>@item</option>
                       }
@@ -236,7 +276,7 @@
                   <label class="col-sm-3 col-form-label">Status</label>
                   <div class="col-sm-9">
                     <select class="form-control form-control-lg" id="EditFlight-status">
-                      <option id="EditFlight-statusdefault"></option>
+                      <option id="EditFlight-statusdefault" hidden></option>
                       <option>AVAILABLE</option>
                       <option>DISABLED</option>
                     </select>
@@ -268,7 +308,7 @@
             <div id="EditFlight-context">
             </div>
 
-            <button id="btsubmitEditMaker" type="submit" class="btn btn-success mr-2" ><b>Update</b></button>
+            <button id="btsubmitEditFlight" type="submit" class="btn btn-success mr-2" ><b>Update</b></button>
             <button class="btn btn-light" data-dismiss="modal"><b>Cancel</b></button>
           </form>
 		    </div>

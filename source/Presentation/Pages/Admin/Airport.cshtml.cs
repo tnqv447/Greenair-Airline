@@ -13,17 +13,20 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using ApplicationCore.DTOs;
 using Presentation.Services.ServiceInterfaces;
+using ApplicationCore.Services;
 
 namespace Presentation.Pages.Admin
 {
     public class AirportModel : PageModel
     {
         private readonly IUnitOfWork _unitofwork;
-        private readonly IAirportVMService _services;
+        private readonly IAirportVMService _servicesVM;
+        private readonly IAirportService _services;
 
-        public AirportModel(IAirportVMService services, IUnitOfWork unitofwork)
+        public AirportModel(IAirportService services, IAirportVMService servicesVM, IUnitOfWork unitofwork)
         {
             this._unitofwork = unitofwork;
+            this._servicesVM = servicesVM;
             this._services = services;
 
         }
@@ -34,7 +37,7 @@ namespace Presentation.Pages.Admin
         public async Task OnGet(string searchString, int pageIndex = 1)
         {
             // ListAirports = await _unitofwork.Airports.GetAllAsync();
-            ListAirportsPage = await _services.GetAirportPageViewModelAsync(SearchString, pageIndex);
+            ListAirportsPage = await _servicesVM.GetAirportPageViewModelAsync(SearchString, pageIndex);
         }
         // Airport methods
         public IActionResult OnGetEditAirport(string id)
@@ -85,10 +88,8 @@ namespace Presentation.Pages.Admin
                     var obj = JsonConvert.DeserializeObject<AirportVM>(requestBody);
                     if (obj != null)
                     {
-                        AirportId = obj.AirportId;
-                        var item = await _unitofwork.Airports.GetByAsync(AirportId);
-                        await _unitofwork.Airports.RemoveAsync(item);
-                        await _unitofwork.CompleteAsync();
+
+                        await _services.disableAirportAsync(obj.AirportId);
                     }
                 }
             }

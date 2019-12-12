@@ -31,9 +31,9 @@ namespace Presentation
                     var greenairContext = services.GetRequiredService<GreenairContext>();
 
                     IUnitOfWork unit = new UnitOfWork(greenairContext);
-                    
-                    unit.Flights.RemoveRange(unit.Flights.GetAll());
-                    
+
+                    //unit.Flights.RemoveRange(unit.Flights.GetAll());
+
                     //unit.Employees.RemoveRange(unit.Employees.GetAll());
                     //unit.Customers.RemoveRange(unit.Customers.GetAll());
 

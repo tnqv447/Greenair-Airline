@@ -89,10 +89,7 @@ namespace Presentation.Pages.Admin
                     var obj = JsonConvert.DeserializeObject<MakerVM>(requestBody);
                     if (obj != null)
                     {
-                        MakerId = obj.MakerId;
-                        var item = await _unitofwork.Makers.GetByAsync(MakerId);
-                        await _unitofwork.Makers.RemoveAsync(item);
-                        await _unitofwork.CompleteAsync();
+                        await _services.RemoveMaker(obj.MakerId);
                     }
                 }
             }

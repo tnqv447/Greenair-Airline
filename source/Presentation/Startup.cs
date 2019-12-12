@@ -81,19 +81,22 @@ namespace Presentation
             // Services
             services.AddScoped<IFlightService, FlightService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IPlaneService, PlaneService>();
             services.AddScoped<IAirportService, AirportService>();
             services.AddScoped<IRouteService, RouteService>();
             services.AddScoped<ITicketTypeService, TicketTypeService>();
             services.AddScoped<IMakerService, MakerService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
             //.....................
             services.AddScoped<IAirportVMService, AirportVMService>();
             services.AddScoped<IPlaneVMService, PlaneVMService>();
             services.AddScoped<IMakerVMService, MakerVMService>();
             services.AddScoped<ICustomerVMService, CustomerVMService>();
             services.AddScoped<IEmployeeVMService, EmployeeVMService>();
-
+            services.AddScoped<IFlightVMService, FlightVMService>();
+            services.AddScoped<IRouteVMService, RouteVMService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 

@@ -24,13 +24,15 @@ namespace ApplicationCore.Services
         {
             var airports = await this.getAllAirportAsync();
 
-            if(term != null){
+            if (term != null)
+            {
                 var res = airports.Where(t =>
                                 t.Address.City.ToLower().StartsWith(term.ToLower())).Select(t => new { Name = t.Address.City, Id = t.AirportId }
                                 ).ToList();
                 return res;
             }
-            else{
+            else
+            {
                 var res = airports.Select(t => new { Name = t.Address.City, Id = t.AirportId }).ToList();
                 return res;
             }
@@ -66,9 +68,9 @@ namespace ApplicationCore.Services
             return this.toDtoRange(Airports);
         }
 
-        new public async Task<IEnumerable<Airport>> SortAsync(IEnumerable<Airport> entities, ORDER_ENUM col, ORDER_ENUM order)
+        new public async Task<IEnumerable<AirportDTO>> SortAsync(IEnumerable<AirportDTO> entities, ORDER_ENUM col, ORDER_ENUM order)
         {
-            IEnumerable<Airport> res = null;
+            IEnumerable<AirportDTO> res = null;
             await Task.Run(() => true);
             if (order == ORDER_ENUM.DESCENDING)
             {

@@ -163,6 +163,52 @@ namespace Presentation.Pages
             HttpContext.Session.Remove("cusid");
             return new JsonResult(Msg);
         }
+        public async Task<IActionResult> OnPostNewCustomer()
+        {
+            {
+                MemoryStream stream = new MemoryStream();
+                Request.Body.CopyTo(stream);
+                stream.Position = 0;
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    string requestBody = reader.ReadToEnd();
+                    if (requestBody.Length > 0)
+                    {
+                        var obj = JsonConvert.DeserializeObject<CustomerViewModel>(requestBody);
+                        if (obj != null)
+                        {
+                            CustomerDTO Cus = new CustomerDTO();
+                            AddressDTO address = new AddressDTO(obj.Num, obj.Street, obj.District,obj.City, obj.State, obj.Country);
+                            AccountDTO Account = new AccountDTO();
+                            Cus.LastName = obj.LastName;
+                            Cus.FirstName = obj.FirstName;
+                            Cus.Birthdate = DateTime.ParseExact(obj.Birthdate, "dd/MM/yyyy", null);
+                            Cus.Address = address;
+                            Cus.Phone = obj.Phone;
+                            Cus.Email =obj.Email;
+                            if(!await _accountService.isExistedUsernameAsync(obj.Username))
+                            {
+                                Account.Username = obj.Username;
+                                Account.Password = obj.Password;
+                                await _customerService.addCustomerAsync(Cus);
+                                IEnumerable<CustomerDTO> ListCus = await _customerService.getAllCustomerAsync();
+                                CustomerDTO LastCus = ListCus.Last();
+                                Account.PersonId = LastCus.Id;
+                                await _accountService.addAccountAsync(Account);  
+                                Msg="Succesfull";  
+                            }
+                            else{
+                                Msg = "false";
+                            }
+                            
+                            
+                            
+                        }
+                    }
+                }
+            }
+            return new JsonResult(Msg);
+        }
         public async Task<IActionResult> OnPostEditCustomer()
         {
             string cusId ="";
@@ -229,6 +275,7 @@ namespace Presentation.Pages
             }
             return new JsonResult(Msg);
         }
+        
     }
     class CustomerViewModel
     {

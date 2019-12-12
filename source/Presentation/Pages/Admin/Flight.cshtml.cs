@@ -11,6 +11,9 @@ using ApplicationCore.Entities;
 using ApplicationCore.Services;
 using Newtonsoft.Json;
 using System.IO;
+using Presentation.Services.ServiceInterfaces;
+using Presentation.ViewModels;
+using ApplicationCore;
 
 namespace Presentation.Pages.Admin
 {
@@ -20,28 +23,38 @@ namespace Presentation.Pages.Admin
         private readonly IFlightService _services;
         private readonly IPlaneService _planeServices;
         private readonly IRouteService _routeServices;
+        private readonly IFlightVMService _serviceVM;
 
-        public FlightModel(IFlightService services, IUnitOfWork unitofwork, IPlaneService servicesPlane, IRouteService routeServices)
+        public FlightModel(IFlightService services, IFlightVMService serviceVM, IUnitOfWork unitofwork, IPlaneService servicesPlane, IRouteService routeServices)
         {
             _unitofwork = unitofwork;
             _services = services;
             _planeServices = servicesPlane;
             _routeServices = routeServices;
+            _serviceVM = serviceVM;
         }
+
+        public FlightPageVM ListFlightPage { get; set; }
+        public FlightPageVM ListFlightPage_2 { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }
 
         public IEnumerable<FlightDTO> ListFlights { get; set; }
+        public IEnumerable<FlightDTO> ListFlights_2 { get; set; }
         public IList<string> ListNamePlanes { get; set; }
         public IEnumerable<RouteDTO> ListRoutes { get; set; }
         public IList<string> ListNameRoutes { get; set; }
         public IEnumerable<Airport> ListAirports { get; set; }
         public IEnumerable<FlightDetail> ListFlightDetail { get; set; }
         public IList<FlightDetailVM> ListFlightDetailVM { get; set; }
-        public async Task OnGet()// chưa đụng gì tới bên này đâu
+        public async Task OnGet(string searchString, int pageIndex = 1)
         {
             ListFlights = await _services.getAllFlightAsync();
+            DateTime depDate = new DateTime(10, 11, 12);
+            DateTime arrDate = new DateTime(10, 11, 12);
+            ListFlightPage = await _serviceVM.GetFlightPageViewModelAsync(ListFlights, depDate, arrDate, searchString, pageIndex);
+
             ListAirports = await _unitofwork.Airports.GetAllAsync();
             ListRoutes = await _routeServices.getAllRouteAsync();
             ListNameRoutes = new List<string>();
@@ -57,6 +70,11 @@ namespace Presentation.Pages.Admin
                 var s = await _planeServices.getPlaneFullname(item.PlaneId);
                 ListNamePlanes.Add(s);
             }
+        }
+        public async Task<JsonResult> OnGetSearchFlight(string searchString, int pageIndex = 1)
+        {
+            await this.OnGet(searchString, pageIndex);
+            return new JsonResult(searchString);
         }
         public async Task<JsonResult> OnGetDetailFlight(string id)
         {
@@ -90,6 +108,7 @@ namespace Presentation.Pages.Admin
                     if (obj != null)
                     {
                         FlightId = obj.FlightId;
+                        Console.WriteLine(FlightId + "  ggggg");
                         await _services.disableFlightAsync(FlightId);
                         // await _services.CompleteAsync();
                     }
@@ -98,6 +117,11 @@ namespace Presentation.Pages.Admin
             string mes = "Remove flight" + FlightId + " Success!";
             return new JsonResult(mes);
         }
+        public async Task<JsonResult> OnGetRouteFull()
+        {
+            ListRoutes = await _routeServices.getAllRouteAsync();
+            return new JsonResult(ListRoutes);
+        }
         public async Task<JsonResult> OnGetRoutes(string routeid)
         {
             // ListRoutes = await _routeServices.getAllRouteAsync();
@@ -105,7 +129,7 @@ namespace Presentation.Pages.Admin
             ListRoutes = await _routeServices.getRouteByOriginAsync(routeid.Substring(n - 3, 3));
             return new JsonResult(ListRoutes);
         }
-        public async Task<JsonResult> OnGetDateTimes(string arrdate,string routeid)
+        public async Task<JsonResult> OnGetDateTimes(string arrdate, string routeid)
         {
             // ListRoutes = await _routeServices.getAllRouteAsync();
             if (arrdate.Count() != 0)
@@ -114,9 +138,9 @@ namespace Presentation.Pages.Admin
                 FlightTime timeDTO = new FlightTime(0, 30);
                 DateTime depDate = await _services.calArrDate(Date, timeDTO);
 
-                var routedto= await _routeServices.getRouteAsync(routeid);
+                var routedto = await _routeServices.getRouteAsync(routeid);
                 var Listrou = await _routeServices.getRouteByOriginAsync(routedto.Destination);
-                routedto=Listrou.ElementAt(0);
+                routedto = Listrou.ElementAt(0);
                 Route route = new Route();
                 _routeServices.convertDtoToEntity(routedto, route);
                 DateTime arrDate = await _services.calArrDate(Date, route.FlightTime);
@@ -132,11 +156,22 @@ namespace Presentation.Pages.Admin
         {
             var flight = await _services.getFlightAsync(id);
             var flightdetail = await _services.getAllFlightDetailAsync(id);
-            Dictionary<string, object> Result = new Dictionary<string, object>();
-            Result.Add("flight", flight);
-            // Result.Add("flightNum", flightdetail.Count());
-            Result.Add("flightDetail", flightdetail);
-            return new JsonResult(Result);
+
+            EditFlightVM flightVM = new EditFlightVM();
+            flightVM.FlightId = flight.FlightId;
+            flightVM.PlaneId = await _planeServices.getPlaneFullname(flight.PlaneId);
+            flightVM.Status = flight.Status.ToString();
+            int i = 0;
+            foreach (var item in flightdetail)
+            {
+                flightVM.flightDetailId.Add(item.FlightDetailId);
+                var route = await _routeServices.getRouteAsync(item.RouteId);
+                flightVM.routeId.Add(route.RouteId + " : " + route.Origin + " - " + route.Destination);
+                flightVM.depDate.Add(item.DepDate.ToString("dd-MM-yyyy hh:mm tt"));
+                flightVM.arrDate.Add(item.ArrDate.ToString("dd-MM-yyyy hh:mm tt"));
+                ++i;
+            }
+            return new JsonResult(flightVM);
         }
         public async Task<IActionResult> OnGetCalArrDate(string routeid, string depDate)
         {
@@ -166,23 +201,8 @@ namespace Presentation.Pages.Admin
                     var obj = JsonConvert.DeserializeObject<CreateFlightVM>(requestBody);
                     if (obj != null)
                     {
-                        // Console.WriteLine(obj.planeId + " " + obj.Status);
-                        // foreach (var item in obj.routeId)
-                        // {
-                        //     Console.WriteLine(item);
-                        // }
-                        // foreach (var item in obj.depDate)
-                        // {
-                        //     Console.WriteLine(item);
-                        // }
-                        // foreach (var item in obj.arrDate)
-                        // {
-                        //     Console.WriteLine(item);
-                        // }
-
-
                         FlightDTO flight = new FlightDTO();
-                        flight.PlaneId = obj.planeId;
+                        flight.PlaneId = obj.PlaneId;
                         if (obj.Status == "AVAILABLE")
                         {
                             flight.Status = 0;
@@ -200,6 +220,52 @@ namespace Presentation.Pages.Admin
                             detailDTO.Add(detail);
                         }
                         await _services.addFlightAsync(flight, detailDTO);
+
+                    }
+                }
+            }
+            return new JsonResult(respone);
+        }
+        public async Task<IActionResult> OnPostEditFlight()
+        {
+            await Task.Run(() => true);
+            string respone = "True";
+            MemoryStream stream = new MemoryStream();
+            Request.Body.CopyTo(stream);
+            stream.Position = 0;
+            using (StreamReader reader = new StreamReader(stream))
+            {
+
+                string requestBody = reader.ReadToEnd();
+                if (requestBody.Length > 0)
+                {
+                    var obj = JsonConvert.DeserializeObject<EditFlightVM>(requestBody);
+                    if (obj != null)
+                    {
+                        FlightDTO flight = new FlightDTO();
+                        flight.FlightId = obj.FlightId;
+                        flight.PlaneId = obj.PlaneId;
+                        if (obj.Status == "AVAILABLE")
+                        {
+                            flight.Status = STATUS.AVAILABLE;
+                        }
+                        else if (obj.Status == "DISABLED")
+                        {
+                            flight.Status = STATUS.DISABLED;
+                        }
+
+                        IList<FlightDetailDTO> detailDTO = new List<FlightDetailDTO>();
+                        int n = obj.routeId.Count();
+                        for (var i = 0; i < n; ++i)
+                        {
+                            DateTime depDate = DateTime.ParseExact(obj.depDate[i], "dd-MM-yyyy hh:mm tt", null);
+                            DateTime arrDate = DateTime.ParseExact(obj.arrDate[i], "dd-MM-yyyy hh:mm tt", null);
+                            FlightDetailDTO detail = new FlightDetailDTO(null, null, obj.routeId[i], depDate, arrDate);
+                            detailDTO.Add(detail);
+                        }
+                        await _services.updateFlightAsync(flight);
+                        Console.WriteLine(flight.FlightId + " ggggg");
+                        await _services.addFlightDetailRangeAsync(detailDTO, flight.FlightId);
 
                     }
                 }
@@ -275,11 +341,28 @@ namespace Presentation.Pages.Admin
     }
     public class CreateFlightVM
     {
-        public string planeId { get; set; }
+        public string PlaneId { get; set; }
         public string Status { get; set; }
         public List<string> routeId { get; set; }
         public List<string> depDate { get; set; }
         public List<string> arrDate { get; set; }
+    }
+    public class EditFlightVM
+    {
+        public string FlightId { get; set; }
+        public string PlaneId { get; set; }
+        public string Status { get; set; }
+        public List<string> flightDetailId { get; set; }
+        public List<string> routeId { get; set; }
+        public List<string> depDate { get; set; }
+        public List<string> arrDate { get; set; }
+        public EditFlightVM()
+        {
+            flightDetailId = new List<string>();
+            routeId = new List<string>();
+            depDate = new List<string>();
+            arrDate = new List<string>();
+        }
     }
 
 }

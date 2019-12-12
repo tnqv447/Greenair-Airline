@@ -18,9 +18,7 @@ namespace ApplicationCore.Services
         Task<IEnumerable<FlightDTO>> getLimitFlightAsync(IEnumerable<FlightDTO> flights, DateTime arr_date);
         //Task generateId(Flight flight);
         Task<string> generateFlightId();
-        // Task addFlightAsync(FlightDTO flightDto);
-        //Task addFlightAsync(FlightDTO flightDto);
-        Task addFlightAsync(FlightDTO flightDto, IEnumerable<FlightDetailDTO> details);
+        new Task addFlightAsync(FlightDTO flightDto, IEnumerable<FlightDetailDTO> details);
 
         Task updateFlightAsync(FlightDTO flightDto);
         Task removeFlightAsync(string flight_id);
@@ -46,7 +44,7 @@ namespace ApplicationCore.Services
         Task<IEnumerable<FlightDetailDTO>> getAllFlightDetailAsync(string flight_id);
         Task<DateTime> calArrDate(DateTime depDate, FlightTime time);
         Task addFlightDetailAsync(FlightDetailDTO det_dto);
-        Task addFlightDetailRangeAsync(IEnumerable<FlightDetailDTO> dets_dto);
+        Task addFlightDetailRangeAsync(IEnumerable<FlightDetailDTO> dets_dto, string flight_id);
         Task removeFlightDetailAsync(string flight_id); //xoa detail dung cuoi
         Task removeAllFlightDetailAsync(string flight_id);
 

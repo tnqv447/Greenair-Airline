@@ -40,9 +40,9 @@ namespace ApplicationCore.Services
             return this.toDtoRange(Jobs);
         }
 
-        new public async Task<IEnumerable<Job>> SortAsync(IEnumerable<Job> entities, ORDER_ENUM col, ORDER_ENUM order)
+        new public async Task<IEnumerable<JobDTO>> SortAsync(IEnumerable<JobDTO> entities, ORDER_ENUM col, ORDER_ENUM order)
         {
-            IEnumerable<Job> res = null;
+            IEnumerable<JobDTO> res = null;
             await Task.Run(() => true);
             if (order == ORDER_ENUM.DESCENDING)
             {

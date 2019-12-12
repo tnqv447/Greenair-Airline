@@ -223,549 +223,697 @@
  	}
  	counter();
 
-var contentWayPoint = function () {
-var i = 0;
-$('.ftco-animate').waypoint(function (direction) {
+ 	var contentWayPoint = function () {
+ 		var i = 0;
+ 		$('.ftco-animate').waypoint(function (direction) {
 
-	if (direction === 'down' && !$(this.element).hasClass('ftco-animated')) {
+ 			if (direction === 'down' && !$(this.element).hasClass('ftco-animated')) {
 
-		i++;
+ 				i++;
 
-		$(this.element).addClass('item-animate');
-		setTimeout(function () {
+ 				$(this.element).addClass('item-animate');
+ 				setTimeout(function () {
 
-			$('body .ftco-animate.item-animate').each(function (k) {
-				var el = $(this);
-				setTimeout(function () {
-					var effect = el.data('animate-effect');
-					if (effect === 'fadeIn') {
-						el.addClass('fadeIn ftco-animated');
-					} else if (effect === 'fadeInLeft') {
-						el.addClass('fadeInLeft ftco-animated');
-					} else if (effect === 'fadeInRight') {
-						el.addClass('fadeInRight ftco-animated');
-					} else {
-						el.addClass('fadeInUp ftco-animated');
-					}
-					el.removeClass('item-animate');
-				}, k * 50, 'easeInOutExpo');
-			});
+ 					$('body .ftco-animate.item-animate').each(function (k) {
+ 						var el = $(this);
+ 						setTimeout(function () {
+ 							var effect = el.data('animate-effect');
+ 							if (effect === 'fadeIn') {
+ 								el.addClass('fadeIn ftco-animated');
+ 							} else if (effect === 'fadeInLeft') {
+ 								el.addClass('fadeInLeft ftco-animated');
+ 							} else if (effect === 'fadeInRight') {
+ 								el.addClass('fadeInRight ftco-animated');
+ 							} else {
+ 								el.addClass('fadeInUp ftco-animated');
+ 							}
+ 							el.removeClass('item-animate');
+ 						}, k * 50, 'easeInOutExpo');
+ 					});
 
-		}, 100);
+ 				}, 100);
 
-	}
+ 			}
 
-}, {
-	offset: '95%'
-});
-};
-contentWayPoint();
+ 		}, {
+ 			offset: '95%'
+ 		});
+ 	};
+ 	contentWayPoint();
 
 
  	// navigation
-	var OnePageNav = function () {
-		$(".smoothscroll[href^='#'], #ftco-nav ul li a[href^='#']").on('click', function (e) {
-			e.preventDefault();
+ 	var OnePageNav = function () {
+ 		$(".smoothscroll[href^='#'], #ftco-nav ul li a[href^='#']").on('click', function (e) {
+ 			e.preventDefault();
 
-			var hash = this.hash,
-				navToggler = $('.navbar-toggler');
-			$('html, body').animate({
-				scrollTop: $(hash).offset().top
-			}, 700, 'easeInOutExpo', function () {
-				window.location.hash = hash;
-			});
+ 			var hash = this.hash,
+ 				navToggler = $('.navbar-toggler');
+ 			$('html, body').animate({
+ 				scrollTop: $(hash).offset().top
+ 			}, 700, 'easeInOutExpo', function () {
+ 				window.location.hash = hash;
+ 			});
 
 
-			if (navToggler.is(':visible')) {
-				navToggler.click();
-			}
-		});
-		$('body').on('activate.bs.scrollspy', function () {
-			console.log('nice');
-		})
-	};
-	OnePageNav();
+ 			if (navToggler.is(':visible')) {
+ 				navToggler.click();
+ 			}
+ 		});
+ 		$('body').on('activate.bs.scrollspy', function () {
+ 			console.log('nice');
+ 		})
+ 	};
+ 	OnePageNav();
 
 
  	// magnific popup
-		$('.image-popup').magnificPopup({
-			type: 'image',
-			closeOnContentClick: true,
-			closeBtnInside: false,
-			fixedContentPos: true,
-			mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
-			gallery: {
-				enabled: true,
-				navigateByImgClick: true,
-				preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
-			},
-			image: {
-				verticalFit: true
-			},
-			zoom: {
-				enabled: true,
-				duration: 300 // don't foget to change the duration also in CSS
-			}
-		});
+ 	$('.image-popup').magnificPopup({
+ 		type: 'image',
+ 		closeOnContentClick: true,
+ 		closeBtnInside: false,
+ 		fixedContentPos: true,
+ 		mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+ 		gallery: {
+ 			enabled: true,
+ 			navigateByImgClick: true,
+ 			preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+ 		},
+ 		image: {
+ 			verticalFit: true
+ 		},
+ 		zoom: {
+ 			enabled: true,
+ 			duration: 300 // don't foget to change the duration also in CSS
+ 		}
+ 	});
 
-	$('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
-		disableOn: 700,
-		type: 'iframe',
-		mainClass: 'mfp-fade',
-		removalDelay: 160,
-		preloader: false,
-		fixedContentPos: false
-	});
-	// DatePicker
-	$('.checkin_date').datepicker({
-		dateFormat: 'dd/mm/yy',
-		minDate: new Date(),	
-		'autoclose': true
-	});
-	$('.checkout_date').datepicker({
-		dateFormat: 'dd/mm/yy',
-		minDate: $('.checkin_date').val() + 1 
-	});
+ 	$('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+ 		disableOn: 700,
+ 		type: 'iframe',
+ 		mainClass: 'mfp-fade',
+ 		removalDelay: 160,
+ 		preloader: false,
+ 		fixedContentPos: false
+ 	});
+ 	// DatePicker
+ 	$('.checkin_date').datepicker({
+ 		dateFormat: 'dd/mm/yy',
+ 		minDate: new Date(),
+ 		'autoclose': true
+ 	});
+ 	$('.checkout_date').datepicker({
+ 		dateFormat: 'dd/mm/yy',
+ 		minDate: $('.checkin_date').val() + 1
+ 	});
 
-	$(".birth_date").datepicker({
-		dateFormat: 'dd/mm/yy',
-		'autoclose': true
-	})
-	//end of datepicker
-	$( ".checkin_date" ).datepicker( "setDate", new Date() );
-	$( ".checkout_date" ).datepicker( "setDate", $(".checkin_date").val() );
-	$( ".checkout_date" ).datepicker( "option", "minDate", $(".checkin_date").val());
+ 	$(".birth_date").datepicker({
+ 		dateFormat: 'dd/mm/yy',
+ 		'autoclose': true
+ 	})
+ 	//end of datepicker
+ 	$(".checkin_date").datepicker("setDate", new Date());
+ 	$(".checkout_date").datepicker("setDate", $(".checkin_date").val());
+ 	$(".checkout_date").datepicker("option", "minDate", $(".checkin_date").val());
 
-	$(document).on("change",".checkin_date",function(){
-		$( ".checkout_date" ).datepicker( "option", "minDate", $(".checkin_date").val());
-	})
-	//dialog,form
-		var dialog, form;
-		$("#register").dialog({
-		autoOpen: false,
-		height: 600,
-		width: 800,
-		modal: true,
-		closeOnEscape: true,
-		buttons: {
-			"Create an account": addUser,
-			Cancel: function () {
-				$(this).dialog("close");
-			}
-		},
-		close: function () {
-			$(this).dialog("close");
-		}
-		});
-		function addUser() {
-		$("#register").dialog("close");
-		alert("Succesful");
-	}
-	dialog = $("#dialog").dialog({
-		autoOpen: false,
-		height: 270,	
-		width: 320,
-		maxHeight: 350,
-		maxWidth: 320,
-		resizable: false,
-		modal: true,
-		dialogClass: 'myTitleClass',
-		position: 'center',	
-		close: function () {
-		//form[0].reset();
-		$(this).dialog("close")
+ 	$(document).on("change", ".checkin_date", function () {
+ 		$(".checkout_date").datepicker("option", "minDate", $(".checkin_date").val());
+ 	})
+ 	//dialog,form
+ 	var dialog, form;
+ 	$("#register").dialog({
+ 		autoOpen: false,
+ 		height: 600,
+ 		width: 800,
+ 		modal: true,
+ 		closeOnEscape: true,
+ 		buttons: {
+ 			"Create an account": addUser,
+ 			Cancel: function () {
+ 				$(this).dialog("close");
+ 			}
+ 		},
+ 		close: function () {
+ 			$(this).dialog("close");
+ 		}
+ 	});
+ 	//test
+ 	var firstName = $("#firstName").val();
+ 	var lastName = $("#lastName").val();
+ 	$(".name").text(firstName + " " + lastName);
+ 	var birth_date = new Date();
+ 	// $(".birth_day").text(birth_date);
+ 	var OldPass;
+ 	var phone;
+ 	var num;
+ 	var street;
+ 	var district;
+ 	var state;
+ 	var city;
+ 	var email;
 
-		}
-	});
-	$("#opener").on("click", function () {
-		$("#dialog").dialog("open");
-	});
-	$("#open-register").on("click",function(){
-		$("#register").dialog("open");
-		$("#dialog").dialog("close");
-	})
-	$("#dialog").dialog("option", "closeOnEscape", true);
-	$(".info-show").on("click", function () {
-		$(".info-show").css("display", "none");
-		$(".info-hide").css("display", "inline-block");
-		$(".fare__details").css("display", "block");
-	});
-	$(".info-hide").on("click", function () {
-		$(".info-hide").css("display", "none");
-		$(".info-show").css("display", "inline-block");
-		$(".fare__details").css("display", "none");
-	})
-	//end of dialog
-	$(window).resize(function () {
-		$("#dialog").dialog("option", "position", {
-			my: "center",
-			at: "center",
-			of: window
-		});
-		$("#register").dialog("option", "position", {
-			my: "center",
-			at: "center",
-			of: window
-		});
-		});
-		
+ 	function addUser() {
+ 		firstName = $("#reg-first-name").val();
+ 		lastName = $("#reg-last-name").val();
+ 		birth_date = $("#reg-birth-date").val();
+ 		num = $("#reg-num").val();
+ 		street = $("#reg-street").val();
+ 		district = $("#reg-district").val();
+ 		state = $("#reg-state").val();
+ 		city = $("#reg-city").val();
+ 		country = $("reg-country").children("option:selected").val();
+ 		phone = $("#reg-phone").val();
+ 		email = $("#reg-email").val();
+ 		var nameRegex = new RegExp(/^([A-Za-z]+[,.]?[ ]?|[A-Za-z]+['-]?)+$/);
+ 		var dateRegex = new RegExp(/^\s*((31([-/ ])((0?[13578])|(1[02]))\3(\d\d)?\d\d)|((([012]?[1-9])|([123]0))([-/ ])((0?[13-9])|(1[0-2]))\12(\d\d)?\d\d)|(((2[0-8])|(1[0-9])|(0?[1-9]))([-/ ])0?2\22(\d\d)?\d\d)|(29([-/ ])0?2\25(((\d\d)?(([2468][048])|([13579][26])|(0[48])))|((([02468][048])|([13579][26]))00))))\s*$/);
+ 		var emailRegex = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/);
+ 		var phoneRegex = new RegExp(/((09|03|07|08|05)+([0-9]{8})\b)/g);
+ 		var UserName = $("#reg-username").val();
+ 		var NewPass = $("#reg-password").val();
+ 		var RePass = $("#reg-re-password").val();
+ 		var UserNameRegexp = new RegExp(/^(?![0-9]+$)(?=[a-zA-Z0-9-]{5,25}$)[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/);
+ 		var PassWordRegexp = new RegExp(/^(?=[^a-z]*[a-z])(?=\D*\d)[^:&.~\s]{5,20}$/);
+ 		if (!nameRegex.test(firstName)) {
+ 			$("#err-first-name").removeClass("hidden");
+ 		} else {
+ 			$("#err-first-name").addClass("hidden");
+ 			if (!nameRegex.test(lastName)) {
+ 				$("#err-last-name").removeClass("hidden");
+ 			} else {
+ 				$("#err-last-name").addClass("hidden");
+ 				if (!dateRegex.test(birth_date)) {
+ 					$("#err-birth-date").removeClass("hidden");
+ 				} else {
+ 					$("#err-birth-date").addClass("hidden");
+ 					if (!emailRegex.test(email)) {
+ 						$("#err-email").removeClass("hidden");
+
+ 					} else {
+ 						$("#err-email").addClass("hidden");
+ 						if (!phoneRegex.test(phone)) {
+ 							$("#err-phone").removeClass("hidden");
+ 						} else {
+ 							$("#err-phone").addClass("hidden");
+ 							if (!UserNameRegexp.test(UserName)) {
+ 								$("#err-user").removeClass("hidden");
+ 							} else {
+ 								$("#err-user").addClass("hidden");
+ 								if (!PassWordRegexp.test(NewPass)) {
+ 									$("#err-new-pass").removeClass("hidden");
+ 								} else {
+ 									$("#err-new-pass").addClass("hidden");
+ 									if (RePass != NewPass) {
+ 										$("#err-re-pass").removeClass("hidden");
+ 									} else {
+ 										$("#err-re-pass").addClass("hidden");
+ 										$.ajax({
+ 											type: "POST",
+ 											url: "/Account?handler=NewCustomer",
+ 											headers: {
+ 												"XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
+ 											},
+ 											data: JSON.stringify({
+ 												FirstName: firstName,
+ 												LastName: lastName,
+ 												Birthdate: birth_date,
+ 												Num: num,
+ 												Street: street,
+ 												District: district,
+ 												State: state,
+ 												City: city,
+ 												Country: country,
+ 												Phone: phone,
+ 												Email: email,
+ 												Username: UserName,
+ 												Password: NewPass
+ 											}),
+ 											success: function (response) {
+ 												if ($.trim(response) == "false") {
+ 													alert("Your account already exists");
+ 												} else {
+ 													$("#register").dialog("close");
+ 												}
+
+ 											},
+ 											error: function (response) {
+ 												alert("Cant save your changes");
+ 											}
+ 										});
+ 									}
+ 								}
+ 							}
+
+ 						}
+ 					}
+ 				}
+ 			}
+ 		}
+ 	}
+ 	dialog = $("#dialog").dialog({
+ 		autoOpen: false,
+ 		height: 270,
+ 		width: 320,
+ 		maxHeight: 350,
+ 		maxWidth: 320,
+ 		resizable: false,
+ 		modal: true,
+ 		dialogClass: 'myTitleClass',
+ 		position: 'center',
+ 		close: function () {
+ 			//form[0].reset();
+ 			$(this).dialog("close")
+
+ 		}
+ 	});
+ 	$("#opener").on("click", function () {
+ 		$("#dialog").dialog("open");
+ 	});
+ 	$("#open-register").on("click", function () {
+ 		$("#register").dialog("open");
+ 		$("#dialog").dialog("close");
+ 	})
+ 	$("#dialog").dialog("option", "closeOnEscape", true);
+
+ 	//end of dialog
+ 	$(window).resize(function () {
+ 		$("#dialog").dialog("option", "position", {
+ 			my: "center",
+ 			at: "center",
+ 			of: window
+ 		});
+ 		$("#register").dialog("option", "position", {
+ 			my: "center",
+ 			at: "center",
+ 			of: window
+ 		});
+ 	});
+
  	//Autocomplete
-	$("#From").autocomplete({
-		source: function(request,response){
-			$.ajax({
-				url: '/Index?handler=AirPort',
-				datatype: "json",
+ 	$("#From").autocomplete({
+ 		source: function (request, response) {
+ 			$.ajax({
+ 				url: '/Index?handler=AirPort',
+ 				datatype: "json",
 
-				data:{term: request.term},
-				contentType: "application/json; charset=utf-8",
-				success: function(data){
-					response($.map(data,function(item){
-						return {
-							label: item.name,
-							value: item.name,
-							CategoryId: item.id
-						}
-					}))
-				},
-				error: function(response){
-					
-				}
-			});
-		},
-		minLength: 1,
-		select: function(e,i)
-		{
-			$("#AirportId").val(i.item.CategoryId);
-			//bind airport dropdown
-			
-		},
-		
-	}).focus(function(){
-		$(this).autocomplete("search");
-	});
-	$("#Where").autocomplete({
-		source: function(request,response){
-			$.ajax({
-				url: '/Index?handler=AirPort',
-				datatype: "json",
-				data:{term: request.term},
-				contentType: "application/json; charset=utf-8",
-				success: function(data){
-					response($.map(data,function(item){
-						return {
-							label: item.name,
-							value: item.name,
-							CategoryId: item.id
-						}
-					}))
-				},
-				error: function(response){
-					
-				}
-			});
-		},
-		minLength: 1,
-		select: function(e,i)
-		{
-			$("#AirportId_2").val(i.item.CategoryId);
-			//bind airport dropdown
-			
-		},
-		
-	}).focus(function(){
-		$(this).autocomplete("search");
-	});
-	// End autocomplete
-	//click everything
-	$("#profile").on("click",function(){
-		location.replace("/Account");
-	})
-	
-	//Open close class
-	$(".open-account").on("click",function(){
-		var id = $(this).attr("id");
-		if(id == "open-user"){
-			$(".user-show").addClass("hidden");
-			$(".user-field").removeClass("hidden");
-			$("#open-user").addClass("hidden");
-			$("#close-user").removeClass("hidden");
-			$("#save-user").removeClass("hidden");
-		}
-		if(id == "open-pass")
-		{
-			$("#pass-field").removeClass("hidden");
-			$("#pass-show").addClass("hidden");
-			$("#open-pass").addClass("hidden");
-			$("#close-pass").removeClass("hidden");
-			$("#save-pass").removeClass("hidden");
-		}
-	});
-	$(".close-account").on("click",function(){
-		var id = $(this).attr("id");
-		if(id == "close-user"){
-			$(".user-show").removeClass("hidden");
-			$(".user-field").addClass("hidden");
-			$("#open-user").removeClass("hidden");
-			$("#close-user").addClass("hidden");
-			$("#save-user").addClass("hidden");
-		}
-		if(id == "close-pass")
-		{
-			$("#pass-field").addClass("hidden");
-			$("#pass-show").removeClass("hidedn");
-			$("#open-pass").removeClass("hidden");
-			$("#close-pass").addClass("hidden");
-			$("#save-pass").addClass("hidden");
-		}
-	});
-	$(".open").on("click",function(){
-		var id = $(this).attr("id");
-		if(id == "profile_op")
-		{
-			$("#profile_op").addClass("hidden");
-			$("#profile_cl").removeClass("hidden");
-			$("#profile_s").removeClass("hidden");
-			$(".pro-show").addClass("hidden");
-			$(".pro-field").removeClass("hidden");
-		}
-		if(id == "add_op")
-		{
-			$("#add_op").addClass("hidden");
-			$("#add_cl").removeClass("hidden");
-			$("#add_s").removeClass("hidden");
-			$("#address-show").addClass("hidden");
-			$("#address-field").removeClass("hidden");
-		}
-		if(id == "phone_op")
-		{
-			$("#phone_op").addClass("hidden");
-			$("#phone_cl").removeClass("hidden");
-			$("#phone_s").removeClass("hidden");
-			$(".phone-show").addClass("hidden");
-			$(".phone-field").removeClass("hidden");
-		}
-		if(id == "email_op")
-		{
-			$("#email_op").addClass("hidden");
-			$("#email_cl").removeClass("hidden");
-			$("#email_s").removeClass("hidden");
-			$(".email-show").addClass("hidden");
-			$(".email-field").removeClass("hidden");
-		}
-	});
-	$(".cancel").on("click",function(){
-		var id = $(this).attr("id");
-		if(id == "profile_cl")
-		{
-			$("#profile_op").removeClass("hidden");
-			$("#profile_cl").addClass("hidden");
-			$("#profile_s").addClass("hidden");
-			$(".pro-show").removeClass("hidden");
-			$(".pro-field").addClass("hidden");
-		}
-		if(id == "add_cl")
-		{
-			$("#add_op").removeClass("hidden");
-			$("#add_cl").addClass("hidden");
-			$("#add_s").addClass("hidden");
-			$("#address-show").removeClass("hidden");
-			$("#address-field").addClass("hidden");
-		}
-		if(id == "phone_cl")
-		{
-			$("#phone_op").removeClass("hidden");
-			$("#phone_cl").addClass("hidden");
-			$("#phone_s").addClass("hidden");
-			$(".phone-show").removeClass("hidden");
-			$(".phone-field").addClass("hidden");
-		}
-		if(id == "email_cl")
-		{
-			$("#email_op").removeClass("hidden");
-			$("#email_cl").addClass("hidden");
-			$("#email_s").addClass("hidden");
-			$(".email-show").removeClass("hidden");
-			$(".email-field").addClass("hidden");
-		}
-	});
-	//end of open close class
+ 				data: {
+ 					term: request.term
+ 				},
+ 				contentType: "application/json; charset=utf-8",
+ 				success: function (data) {
+ 					response($.map(data, function (item) {
+ 						return {
+ 							label: item.name,
+ 							value: item.name,
+ 							CategoryId: item.id
+ 						}
+ 					}))
+ 				},
+ 				error: function (response) {
 
-	// select country
-	var country_list = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua &amp; Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia &amp; Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Cape Verde","Cayman Islands","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cruise Ship","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kuwait","Kyrgyz Republic","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre &amp; Miquelon","Samoa","San Marino","Satellite","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","South Africa","South Korea","Spain","Sri Lanka","St Kitts &amp; Nevis","St Lucia","St Vincent","St. Lucia","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad &amp; Tobago","Tunisia","Turkey","Turkmenistan","Turks &amp; Caicos","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","Uzbekistan","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
-	var option = '';
-	var country = $("#country").val();
-	if(country != null)
-	{
-		option += '<option value="' + country + '" selected>' + country + '</option>';
-	}
-	else
-	{
-		option += '<option value="0" selected>Select your country</option>';
-	}
-	for(var i = 0;i<country_list.length;i++)
-	{
-		option += '<option value="' + country_list[i] + '">' + country_list[i] + '</option>';
-	}
-	$("#items").append(option);
-	//end of array coutries
-	
-	//test
-	var firstName = $("#firstName").val();
-	var lastName = $("#lastName").val();
-	$(".name").text(firstName+" "+lastName);
-	var birth_date = new Date() ;
-	// $(".birth_day").text(birth_date);
-	var OldPass;
-	var phone ;
-	var num;
-	var street;
-	var district;
-	var state;
-	var city;
-	var email;
-	
-	// save profile
-	$(".save").on("click",function(){
-		var id = $(this).attr("id");
-		firstName = $("#firstName").val();
-		lastName =$("#lastName").val();
-		birth_date = $(".birth_date").val();
-		num =$("#num").val();
-		street=$("#street").val();
-		district = $("#district").val();
-		state = $("#state").val();
-		city = $("#city").val();
-		country = $(".country").children("option:selected").val();
-		phone = $("#phone").val();
-		email = $("#email").val();
-		var save_button = $(this).find("button");
-		save_button.button("loading");
-		$.ajax({
-			type: "POST",
-			url: "/Account?handler=EditCustomer",
-			headers: {
-			"XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
-			},
-			data: JSON.stringify({
-				FirstName: firstName,
-				LastName: lastName,
-				Birthdate: birth_date,
-				Num: num,
-				Street: street,
-				District: district,
-				State: state,
-				City: city,
-				Country: country,
-				Phone: phone,
-				Email: email
-			}),
-			success:function(response){
-				alert(response);
-				$(".name").text(firstName+" "+lastName);
-				$(".birth_day").text(birth_date);
-				$("#text-num").text(num);
-				$("#text-street").text(street);
-				$("#text-district").text(district);
-				$("#text-city").text(city);
-				$("#text-state").text(state);
-				$("#text-country").text(country);
-				$("#text-phone").text(phone);
-				$("#text-email").text(email);
-				save_button.button("reset");
-				if(id == "profile_s")
-				{
-					$("#profile_op").removeClass("hidden");
-					$("#profile_cl").addClass("hidden");
-					$("#profile_s").addClass("hidden");
-					$(".pro-show").removeClass("hidden");
-					$(".pro-field").addClass("hidden");
-				}
-				if(id == "add_s")
-				{
-					$("#add_op").removeClass("hidden");
-					$("#add_cl").addClass("hidden");
-					$("#add_s").addClass("hidden");
-					$("#address-show").removeClass("hidden");
-					$("#address-field").addClass("hidden");
-				}
-				if(id == "phone_s")
-				{
-					$("#phone_op").removeClass("hidden");
-					$("#phone_cl").addClass("hidden");
-					$("#phone_s").addClass("hidden");
-					$(".phone-show").removeClass("hidden");
-					$(".phone-field").addClass("hidden");
-				}
-				if(id == "email_s")
-				{
-					$("#email_op").removeClass("hidden");
-					$("#email_cl").addClass("hidden");
-					$("#email_s").addClass("hidden");
-					$(".email-show").removeClass("hidden");
-					$(".email-field").addClass("hidden");
-				}
-			},
-			error: function(response){
-				alert("Cant save your changes");
-			}
-		});
-		// alert(num);
-		
-		
-	});
-	$(".save-account").on("click",function(){
-		var id = $(this).attr("id");
-		var UserName = $("#Username").val();
-		var NewPass = $("#new-pass").val();
-		var RePass = $("#re-pass").val();
-		OldPass = $("#old-pass").val();
-		var PassWordRegexp = new RegExp(/^(?=[^a-z]*[a-z])(?=\D*\d)[^:&.~\s]{5,20}$/);
-		var save_button = $(this).find("button");
-		
-		if(id == "save-pass"){
-			if(!PassWordRegexp.test(NewPass))
-			{
-				$("#err-new-pass").removeClass("hidden");
-			}
-			else{
-				$("#err-new-pass").addClass("hidden");
-				if(RePass != NewPass)
-				{
-					$("#err-re-pass").removeClass("hidden");
-				}
-				else{
-					save_button.button('loading');
-					$("#err-re-pass").addClass("hidden");
-					$.ajax({
-						type: "POST",
-						url: "/Account?handler=EditAccountCustomer",
-						headers: {
-						"XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
-						},
-						data: JSON.stringify({
-							// Username: UserName,
-							Password: NewPass
-						}),
-						success: function(response)
-						{
-								$("#pass-field").addClass("hidden");
-								$("#pass-show").removeClass("hidedn");
-								$("#open-pass").removeClass("hidden");
-								$("#close-pass").addClass("hidden");
-								$("#save-pass").addClass("hidden");
-								$("#new-pass").val("");
-								$("#re-pass").val("");
-								$("#old-pass").val(NewPass);
-								save_button.button("reset");
-						},
-						error:function()
-						{
-							alert("false");
-						}
-					});	
-				}
-			}
-		}
-	})
-	// end of save profile
-})(jQuery);
+ 				}
+ 			});
+ 		},
+ 		minLength: 1,
+ 		select: function (e, i) {
+ 			$("#AirportId").val(i.item.CategoryId);
+ 			//bind airport dropdown
+
+ 		},
+
+ 	}).focus(function () {
+ 		$(this).autocomplete("search");
+ 	});
+ 	$("#Where").autocomplete({
+ 		source: function (request, response) {
+ 			$.ajax({
+ 				url: '/Index?handler=AirPort',
+ 				datatype: "json",
+ 				data: {
+ 					term: request.term
+ 				},
+ 				contentType: "application/json; charset=utf-8",
+ 				success: function (data) {
+ 					response($.map(data, function (item) {
+ 						return {
+ 							label: item.name,
+ 							value: item.name,
+ 							CategoryId: item.id
+ 						}
+ 					}))
+ 				},
+ 				error: function (response) {
+
+ 				}
+ 			});
+ 		},
+ 		minLength: 1,
+ 		select: function (e, i) {
+ 			$("#AirportId_2").val(i.item.CategoryId);
+ 			//bind airport dropdown
+
+ 		},
+
+ 	}).focus(function () {
+ 		$(this).autocomplete("search");
+ 	});
+ 	// End autocomplete
+ 	//click everything
+ 	$("#profile").on("click", function () {
+ 		location.replace("/Account");
+ 	})
+
+ 	//Open close class
+ 	$(".open-account").on("click", function () {
+ 		var id = $(this).attr("id");
+ 		if (id == "open-user") {
+ 			$(".user-show").addClass("hidden");
+ 			$(".user-field").removeClass("hidden");
+ 			$("#open-user").addClass("hidden");
+ 			$("#close-user").removeClass("hidden");
+ 			$("#save-user").removeClass("hidden");
+ 		}
+ 		if (id == "open-pass") {
+ 			$("#pass-field").removeClass("hidden");
+ 			$("#pass-show").addClass("hidden");
+ 			$("#open-pass").addClass("hidden");
+ 			$("#close-pass").removeClass("hidden");
+ 			$("#save-pass").removeClass("hidden");
+ 		}
+ 	});
+ 	$(".close-account").on("click", function () {
+ 		var id = $(this).attr("id");
+ 		if (id == "close-user") {
+ 			$(".user-show").removeClass("hidden");
+ 			$(".user-field").addClass("hidden");
+ 			$("#open-user").removeClass("hidden");
+ 			$("#close-user").addClass("hidden");
+ 			$("#save-user").addClass("hidden");
+ 		}
+ 		if (id == "close-pass") {
+ 			$("#pass-field").addClass("hidden");
+ 			$("#pass-show").removeClass("hidedn");
+ 			$("#open-pass").removeClass("hidden");
+ 			$("#close-pass").addClass("hidden");
+ 			$("#save-pass").addClass("hidden");
+ 		}
+ 	});
+ 	$(".open").on("click", function () {
+ 		var id = $(this).attr("id");
+ 		if (id == "profile_op") {
+ 			$("#profile_op").addClass("hidden");
+ 			$("#profile_cl").removeClass("hidden");
+ 			$("#profile_s").removeClass("hidden");
+ 			$(".pro-show").addClass("hidden");
+ 			$(".pro-field").removeClass("hidden");
+ 		}
+ 		if (id == "add_op") {
+ 			$("#add_op").addClass("hidden");
+ 			$("#add_cl").removeClass("hidden");
+ 			$("#add_s").removeClass("hidden");
+ 			$("#address-show").addClass("hidden");
+ 			$("#address-field").removeClass("hidden");
+ 		}
+ 		if (id == "phone_op") {
+ 			$("#phone_op").addClass("hidden");
+ 			$("#phone_cl").removeClass("hidden");
+ 			$("#phone_s").removeClass("hidden");
+ 			$(".phone-show").addClass("hidden");
+ 			$(".phone-field").removeClass("hidden");
+ 		}
+ 		if (id == "email_op") {
+ 			$("#email_op").addClass("hidden");
+ 			$("#email_cl").removeClass("hidden");
+ 			$("#email_s").removeClass("hidden");
+ 			$(".email-show").addClass("hidden");
+ 			$(".email-field").removeClass("hidden");
+ 		}
+ 	});
+ 	$(".cancel").on("click", function () {
+ 		var id = $(this).attr("id");
+ 		if (id == "profile_cl") {
+ 			$("#profile_op").removeClass("hidden");
+ 			$("#profile_cl").addClass("hidden");
+ 			$("#profile_s").addClass("hidden");
+ 			$(".pro-show").removeClass("hidden");
+ 			$(".pro-field").addClass("hidden");
+ 		}
+ 		if (id == "add_cl") {
+ 			$("#add_op").removeClass("hidden");
+ 			$("#add_cl").addClass("hidden");
+ 			$("#add_s").addClass("hidden");
+ 			$("#address-show").removeClass("hidden");
+ 			$("#address-field").addClass("hidden");
+ 		}
+ 		if (id == "phone_cl") {
+ 			$("#phone_op").removeClass("hidden");
+ 			$("#phone_cl").addClass("hidden");
+ 			$("#phone_s").addClass("hidden");
+ 			$(".phone-show").removeClass("hidden");
+ 			$(".phone-field").addClass("hidden");
+ 		}
+ 		if (id == "email_cl") {
+ 			$("#email_op").removeClass("hidden");
+ 			$("#email_cl").addClass("hidden");
+ 			$("#email_s").addClass("hidden");
+ 			$(".email-show").removeClass("hidden");
+ 			$(".email-field").addClass("hidden");
+ 		}
+ 	});
+ 	//end of open close class
+
+ 	// select country
+ 	var country_list = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua &amp; Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia &amp; Herzegovina", "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Cape Verde", "Cayman Islands", "Chad", "Chile", "China", "Colombia", "Congo", "Cook Islands", "Costa Rica", "Cote D Ivoire", "Croatia", "Cruise Ship", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland", "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kuwait", "Kyrgyz Republic", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Mauritania", "Mauritius", "Mexico", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Namibia", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre &amp; Miquelon", "Samoa", "San Marino", "Satellite", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "South Africa", "South Korea", "Spain", "Sri Lanka", "St Kitts &amp; Nevis", "St Lucia", "St Vincent", "St. Lucia", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad &amp; Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks &amp; Caicos", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "Uruguay", "Uzbekistan", "Venezuela", "Vietnam", "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
+ 	var option = '';
+ 	var country = $("#country").val();
+ 	if (country != null) {
+ 		option += '<option value="' + country + '" selected>' + country + '</option>';
+ 	} else {
+ 		option += '<option value="0" selected>Select your country</option>';
+ 	}
+ 	for (var i = 0; i < country_list.length; i++) {
+ 		option += '<option value="' + country_list[i] + '">' + country_list[i] + '</option>';
+ 	}
+ 	$("#items").append(option);
+ 	//end of array coutries
+
+
+ 	// save profile
+ 	$(".save").on("click", function () {
+ 		var id = $(this).attr("id");
+ 		firstName = $("#firstName").val();
+ 		lastName = $("#lastName").val();
+ 		birth_date = $(".birth_date").val();
+ 		num = $("#num").val();
+ 		street = $("#street").val();
+ 		district = $("#district").val();
+ 		state = $("#state").val();
+ 		city = $("#city").val();
+ 		country = $(".country").children("option:selected").val();
+ 		phone = $("#phone").val();
+ 		email = $("#email").val();
+ 		var nameRegex = new RegExp(/^([A-Za-z]+[,.]?[ ]?|[A-Za-z]+['-]?)+$/);
+ 		var dateRegex = new RegExp(/^\s*((31([-/ ])((0?[13578])|(1[02]))\3(\d\d)?\d\d)|((([012]?[1-9])|([123]0))([-/ ])((0?[13-9])|(1[0-2]))\12(\d\d)?\d\d)|(((2[0-8])|(1[0-9])|(0?[1-9]))([-/ ])0?2\22(\d\d)?\d\d)|(29([-/ ])0?2\25(((\d\d)?(([2468][048])|([13579][26])|(0[48])))|((([02468][048])|([13579][26]))00))))\s*$/);
+ 		var emailRegex = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/);
+ 		var phoneRegex = new RegExp(/((09|03|07|08|05)+([0-9]{8})\b)/g);
+ 		if (!nameRegex.test(firstName)) {
+ 			$("#err-first-name").removeClass("hidden");
+ 			if (id != "profile_s") {
+ 				$("#profile_op").addClass("hidden");
+ 				$("#profile_cl").removeClass("hidden");
+ 				$("#profile_s").removeClass("hidden");
+ 				$(".pro-show").addClass("hidden");
+ 				$(".pro-field").removeClass("hidden");
+ 			}
+ 		} else {
+ 			$("#err-first-name").addClass("hidden");
+ 			if (!nameRegex.test(lastName)) {
+ 				$("#err-last-name").removeClass("hidden");
+ 				if (id != "profile_s") {
+ 					$("#profile_op").addClass("hidden");
+ 					$("#profile_cl").removeClass("hidden");
+ 					$("#profile_s").removeClass("hidden");
+ 					$(".pro-show").addClass("hidden");
+ 					$(".pro-field").removeClass("hidden");
+ 				}
+ 			} else {
+ 				$("#err-last-name").addClass("hidden");
+ 				if (!dateRegex.test(birth_date)) {
+ 					$("#err-birth-date").removeClass("hidden");
+ 					if (id != "profile_s") {
+ 						$("#profile_op").addClass("hidden");
+ 						$("#profile_cl").removeClass("hidden");
+ 						$("#profile_s").removeClass("hidden");
+ 						$(".pro-show").addClass("hidden");
+ 						$(".pro-field").removeClass("hidden");
+ 					}
+ 				} else {
+ 					$("#err-birth-date").addClass("hidden");
+ 					if (!emailRegex.test(email)) {
+ 						$("#err-email").removeClass("hidden");
+ 						if (id != "email_s") {
+ 							$("#email_op").addClass("hidden");
+ 							$("#email_cl").removeClass("hidden");
+ 							$("#email_s").removeClass("hidden");
+ 							$(".email-show").addClass("hidden");
+ 							$(".email-field").removeClass("hidden");
+ 						}
+ 					} else {
+ 						$("#err-email").addClass("hidden");
+ 						if (!phoneRegex.test(phone)) {
+ 							$("#err-phone").removeClass("hidden");
+ 							if (id != "phone_s") {
+ 								$("#phone_op").addClass("hidden");
+ 								$("#phone_cl").removeClass("hidden");
+ 								$("#phone_s").removeClass("hidden");
+ 								$(".phone-show").addClass("hidden");
+ 								$(".phone-field").removeClass("hidden");
+ 							}
+ 						} else {
+ 							$("#err-phone").addClass("hidden");
+ 							var save_button = $(this).find("button");
+ 							save_button.button("loading");
+ 							$.ajax({
+ 								type: "POST",
+ 								url: "/Account?handler=EditCustomer",
+ 								headers: {
+ 									"XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
+ 								},
+ 								data: JSON.stringify({
+ 									FirstName: firstName,
+ 									LastName: lastName,
+ 									Birthdate: birth_date,
+ 									Num: num,
+ 									Street: street,
+ 									District: district,
+ 									State: state,
+ 									City: city,
+ 									Country: country,
+ 									Phone: phone,
+ 									Email: email
+ 								}),
+ 								success: function (response) {
+ 									alert(response);
+ 									$(".name").text(firstName + " " + lastName);
+ 									$(".birth_day").text(birth_date);
+ 									$("#text-num").text(num);
+ 									$("#text-street").text(street);
+ 									$("#text-district").text(district);
+ 									$("#text-city").text(city);
+ 									$("#text-state").text(state);
+ 									$("#text-country").text(country);
+ 									$("#text-phone").text(phone);
+ 									$("#text-email").text(email);
+ 									save_button.button("reset");
+ 									//profile
+ 									$("#profile_op").removeClass("hidden");
+ 									$("#profile_cl").addClass("hidden");
+ 									$("#profile_s").addClass("hidden");
+ 									$(".pro-show").removeClass("hidden");
+ 									$(".pro-field").addClass("hidden");
+ 									//address
+ 									$("#add_op").removeClass("hidden");
+ 									$("#add_cl").addClass("hidden");
+ 									$("#add_s").addClass("hidden");
+ 									$("#address-show").removeClass("hidden");
+ 									$("#address-field").addClass("hidden");
+ 									//phone
+ 									$("#phone_op").removeClass("hidden");
+ 									$("#phone_cl").addClass("hidden");
+ 									$("#phone_s").addClass("hidden");
+ 									$(".phone-show").removeClass("hidden");
+ 									$(".phone-field").addClass("hidden");
+ 									//email
+ 									$("#email_op").removeClass("hidden");
+ 									$("#email_cl").addClass("hidden");
+ 									$("#email_s").addClass("hidden");
+ 									$(".email-show").removeClass("hidden");
+ 									$(".email-field").addClass("hidden");
+ 								},
+ 								error: function (response) {
+ 									alert("Cant save your changes");
+ 								}
+ 							});
+ 						}
+ 					}
+ 				}
+ 			}
+ 		}
+
+ 		// alert(num);
+
+
+ 	});
+ 	$(".save-account").on("click", function () {
+ 		var id = $(this).attr("id");
+ 		var UserName = $("#Username").val();
+ 		var NewPass = $("#new-pass").val();
+ 		var RePass = $("#re-pass").val();
+ 		OldPass = $("#old-pass").val();
+ 		var CheckPass = $("#check-pass").val();
+ 		var PassWordRegexp = new RegExp(/^(?=[^a-z]*[a-z])(?=\D*\d)[^:&.~\s]{5,20}$/);
+ 		var save_button = $(this).find("button");
+
+ 		if (id == "save-pass") {
+ 			if (OldPass != CheckPass) {
+ 				$("#err-old-pass").removeClass("hidden");
+ 			} else {
+ 				$("#err-old-pass").addClass("hidden");
+ 				if (!PassWordRegexp.test(NewPass)) {
+ 					$("#err-new-pass").removeClass("hidden");
+ 				} else {
+ 					$("#err-new-pass").addClass("hidden");
+ 					if (RePass != NewPass) {
+ 						$("#err-re-pass").removeClass("hidden");
+ 					} else {
+ 						save_button.button('loading');
+ 						$("#err-re-pass").addClass("hidden");
+ 						$.ajax({
+ 							type: "POST",
+ 							url: "/Account?handler=EditAccountCustomer",
+ 							headers: {
+ 								"XSRF-TOKEN": $('input:hidden[name="__RequestVerificationToken"]').val()
+ 							},
+ 							data: JSON.stringify({
+ 								// Username: UserName,
+ 								Password: NewPass
+ 							}),
+ 							success: function (response) {
+ 								$("#pass-field").addClass("hidden");
+ 								$("#pass-show").removeClass("hidedn");
+ 								$("#open-pass").removeClass("hidden");
+ 								$("#close-pass").addClass("hidden");
+ 								$("#save-pass").addClass("hidden");
+ 								$("#new-pass").val("");
+ 								$("#re-pass").val("");
+ 								$("#old-pass").val(NewPass);
+ 								save_button.button("reset");
+ 							},
+ 							error: function () {
+ 								alert("false");
+ 							}
+ 						});
+ 					}
+ 				}
+ 			}
+
+ 		}
+ 	})
+ 	// end of save profile
+ })(jQuery);
+ $(document).ready(function () {
+ 	$(document).on("click", ".info-show", function () {
+ 		var id = $(this).attr("id");
+ 		$(".info-show #" + id).css("display", "none");
+ 		$("." + id + "Hide").css("display", "inline-block");
+ 		$("." + id).css("display", "block");
+ 	});
+ 	$(document).on("click", ".info-hide", function () {
+ 		var id = $(this).attr("id");
+ 		$("." + id + "Hide").css("display", "none");
+ 		$(".info-show #" + id + "Hide").css("display", "inline-block");
+ 		$("." + id).css("display", "none");
+ 	})
+ 	$(document).on("click", ".flight-card", function () {
+
+ 	})
+ });

@@ -26,7 +26,7 @@ namespace Infrastructure.Persistence.Repos
                 // else return res.ElementAt(0);
 
 
-                var res = this.Context.Customers.AsNoTracking().Where(m => String.Equals(m.Id, id)).ToList();
+                var res = this.Context.Customers.AsNoTracking().Where(m => !m.Id.Equals("000") && m.Id.Equals(id)).ToList();
 
                 //Console.WriteLine("20gg {0}", res.Count());
                 //foreach (Customer m in res) Console.WriteLine("{0} {1}", m.Id, m.FullName);
@@ -59,7 +59,7 @@ namespace Infrastructure.Persistence.Repos
             try
             {
                 var predicate = PredicateBuilder.New<Customer>();
-                predicate = predicate.And(m => m.Id.Equals(id));
+                predicate = predicate.And(m => !m.Id.Equals("000") && m.Id.Equals(id));
                 //Expression<Func<Customer, bool>> predicate = m => String.Equals(m.Id, id) && true;
                 var res = await Task.Run(() => this.Context.Customers.AsNoTracking()
                     .Where(predicate).ToList());
@@ -70,6 +70,19 @@ namespace Infrastructure.Persistence.Repos
             catch (Exception e)
             {
                 Console.WriteLine("GetByCustomerAsync() Unexpected: " + e);
+                return null;
+            }
+        }
+        new public async Task<IEnumerable<Customer>> GetAllAsync()
+        {
+            try
+            {
+                var res = await Context.Set<Customer>().AsNoTracking().Where(m => !String.Equals(m.Id, "000")).ToListAsync();
+                return res;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("GetAllCustomer() Unexpected: " + e);
                 return null;
             }
         }

@@ -57,9 +57,9 @@ namespace ApplicationCore.Services
             return this.toDtoRange(Customers);
         }
 
-        new public async Task<IEnumerable<Customer>> SortAsync(IEnumerable<Customer> entities, ORDER_ENUM col, ORDER_ENUM order)
+        new public async Task<IEnumerable<CustomerDTO>> SortAsync(IEnumerable<CustomerDTO> entities, ORDER_ENUM col, ORDER_ENUM order)
         {
-            IEnumerable<Customer> res = null;
+            IEnumerable<CustomerDTO> res = null;
             await Task.Run(() => true);
             if (order == ORDER_ENUM.DESCENDING)
             {

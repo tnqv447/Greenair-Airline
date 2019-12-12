@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Presentation.ViewModels;
 using ApplicationCore.DTOs;
+using System;
 namespace Presentation.Services.ServiceInterfaces
 {
     public interface IFlightVMService
     {
-        // Task<IEnumerable<FlightDTO>> GetFlightListVm(string origin_id, string destination_id, DateTime dep_date, DateTime arr_date, int adults_num, int childs_num);
+        Task<FlightPageVM> GetFlightPageViewModelAsync(IEnumerable<FlightDTO> list, DateTime depDate, DateTime arrDate, string searchString, int pageIndex = 1);
     }
 }

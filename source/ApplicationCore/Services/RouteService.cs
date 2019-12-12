@@ -44,9 +44,9 @@ namespace ApplicationCore.Services
             return this.toDtoRange(Routes);
         }
 
-        new public async Task<IEnumerable<Route>> SortAsync(IEnumerable<Route> entities, ORDER_ENUM col, ORDER_ENUM order)
+        new public async Task<IEnumerable<RouteDTO>> SortAsync(IEnumerable<RouteDTO> entities, ORDER_ENUM col, ORDER_ENUM order)
         {
-            IEnumerable<Route> res = null;
+            IEnumerable<RouteDTO> res = null;
             await Task.Run(() => true);
             if (order == ORDER_ENUM.DESCENDING)
             {
